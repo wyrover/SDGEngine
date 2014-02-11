@@ -26,6 +26,15 @@ flaws
 - not multithreaded
 - not cross platform (only in win32 operating system)
 
+```C++
+int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE, LPSTR, int)
+{
+	Engine engine;
+	return engine.Run();
+}
+```
+
 *version 0.1 made by bodguy*
+http://blog.naver.com/bodguy
 
 *thanks*
