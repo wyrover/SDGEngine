@@ -81,8 +81,7 @@ template<typename C>
 void GameObject::SubscribeToMessageType(EMessageType msgType)
 {
 	auto ret = GetComponent<C>();
-	if (ret == nullptr)
-		throw std::logic_error("SubscribeToMessageType GetComponent<TYPE> TYPE error: TYPE can't be nullptr.");
+	assert(ret != nullptr);
 
 	m_subscriber[msgType].insert(ret);
 }
@@ -91,8 +90,7 @@ template<typename C>
 void GameObject::PostMessage(const Message &msg)
 {
 	auto ret = GetComponent<C>();
-	if (ret == nullptr)
-		throw std::logic_error("PostMessage GetComponent<TYPE> TYPE error: TYPE can't be nullptr.");
+	assert(ret != nullptr);
 
 	for (auto compSet : m_subscriber[msg.m_type])
 	{

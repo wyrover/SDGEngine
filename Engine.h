@@ -40,5 +40,4 @@ private:
 	Time *time = nullptr;
 	Input *input = nullptr;
 	Space space;
-	Renderer *renderer = nullptr;
 };

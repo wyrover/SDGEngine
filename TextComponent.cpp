@@ -20,12 +20,12 @@ void TextComponent::Destroy()
 
 void TextComponent::Update(float delta)
 {
-	std::cout << "Update" << std::endl;
+	
 }
 
 void TextComponent::Render()
 {
-	std::cout << "Render" << std::endl;
+	std::cout << "TextComponent Render" << std::endl;
 }
 
 EMessageResult TextComponent::HandleMessage(const Message &msg)
@@ -33,10 +33,10 @@ EMessageResult TextComponent::HandleMessage(const Message &msg)
 	switch (msg.m_type)
 	{
 	case MT_OBJECT_CREATED:
-		std::cout << "MT_OBJECT_CREATED" << std::endl;
+		std::cout << "TextComponent MT_OBJECT_CREATED" << std::endl;
 		return MR_TRUE;
 	case MT_UPDATE:
-		std::cout << "MT_UPDATE" << std::endl;
+		std::cout << "TextComponent MT_UPDATE" << std::endl;
 		return MR_TRUE;
 	}
 

@@ -55,17 +55,19 @@ HRESULT Engine::OnInit()
 
 	time = new Time;
 	input = new Input;
-	renderer = new Renderer;
 	frameRateFont = new Font("±¼¸²Ã¼", 12);
+
 	GameObject *hero = new GameObject(&space, "hero");
-	auto obj1 = hero->AddComponent<TextComponent>();
-	obj1->setText("hello component based object management!");
+	auto comp1 = hero->AddComponent<TextComponent>();
+	auto comp2 = hero->AddComponent<Renderer>();
+	comp1->setText("hello component based object management!");
+
 	hero->SubscribeToMessageType<TextComponent>(MT_OBJECT_CREATED);
-	hero->SubscribeToMessageType<TextComponent>(MT_UPDATE);
+	hero->SubscribeToMessageType<Renderer>(MT_OBJECT_CREATED);
 
 	Message msg(MT_OBJECT_CREATED);
 	hero->BroadcastMessage(msg);
-	//hero->SetActiveRecursively(true);
+	hero->SetActiveRecursively(true);
 
 	space.Init();
 
@@ -75,7 +77,6 @@ HRESULT Engine::OnInit()
 void Engine::OnCleanUp()
 {
 	space.Destroy();
-	SDELETE(renderer);
 	SDELETE(frameRateFont);
 	SDELETE(time);
 	SDELETE(input);

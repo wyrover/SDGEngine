@@ -11,7 +11,7 @@ public:
 
 	virtual void Update(float delta) override;
 	virtual void Render() override;
-	virtual EMessageResult HandleMessage(const Message &);
+	virtual EMessageResult HandleMessage(const Message &) override;
 
 	void setText(std::string str) { text = str; }
 

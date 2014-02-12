@@ -14,8 +14,8 @@ struct Object
 	//	return MemPooler<Object>::GetUserPool().Alloc();
 	//}
 
-	//	void operator delete(void *p)
+	//void operator delete(void *p)
 	//{
-	//		MemPooler<Object>::GetUserPool().Free((Object *)p);
+	//	MemPooler<Object>::GetUserPool().Free((Object *)p);
 	//}
 };
