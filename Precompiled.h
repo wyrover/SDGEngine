@@ -48,7 +48,6 @@ extern "C"
 #include <imm.h>
 
 #include "Input.h"
-#include "MemPooler.h"
 #include "RemoveQualifier.h"
 #include "Meta.h"
 #include "MetaMacro.h"
@@ -60,7 +59,10 @@ extern "C"
 #include "LuaInterface.h"
 #include "DefaultRegistration.h"
 
+#include "MemPooler.h"
 #include "Object.h"
+#include "Font.h"
+#include "Time.h"
 #include "Texture.h"
 #include "Graphics.h"
 #include "AnimationClip.h"
@@ -75,7 +77,7 @@ extern "C"
 #include "GameScene.h"
 #include "Engine.h"
 
-#include "EditBox.h"
+#include "Ime.h"
 
 #include "TextComponent.h"
 #include "Collider.h"
@@ -83,8 +85,12 @@ extern "C"
 #include "Behaviour.h"
 #include "Animation.h"
 
-#define randomize() srand((unsigned)time(NULL))
+#define randomize() srand((unsigned)time(nullptr))
 #define random(n) (rand() % (n))
+
+#define SDELETE(p)       { if(p) { delete (p);     (p)=nullptr; } }
+#define SDELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=nullptr; } }
+#define SRELEASE(p)      { if(p) { (p)->Release(); (p)=nullptr; } }
 
 #ifdef _DEBUG
 #include "vld.h"

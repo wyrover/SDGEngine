@@ -1,9 +1,10 @@
 #include "Precompiled.h"
 
 Engine *ENGINE = nullptr;
-Engine::Engine()
+Engine::Engine(HINSTANCE inst)
 {
 	ENGINE = this;
+	m_hInst = inst;
 	m_dwStyle = WS_CAPTION | WS_SYSMENU;
 	m_caption = "Test application";
 	m_dwScreenWidth = 1024;
@@ -43,7 +44,6 @@ HRESULT Engine::OnInit()
 	d3dpp.Windowed = TRUE;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
-	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
 	if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd,
 		D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &m_pd3dDevice)))
@@ -53,7 +53,10 @@ HRESULT Engine::OnInit()
 
 	m_lua = Lua::CreateEnvironment();
 
+	time = new Time;
+	input = new Input;
 	renderer = new Renderer;
+	frameRateFont = new Font("±¼¸²Ã¼", 12);
 	GameObject *hero = new GameObject(&space, "hero");
 	auto obj1 = hero->AddComponent<TextComponent>();
 	obj1->setText("hello component based object management!");
@@ -72,14 +75,12 @@ HRESULT Engine::OnInit()
 void Engine::OnCleanUp()
 {
 	space.Destroy();
-	delete renderer;
-	renderer = nullptr;
-
-	if (m_pd3dDevice != nullptr)
-		m_pd3dDevice->Release();
-
-	if (m_pD3D != nullptr)
-		m_pD3D->Release();
+	SDELETE(renderer);
+	SDELETE(frameRateFont);
+	SDELETE(time);
+	SDELETE(input);
+	SRELEASE(m_pd3dDevice);
+	SRELEASE(m_pD3D);
 }
 
 void Engine::OnRender()
@@ -90,6 +91,7 @@ void Engine::OnRender()
 	m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 	if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 	{
+		frameRateFont->PrintFormat(10, 20, "frameRate: %ld", TIME->frameRate());
 		space.Render();
 		m_pd3dDevice->EndScene();
 	}
@@ -110,17 +112,6 @@ int Engine::Run()
 	ShowWindow(m_hwnd, SW_SHOWDEFAULT);
 	UpdateWindow(m_hwnd);
 
-	//Store counts per second
-	__int64 countsPerSec = 0;
-	BOOL ret = QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSec);
-	if (!ret) return 0;
-
-	float secPerCount = 1.0f / countsPerSec; //store seconds per count
-
-	//Initial previous time
-	__int64 prevTime = 0;
-	QueryPerformanceCounter((LARGE_INTEGER*)&prevTime);
-
 	MSG msg = { 0, };
 	while (msg.message != WM_QUIT)
 	{
@@ -131,17 +122,9 @@ int Engine::Run()
 		}
 		else
 		{
-			//Capture current count
-			__int64 curTime = 0;
-			QueryPerformanceCounter((LARGE_INTEGER*)&curTime);
-			//Calculate deltaTime
-			float deltaTime = (curTime - prevTime) * secPerCount;
-
-			CalculateFPS(deltaTime);
+			TIME->MeasureTheTime();
 			OnRender();
-			OnUpdate(deltaTime);
-
-			prevTime = curTime;
+			OnUpdate(TIME->deltaTime());
 		}
 	}
 
@@ -154,6 +137,8 @@ LRESULT Engine::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
+	case WM_IME_STARTCOMPOSITION:
+		return 0;
 	case WM_DESTROY:
 		OnCleanUp();
 		PostQuitMessage(0);
@@ -166,29 +151,4 @@ LRESULT Engine::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 LRESULT WINAPI Engine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return ENGINE->WndProc(hWnd, msg, wParam, lParam);
-}
-
-void Engine::CalculateFPS(float dt)
-{
-	static int frameCnt;
-	static float elapsedTime;
-
-	//Increment frameCnt
-	frameCnt++;
-	//Increment elapsed time
-	elapsedTime += dt;
-
-	if (elapsedTime >= 1.0f)
-	{
-		m_FPS = (float)frameCnt;
-
-		//Output FPS to Window title
-		std::stringstream ss;
-		ss << m_caption.c_str() << " FPS:  " << m_FPS;
-		SetWindowText(m_hwnd, ss.str().c_str());
-
-		//Reset elapsed time and frame count
-		frameCnt = 0;
-		elapsedTime = 0;
-	}
 }

@@ -1,29 +1,18 @@
 #include "Precompiled.h"
 
 Input *INPUTS = nullptr;
-Input::Input() 
+Input::Input()
 : m_pInput(0), m_pKey(0), m_pMou(0)
 {
 	INPUTS = this;
+	assert(ENGINE != nullptr);
 	memset(m_byCStk, 0, sizeof(BYTE)* 256);
 	memset(m_byLStk, 0, sizeof(BYTE)* 256);
 	memset(&m_CStm, 0, sizeof(DIMOUSESTATE));
 	memset(&m_LStm, 0, sizeof(DIMOUSESTATE));
-}
 
-Input::~Input()
-{
-	if (m_pKey)	{ m_pKey->Unacquire();	m_pKey->Release(); }	m_pKey = NULL;
-	if (m_pMou)	{ m_pMou->Unacquire();	m_pMou->Release(); }	m_pMou = NULL;
-	if (m_pInput)    m_pInput->Release();	m_pInput = NULL;
-	INPUTS = nullptr;
-}
-
-void Input::Init()
-{
-	assert(ENGINE != nullptr);
 	//DirectInput 객체 생성.
-	if (DirectInput8Create(ENGINE->hInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_pInput, NULL) != DI_OK)	return;
+	if (DirectInput8Create(ENGINE->instance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_pInput, NULL) != DI_OK)	return;
 
 	//키보드 입력 디바이스 생성.
 	if (m_pInput->CreateDevice(GUID_SysKeyboard, &m_pKey, NULL) != DI_OK) return;
@@ -42,6 +31,22 @@ void Input::Init()
 	if (m_pMou->SetDataFormat(&c_dfDIMouse) != DI_OK) return;
 	//디바이스 접근 제어권 얻기.
 	if (m_pMou->Acquire() != DI_OK) return;
+}
+
+Input::~Input()
+{
+	if (m_pKey)
+	{
+		m_pKey->Unacquire();
+		SRELEASE(m_pKey);
+	}
+	if (m_pMou)
+	{
+		m_pMou->Unacquire();
+		SRELEASE(m_pMou);
+	}
+	SRELEASE(m_pInput);
+	INPUTS = nullptr;
 }
 
 void Input::Update()

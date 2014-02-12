@@ -2,6 +2,6 @@
 
 int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE, LPSTR, int)
 {
-	Engine engine;
+	Engine engine(hThisInstance);
 	return engine.Run();
 }

@@ -1,63 +1,60 @@
 #include "Precompiled.h"
 
-EditBox::EditBox(HWND hWnd)
+Ime::Ime(std::string font, int size)
 {
 	isKorean = false;
-	buf = (char *)malloc(65536);
-	memset(buf, 0, 65536);
-	// other init
-	m_hWnd = hWnd;
+	buf = (char *)malloc(256);
+	memset(buf, 0, 256);
 	offset = 0;
-	hdc = GetDC(hWnd);
-	GetTextMetrics(hdc, &tm);
-	fontHeight = tm.tmHeight;
-	ReleaseDC(hWnd, hdc);
+	m_imeFont = new Font(font, size);
 }
 
-EditBox::~EditBox()
+Ime::~Ime()
 {
 	free(buf);
+	SDELETE(m_imeFont);
 }
 
-int EditBox::GetCharWidth(HDC hdc, char *ch, int len)
+int Ime::GetCharWidth(HDC hdc, char *ch, int len)
 {
-	SIZE sz;
-	GetTextExtentPoint32(hdc, ch, len, &sz);
-	return sz.cx;
+	//SIZE sz;
+	//GetTextExtentPoint32(hdc, ch, len, &sz);
+	//return sz.cx;
+	return 0;
 }
 
-void EditBox::SetCaret()
+void Ime::SetCaret()
 {
-	SIZE sz;
-	HDC hdc;
-	int toff;
-	int caretwidth;
+	//SIZE sz;
+	//HDC hdc;
+	//int toff;
+	//int caretwidth;
 
-	hdc = GetDC(m_hWnd);
-	if (isKorean)
-	{
-		toff = offset - 2;
-		caretwidth = GetCharWidth(hdc, buf + toff, 2);
-	}
-	else
-	{
-		toff = offset;
-		caretwidth = 2;
-	}
-	CreateCaret(m_hWnd, NULL, caretwidth, fontHeight);
-	ShowCaret(m_hWnd);
+	//hdc = GetDC(m_hWnd);
+	//if (isKorean)
+	//{
+	//	toff = offset - 2;
+	//	caretwidth = GetCharWidth(hdc, buf + toff, 2);
+	//}
+	//else
+	//{
+	//	toff = offset;
+	//	caretwidth = 2;
+	//}
+	//CreateCaret(m_hWnd, NULL, caretwidth, fontHeight);
+	//ShowCaret(m_hWnd);
 
-	GetTextExtentPoint32(hdc, buf, toff, &sz);
-	SetCaretPos(sz.cx, 0);
-	ReleaseDC(m_hWnd, hdc);
+	//GetTextExtentPoint32(hdc, buf, toff, &sz);
+	//SetCaretPos(sz.cx, 0);
+	//ReleaseDC(m_hWnd, hdc);
 }
 
-inline int EditBox::isDBCS(int nPos)
+inline int Ime::isDBCS(int nPos)
 {
 	return (IsDBCSLeadByte(buf[nPos]));
 }
 
-int EditBox::GetPrevOff(int nPos)
+int Ime::GetPrevOff(int nPos)
 {
 	int n, size;
 
@@ -76,7 +73,7 @@ int EditBox::GetPrevOff(int nPos)
 	return n - size;
 }
 
-int EditBox::GetNextOff(int nPos)
+int Ime::GetNextOff(int nPos)
 {
 	if (isDBCS(nPos))
 		return nPos + 2;
@@ -84,7 +81,7 @@ int EditBox::GetNextOff(int nPos)
 		return nPos + 1;
 }
 
-void EditBox::Insert(int nPos, char *str)
+void Ime::Insert(int nPos, char *str)
 {
 	int len;
 	int movelen;
@@ -96,7 +93,7 @@ void EditBox::Insert(int nPos, char *str)
 	memcpy(buf + nPos, str, len);
 }
 
-void EditBox::Delete(int nPos, int nCount)
+void Ime::Delete(int nPos, int nCount)
 {
 	int movelen;
 
@@ -107,16 +104,10 @@ void EditBox::Delete(int nPos, int nCount)
 	memmove(buf + nPos, buf + nPos + nCount, movelen);
 }
 
-LRESULT EditBox::ImeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+LRESULT Ime::wmChar(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	HIMC hImc; // context 핸들
-	char tmpChar[3], *tmpComp;
-	int length;
-
 	switch (iMessage)
 	{
-	case WM_IME_STARTCOMPOSITION:
-		return 0;
 	case WM_CHAR:
 		// 영어, 숫자일때 오는 메세지, wParam은 오직 1byte이다.
 		// LOWORD(lParam) means 입력받은 횟수
@@ -132,6 +123,15 @@ LRESULT EditBox::ImeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, true); // make wm_paint message
 		SetCaret();
 		return 0;
+	}
+
+	return 0;
+}
+
+LRESULT Ime::imeComposition(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+{
+	switch (iMessage)
+	{
 	case WM_IME_COMPOSITION:
 		// if character composition is going
 		if (lParam & GCS_COMPSTR)
@@ -158,9 +158,18 @@ LRESULT EditBox::ImeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			SetCaret();
 		}
 		break; // must be break
+	}
+
+	return 0;
+}
+
+LRESULT Ime::imeChar(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+{
+	switch (iMessage)
+	{
 	case WM_IME_CHAR:
 		// 스페이스, 숫자등도 이 메세지를 받기 때문에 DBCS 인지 SBCS인지 검사해야함
-		if (IsDBCSLeadByte((byte)(wParam >> 8)))
+		if (isDBCS((byte)(wParam >> 8)))
 		{
 			tmpChar[0] = HIBYTE(LOWORD(wParam));
 			tmpChar[1] = LOBYTE(LOWORD(wParam));
@@ -182,18 +191,39 @@ LRESULT EditBox::ImeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, true); // make wm_paint message
 		SetCaret();
 		return 0; // must be return 0
-	case WM_PAINT:
-		// draw window region with text
-		hdc = BeginPaint(hWnd, &ps);
-		TextOut(hdc, 0, 0, buf, strlen(buf));
-		EndPaint(hWnd, &ps);
-		return 0;
+	}
+
+	return 0;
+}
+
+LRESULT Ime::wmSetFocus(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+{
+	switch (iMessage)
+	{
 	case WM_SETFOCUS:
-		SetCaret();
-		return 0;
+		//SetCaret();
+		break;
+	}
+
+	return 0;
+}
+
+LRESULT Ime::wmKillFocus(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+{
+	switch (iMessage)
+	{
 	case WM_KILLFOCUS:
-		DestroyCaret();
-		return 0;
+		//DestroyCaret();
+		break;
+	}
+
+	return 0;
+}
+
+LRESULT Ime::wmKeyDown(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+{
+	switch (iMessage)
+	{
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
@@ -219,9 +249,6 @@ LRESULT EditBox::ImeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			offset = (int)strlen(buf);
 			SetCaret();
 			return 0;
-		case VK_ESCAPE:
-			PostMessage(hWnd, WM_DESTROY, NULL, NULL);
-			break;
 		case VK_DELETE:
 			if (isDBCS(offset))
 				Delete(offset, 2);
@@ -238,10 +265,7 @@ LRESULT EditBox::ImeProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			return 0;
 		}
 		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
 	}
 
-	return DefWindowProc(hWnd, iMessage, wParam, lParam);
+	return 0;
 }

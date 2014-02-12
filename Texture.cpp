@@ -37,11 +37,7 @@ HRESULT Texture::LoadFromMemory(LPDIRECT3DDEVICE9 pDev, std::string szEntityName
 
 void Texture::Destroy()
 {
-	if (m_pTex)
-	{
-		m_pTex->Release();
-		m_pTex = nullptr;
-	}
+	SRELEASE(m_pTex);
 }
 
 void Texture::AddReference()

@@ -8,9 +8,7 @@ public:
 	Input();
 	~Input();
 
-	void Init();
 	void Update();
-
 	//키보드 계속 클릭
 	bool key(DWORD key) { return (m_byCStk[key] & 0x80) ? true : false; }
 	//키보드 한번 클릭
