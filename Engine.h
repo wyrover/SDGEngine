@@ -27,6 +27,7 @@ private:
 	void OnRender();
 	void OnUpdate(float delta);
 
+	void ParseEngineiniFile();
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 private:

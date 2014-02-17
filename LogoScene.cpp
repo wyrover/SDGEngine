@@ -10,8 +10,10 @@ LogoScene::~LogoScene()
 
 void LogoScene::Init()
 {
-	GameScene::Init();
-	m_active = true;
+	m_space = new Space;
+	m_space->Init();
+
+	setActive(true);
 	GameObject *hero = new GameObject(m_space, "hero");
 	auto comp1 = hero->AddComponent<TextComponent>();
 	auto comp2 = hero->AddComponent<Renderer>();
@@ -27,15 +29,16 @@ void LogoScene::Init()
 
 void LogoScene::Destroy()
 {
-	GameScene::Destroy();
+	m_space->Destroy();
+	SDELETE(m_space);
 }
 
 void LogoScene::Update(float delta)
 {
-	GameScene::Update(delta);
+	m_space->Update(delta);
 }
 
 void LogoScene::Render()
 {
-	GameScene::Render();
+	m_space->Render();
 }

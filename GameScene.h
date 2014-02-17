@@ -6,14 +6,10 @@ public:
 	GameScene() {}
 	virtual ~GameScene() {}
 
-	virtual void Init() override;
-	virtual void Destroy() override;
-
-	virtual void Update(float delta) override;
-	virtual void Render() override;
-
 	bool isActive() { return m_active; }
 	bool isFinished() { return m_finished; }
+	void setActive(bool active) { m_active = active; }
+	void setFinished(bool finish) { m_finished = finish; }
 
 protected:
 	Space *m_space;

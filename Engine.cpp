@@ -55,7 +55,7 @@ HRESULT Engine::OnInit()
 
 	time = new Time;
 	input = new Input;
-	frameRateFont = new Font("Arial", 15);
+	frameRateFont = new Font("Arial", 14);
 	addSceneFromQueue(new LogoScene);
 
 	return S_OK;
@@ -144,6 +144,18 @@ void Engine::deleteAllFromRemovedQueue()
 	for (unsigned i = 0; i < size; i++) {
 		SDELETE(m_RemovedSceneQueue.back());
 		m_RemovedSceneQueue.pop();
+	}
+}
+
+void Engine::ParseEngineiniFile()
+{
+	try
+	{
+		File file("game.ini","rb");
+	}
+	catch (const char *exception)
+	{
+		::MessageBox(Handle(), exception, nullptr, MB_OK);
 	}
 }
 
