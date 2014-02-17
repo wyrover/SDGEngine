@@ -1,12 +1,10 @@
 #pragma once
 
-class Time;
-extern Time *TIME;
 class Time
 {
 public:
 	Time();
-	~Time();
+	~Time() {}
 
 	void MeasureTheTime();
 	float deltaTime() { return m_deltaTime; }

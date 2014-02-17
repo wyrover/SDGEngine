@@ -1,4 +1,4 @@
-#include "Precompiled.h"
+ï»¿#include "Precompiled.h"
 
 Engine *ENGINE = nullptr;
 Engine::Engine(HINSTANCE inst)
@@ -55,7 +55,7 @@ HRESULT Engine::OnInit()
 
 	time = new Time;
 	input = new Input;
-	frameRateFont = new Font("±¼¸²Ã¼", 12);
+	frameRateFont = new Font("Arial", 15);
 
 	GameObject *hero = new GameObject(&space, "hero");
 	auto comp1 = hero->AddComponent<TextComponent>();
@@ -67,7 +67,7 @@ HRESULT Engine::OnInit()
 
 	Message msg(MT_OBJECT_CREATED);
 	hero->BroadcastMessage(msg);
-	hero->SetActiveRecursively(true);
+	//hero->SetActiveRecursively(true);
 
 	space.Init();
 
@@ -92,7 +92,7 @@ void Engine::OnRender()
 	m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 	if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 	{
-		frameRateFont->PrintFormat(10, 20, "frameRate: %ld", TIME->frameRate());
+		frameRateFont->PrintFormat(10, 20, "frameRate: %ld", time->frameRate());
 		space.Render();
 		m_pd3dDevice->EndScene();
 	}
@@ -123,9 +123,9 @@ int Engine::Run()
 		}
 		else
 		{
-			TIME->MeasureTheTime();
+			time->MeasureTheTime();
 			OnRender();
-			OnUpdate(TIME->deltaTime());
+			OnUpdate(time->deltaTime());
 		}
 	}
 

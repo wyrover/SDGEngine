@@ -1,11 +1,8 @@
 #include "Precompiled.h"
 
-Input *INPUTS = nullptr;
 Input::Input()
 : m_pInput(0), m_pKey(0), m_pMou(0)
 {
-	INPUTS = this;
-	assert(ENGINE != nullptr);
 	memset(m_byCStk, 0, sizeof(BYTE)* 256);
 	memset(m_byLStk, 0, sizeof(BYTE)* 256);
 	memset(&m_CStm, 0, sizeof(DIMOUSESTATE));
@@ -46,7 +43,6 @@ Input::~Input()
 		SRELEASE(m_pMou);
 	}
 	SRELEASE(m_pInput);
-	INPUTS = nullptr;
 }
 
 void Input::Update()

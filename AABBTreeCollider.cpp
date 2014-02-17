@@ -1,24 +1,6 @@
 #include "Precompiled.h"
 
-Collider::Collider()
-{
-}
-
-Collider::~Collider()
-{
-}
-
-void Collider::Init()
-{
-
-}
-
-void Collider::Destroy()
-{
-
-}
-
-void Collider::Update(float delta)
+AABBTreeCollider::AABBTreeCollider()
 {
 	//auto iter = m_shapes.begin();
 	//for (iter; iter != m_shapes.end(); ++iter)
@@ -77,12 +59,31 @@ void Collider::Update(float delta)
 	//}
 }
 
-void Collider::Render()
+AABBTreeCollider::~AABBTreeCollider()
+{
+}
+
+void AABBTreeCollider::Init()
 {
 
 }
 
-bool Collider::AABBvsAABB(AABB& a, AABB& b)
+void AABBTreeCollider::Destroy()
+{
+
+}
+
+void AABBTreeCollider::Update(float delta)
+{
+
+}
+
+void AABBTreeCollider::Render()
+{
+	std::cout << "Renderer Render" << std::endl;
+}
+
+bool AABBTreeCollider::Collide(const AABBCollisionNode& a, const AABBCollisionNode& b) const
 {
 	// Exit with no intersection if found separated along an axis
 	if (a.max.x < b.min.x || a.min.x > b.max.x) return false;
@@ -92,7 +93,12 @@ bool Collider::AABBvsAABB(AABB& a, AABB& b)
 	return true;
 }
 
-D3DXVECTOR2 Collider::Clamp(AABB& a, AABB& b)
+bool AABBTreeCollider::BoxBoxOverlap(float ex0, float cen0, float ex1, float cen1)
+{
+	return false;
+}
+
+D3DXVECTOR2 AABBTreeCollider::Clamp(const AABBCollisionNode& a, const AABBCollisionNode& b) const
 {
 	static D3DXVECTOR2 mtd(0.f, 0.f);
 

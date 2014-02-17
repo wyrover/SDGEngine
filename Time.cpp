@@ -1,10 +1,7 @@
 #include "Precompiled.h"
 
-Time *TIME = nullptr;
 Time::Time()
 {
-	TIME = this;
-	assert(TIME != nullptr);
 	if (QueryPerformanceFrequency((LARGE_INTEGER*)&m_countsPerSec))
 	{
 		m_bPerfHardware = true;
@@ -19,14 +16,8 @@ Time::Time()
 	}
 }
 
-Time::~Time()
-{
-	TIME = nullptr;
-}
-
 void Time::MeasureTheTime()
 {
-	assert(TIME != nullptr);
 	if (m_bPerfHardware)
 		QueryPerformanceCounter((LARGE_INTEGER*)&m_curTime);
 	else

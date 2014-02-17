@@ -34,9 +34,6 @@ private:
 	DWORD m_dwScreenWidth, m_dwScreenHeight;
 	lua_State *m_lua = nullptr;
 	Font *frameRateFont;
-
-private:
-	// never use this!
 	Time *time = nullptr;
 	Input *input = nullptr;
 	Space space;
