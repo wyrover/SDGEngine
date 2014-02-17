@@ -15,6 +15,12 @@ public:
 	HINSTANCE instance() { return m_hInst; }
 	static  LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 
+	void addSceneFromQueue(GameScene *scene);
+	void removeSceneFromQueue();
+	void removeAllSceneFromQueue();
+	void deleteAllFromRemovedQueue();
+	size_t getSceneQueueSize() { return m_SceneQueue.size(); }
+
 private:
 	HRESULT OnInit();
 	void OnCleanUp();
@@ -26,15 +32,16 @@ private:
 private:
 	LPDIRECT3D9 m_pD3D = nullptr;
 	LPDIRECT3DDEVICE9 m_pd3dDevice = nullptr;
-	D3DPRESENT_PARAMETERS d3dpp;
 	HWND m_hwnd = nullptr;
 	HINSTANCE m_hInst = nullptr;
-	DWORD m_dwStyle;
-	std::string m_caption;
-	DWORD m_dwScreenWidth, m_dwScreenHeight;
 	lua_State *m_lua = nullptr;
 	Font *frameRateFont;
 	Time *time = nullptr;
 	Input *input = nullptr;
-	Space space;
+	D3DPRESENT_PARAMETERS d3dpp;
+	DWORD m_dwStyle;
+	std::string m_caption;
+	DWORD m_dwScreenWidth, m_dwScreenHeight;
+	std::queue<GameScene *> m_SceneQueue;
+	std::queue<GameScene *> m_RemovedSceneQueue;
 };

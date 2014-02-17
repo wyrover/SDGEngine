@@ -40,6 +40,7 @@ extern "C"
 #include <unordered_map>
 #include <set>
 #include <map>
+#include <queue>
 #include <typeinfo>
 #include <typeindex>
 #include <stdexcept>
@@ -230,6 +231,8 @@ namespace Colours
 #include "Renderer.h"
 #include "Behaviour.h"
 #include "Animation.h"
+
+#include "LogoScene.h"
 
 #define randomize() srand((unsigned)time(nullptr))
 #define random(n) (rand() % (n))

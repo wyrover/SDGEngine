@@ -1,12 +1,10 @@
 #pragma once
 
-class GameScene;
-extern GameScene *GSM;
 class GameScene : public Object
 {
 public:
 	GameScene() {}
-	~GameScene() {}
+	virtual ~GameScene() {}
 
 	virtual void Init() override;
 	virtual void Destroy() override;
@@ -14,10 +12,11 @@ public:
 	virtual void Update(float delta) override;
 	virtual void Render() override;
 
-	static void SetNextState(const char *state);
+	bool isActive() { return m_active; }
+	bool isFinished() { return m_finished; }
 
-private:
-	std::string m_current;
-	std::string m_next;
-	lua_State *L;
+protected:
+	Space *m_space;
+	bool m_active = false;
+	bool m_finished = false;
 };

@@ -56,27 +56,14 @@ HRESULT Engine::OnInit()
 	time = new Time;
 	input = new Input;
 	frameRateFont = new Font("Arial", 15);
-
-	GameObject *hero = new GameObject(&space, "hero");
-	auto comp1 = hero->AddComponent<TextComponent>();
-	auto comp2 = hero->AddComponent<Renderer>();
-	comp1->setText("hello component based object management!");
-
-	hero->SubscribeToMessageType<TextComponent>(MT_OBJECT_CREATED);
-	hero->SubscribeToMessageType<Renderer>(MT_OBJECT_CREATED);
-
-	Message msg(MT_OBJECT_CREATED);
-	hero->BroadcastMessage(msg);
-	//hero->SetActiveRecursively(true);
-
-	space.Init();
+	addSceneFromQueue(new LogoScene);
 
 	return S_OK;
 }
 
 void Engine::OnCleanUp()
 {
-	space.Destroy();
+	deleteAllFromRemovedQueue();
 	SDELETE(frameRateFont);
 	SDELETE(time);
 	SDELETE(input);
@@ -93,7 +80,18 @@ void Engine::OnRender()
 	if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 	{
 		frameRateFont->PrintFormat(10, 20, "frameRate: %ld", time->frameRate());
-		space.Render();
+		if (getSceneQueueSize() != 0)
+		{
+			GameScene *scene = m_SceneQueue.back();
+			if (scene && !scene->isFinished() && scene->isActive())
+			{
+				scene->Render();
+			}
+			else if (scene->isFinished())
+			{
+				removeSceneFromQueue();
+			}
+		}
 		m_pd3dDevice->EndScene();
 	}
 
@@ -102,7 +100,51 @@ void Engine::OnRender()
 
 void Engine::OnUpdate(float delta)
 {
-	space.Update(delta);
+	if (getSceneQueueSize() != 0)
+	{
+		GameScene *scene = m_SceneQueue.back();
+		if (scene && !scene->isFinished() && scene->isActive())
+		{
+			scene->Update(delta);
+		}
+		else if (scene->isFinished())
+		{
+			removeSceneFromQueue();
+		}
+	}
+}
+
+void Engine::addSceneFromQueue(GameScene *scene)
+{
+	scene->Init();
+	m_SceneQueue.push(scene);
+}
+
+void Engine::removeSceneFromQueue()
+{
+	if (!m_SceneQueue.empty()) {
+		m_RemovedSceneQueue.push(m_SceneQueue.back());
+		m_SceneQueue.back()->Destroy();
+		m_SceneQueue.pop();
+	}
+}
+
+void Engine::removeAllSceneFromQueue()
+{
+	size_t size = getSceneQueueSize();
+	for (unsigned i = 0; i < size; i++) {
+		removeSceneFromQueue();
+	}
+}
+
+void Engine::deleteAllFromRemovedQueue()
+{
+	removeAllSceneFromQueue();
+	size_t size = m_RemovedSceneQueue.size();
+	for (unsigned i = 0; i < size; i++) {
+		SDELETE(m_RemovedSceneQueue.back());
+		m_RemovedSceneQueue.pop();
+	}
 }
 
 int Engine::Run()
