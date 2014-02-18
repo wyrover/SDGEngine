@@ -8,16 +8,13 @@ LogoScene::~LogoScene()
 {
 }
 
-void LogoScene::Init()
+void LogoScene::Start()
 {
-	m_space = new Space;
-	m_space->Init();
-
 	setActive(true);
 	GameObject *hero = new GameObject(m_space, "hero");
 	auto comp1 = hero->AddComponent<TextComponent>();
 	auto comp2 = hero->AddComponent<Renderer>();
-	comp1->setText("hello component based object management!");
+	comp1->setText("this is hero");
 
 	hero->SubscribeToMessageType<TextComponent>(MT_OBJECT_CREATED);
 	hero->SubscribeToMessageType<Renderer>(MT_OBJECT_CREATED);
@@ -27,18 +24,20 @@ void LogoScene::Init()
 	//hero->SetActiveRecursively(true);
 }
 
-void LogoScene::Destroy()
+void LogoScene::Finish()
 {
-	m_space->Destroy();
-	SDELETE(m_space);
+
 }
 
-void LogoScene::Update(float delta)
+void LogoScene::OnUpdate(float delta)
 {
-	m_space->Update(delta);
+	if (ENGINE->INPUT()->keyPress(DIK_A))
+	{
+		setFinished(true);
+	}
 }
 
-void LogoScene::Render()
+void LogoScene::OnRender()
 {
-	m_space->Render();
+	std::cout << "LogoScene OnRender()" << std::endl;
 }

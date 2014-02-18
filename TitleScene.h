@@ -1,17 +1,14 @@
 #pragma once
 
-class LogoScene : public GameScene
+class TitleScene : public GameScene
 {
 public:
-	LogoScene();
-	virtual ~LogoScene();
+	TitleScene();
+	virtual ~TitleScene();
 
 	virtual void Start() override;
 	virtual void Finish() override;
 
 	virtual void OnUpdate(float delta) override;
 	virtual void OnRender() override;
-
-private:
-
 };

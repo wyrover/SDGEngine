@@ -48,8 +48,15 @@ extern "C"
 #include <iterator>
 #include <imm.h>
 
+#define randomize() srand((unsigned)time(nullptr))
+#define random(n) (rand() % (n))
+
+#define SDELETE(p)       { if(p) { delete (p);     (p)=nullptr; } }
+#define SDELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=nullptr; } }
+#define SRELEASE(p)      { if(p) { (p)->Release(); (p)=nullptr; } }
+#define UNUSED(p) (void)p
+
 #include "Singleton.h"
-#include "Input.h"
 #include "RemoveQualifier.h"
 #include "Meta.h"
 #include "MetaMacro.h"
@@ -206,6 +213,7 @@ namespace Colours
 #include "MemPooler.h"
 #include "Object.h"
 #include "Font.h"
+#include "Input.h"
 #include "Time.h"
 #include "Texture.h"
 #include "Graphics.h"
@@ -233,13 +241,7 @@ namespace Colours
 #include "Animation.h"
 
 #include "LogoScene.h"
-
-#define randomize() srand((unsigned)time(nullptr))
-#define random(n) (rand() % (n))
-
-#define SDELETE(p)       { if(p) { delete (p);     (p)=nullptr; } }
-#define SDELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=nullptr; } }
-#define SRELEASE(p)      { if(p) { (p)->Release(); (p)=nullptr; } }
+#include "TitleScene.h"
 
 #ifdef _DEBUG
 #include "vld.h"

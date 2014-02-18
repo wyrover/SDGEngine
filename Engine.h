@@ -9,15 +9,17 @@ public:
 	~Engine();
 
 	int Run();
-	LPDIRECT3DDEVICE9 device() { return m_pd3dDevice; }
-	lua_State *LuaState() { return m_lua; }
-	HWND Handle() { return m_hwnd; }
-	HINSTANCE instance() { return m_hInst; }
+	LPDIRECT3DDEVICE9 device()	const { return m_pd3dDevice; }
+	lua_State *LuaState()		const { return m_lua;	}
+	HWND Handle()				const { return m_hwnd;	}
+	HINSTANCE instance()		const { return m_hInst; }
+	Time *TIME()				const { return time;	}
+	Input *INPUT()				const { return input;	}
 	static  LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 
-	void addSceneFromQueue(GameScene *scene);
-	void removeSceneFromQueue();
-	void removeAllSceneFromQueue();
+	void addFromSceneQueue(GameScene *scene);
+	void removeFromSceneQueue();
+	void removeAllFromSceneQueue();
 	void deleteAllFromRemovedQueue();
 	size_t getSceneQueueSize() { return m_SceneQueue.size(); }
 

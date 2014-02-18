@@ -55,8 +55,10 @@ HRESULT Engine::OnInit()
 
 	time = new Time;
 	input = new Input;
+	if (!input->Init()) return E_FAIL;
 	frameRateFont = new Font("Arial", 14);
-	addSceneFromQueue(new LogoScene);
+	addFromSceneQueue(new LogoScene);
+	addFromSceneQueue(new TitleScene);
 
 	return S_OK;
 }
@@ -76,22 +78,23 @@ void Engine::OnRender()
 	if (nullptr == m_pd3dDevice)
 		return;
 
-	m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
+	m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::Black, 1.0f, 0);
 	if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 	{
 		frameRateFont->PrintFormat(10, 20, "frameRate: %ld", time->frameRate());
-		if (getSceneQueueSize() != 0)
+		if (m_SceneQueue.empty()) 
+			return;
+
+		GameScene *scene = m_SceneQueue.front();
+		if (scene && !scene->isFinished() && scene->isActive())
 		{
-			GameScene *scene = m_SceneQueue.back();
-			if (scene && !scene->isFinished() && scene->isActive())
-			{
-				scene->Render();
-			}
-			else if (scene->isFinished())
-			{
-				removeSceneFromQueue();
-			}
+			scene->Render();
 		}
+		else if (scene->isFinished())
+		{
+			removeFromSceneQueue();
+		}
+
 		m_pd3dDevice->EndScene();
 	}
 
@@ -100,55 +103,53 @@ void Engine::OnRender()
 
 void Engine::OnUpdate(float delta)
 {
-	if (getSceneQueueSize() != 0)
+	input->Capture();
+	if (m_SceneQueue.empty()) 
+		return;
+
+	GameScene *scene = m_SceneQueue.front();
+	if (scene && !scene->isFinished() && scene->isActive())
 	{
-		GameScene *scene = m_SceneQueue.back();
-		if (scene && !scene->isFinished() && scene->isActive())
-		{
-			scene->Update(delta);
-		}
-		else if (scene->isFinished())
-		{
-			removeSceneFromQueue();
-		}
+		scene->Update(delta);
 	}
 }
 
-void Engine::addSceneFromQueue(GameScene *scene)
+void Engine::addFromSceneQueue(GameScene *scene)
 {
 	scene->Init();
 	m_SceneQueue.push(scene);
 }
 
-void Engine::removeSceneFromQueue()
+void Engine::removeFromSceneQueue()
 {
-	if (!m_SceneQueue.empty()) {
-		m_RemovedSceneQueue.push(m_SceneQueue.back());
-		m_SceneQueue.back()->Destroy();
-		m_SceneQueue.pop();
-	}
+	if (m_SceneQueue.empty())
+		return;
+	m_RemovedSceneQueue.push(m_SceneQueue.front());
+	m_SceneQueue.pop();
 }
 
-void Engine::removeAllSceneFromQueue()
+void Engine::removeAllFromSceneQueue()
 {
-	size_t size = getSceneQueueSize();
-	for (unsigned i = 0; i < size; i++) {
-		removeSceneFromQueue();
+	unsigned i = getSceneQueueSize();
+	for (unsigned j = 0; j < i; j++) {
+		m_RemovedSceneQueue.push(m_SceneQueue.front());
+		m_SceneQueue.pop();
 	}
 }
 
 void Engine::deleteAllFromRemovedQueue()
 {
-	removeAllSceneFromQueue();
-	size_t size = m_RemovedSceneQueue.size();
-	for (unsigned i = 0; i < size; i++) {
-		SDELETE(m_RemovedSceneQueue.back());
+	removeAllFromSceneQueue();
+	unsigned i = m_RemovedSceneQueue.size();
+	for (unsigned j = 0; j < i; j++) {
+		SDELETE(m_RemovedSceneQueue.front());
 		m_RemovedSceneQueue.pop();
 	}
 }
 
 void Engine::ParseEngineiniFile()
 {
+	// incomplete
 	try
 	{
 		File file("game.ini","rb");

@@ -2,32 +2,36 @@
 
 class Input
 {
+	enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
 public:
 	Input();
 	~Input();
 
-	void Update();
-	//키보드 계속 클릭
-	bool key(DWORD key) { return (m_byCStk[key] & 0x80) ? true : false; }
-	//키보드 한번 클릭
-	bool KEY(DWORD key) { return ((m_byCStk[key] & 0x80) && (m_byCStk[key] != m_byLStk[key])) ? true : false; }
-	//마우스 계속 클릭
-	bool mou(int mou) { return (m_CStm.rgbButtons[mou] & 0x80) ? true : false; }
-	//마우스 왼쪽 계속 클릭
-	bool moL() { return (m_CStm.rgbButtons[0] & 0x80) ? true : false; }
-	//마우스 오른쪽 계속 클릭
-	bool moR() { return (m_CStm.rgbButtons[1] & 0x80) ? true : false; }
-	//마우스 한번 클릭
-	bool MOU(int mou){ return ((m_CStm.rgbButtons[mou] & 0x80) && (m_CStm.rgbButtons[mou] != m_LStm.rgbButtons[mou])) ? true : false; }
-	bool mouPos(HWND hWnd);
-	bool MouseRectSection(int x, int y, int w, int h);
+	bool Init();
+
+	void Capture();
+	// keyboard
+	bool keyDown(DWORD key); // keyDown for a while
+	bool keyUp(DWORD key);
+	bool keyPress(DWORD key); // keyPressed just one time
+	// mouse
+	bool isButtonDown(int button); // mouseDown for a while
+	bool isButtonPress(int button); // mousePressed just one time
+	int getMouseMovingX();
+	int getMouseMovingY();
+	int getMouseMovingZ();
+	long getMouseAbsX() { return m_ptAbsMousePos.x; }
+	long getMouseAbsY() { return m_ptAbsMousePos.y; }
+	bool CalcMousePosToWinRect(HWND hWnd);
+	bool isMouseContain(int x, int y, int w, int h);
 
 public:
-	LPDIRECTINPUT8			m_pInput;
-	LPDIRECTINPUTDEVICE8	m_pKey;
-	BYTE					m_byCStk[256], m_byLStk[256];  //키보드 상태값(현재,이전)
+	LPDIRECTINPUT8			m_dInput;
+	LPDIRECTINPUTDEVICE8	m_keyboardDevice;
+	BYTE					m_keyState[256]; // state of the keys
+	BYTE					m_keyPressState[256]; // used for the keyPressed function
 
-	LPDIRECTINPUTDEVICE8	m_pMou;
-	DIMOUSESTATE			m_CStm, m_LStm;			//마우스 상태값(현재,이전)
+	LPDIRECTINPUTDEVICE8	m_mouseDevice;
+	DIMOUSESTATE			m_CurrentmouseState, m_PreviousmouseState; // state of the keys(current, previous)
 	POINT					m_ptAbsMousePos;
 };

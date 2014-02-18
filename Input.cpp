@@ -1,67 +1,139 @@
 #include "Precompiled.h"
 
 Input::Input()
-: m_pInput(0), m_pKey(0), m_pMou(0)
+: m_dInput(nullptr), m_keyboardDevice(nullptr), m_mouseDevice(nullptr)
 {
-	memset(m_byCStk, 0, sizeof(BYTE)* 256);
-	memset(m_byLStk, 0, sizeof(BYTE)* 256);
-	memset(&m_CStm, 0, sizeof(DIMOUSESTATE));
-	memset(&m_LStm, 0, sizeof(DIMOUSESTATE));
-
-	//DirectInput 객체 생성.
-	if (DirectInput8Create(ENGINE->instance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_pInput, NULL) != DI_OK)	return;
-
-	//키보드 입력 디바이스 생성.
-	if (m_pInput->CreateDevice(GUID_SysKeyboard, &m_pKey, NULL) != DI_OK) return;
-	//키보드 디바이스의 협력 레벨을 설정한다.
-	if (m_pKey->SetCooperativeLevel(ENGINE->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK) return; //DISCL_BACKGROUND
-	//디바이스의 데이터 포맷 설정.
-	if (m_pKey->SetDataFormat(&c_dfDIKeyboard) != DI_OK) return;
-	//디바이스 접근 제어권 얻기.
-	if (m_pKey->Acquire() != DI_OK) return;
-
-	//마우스 입력 디바이스 생성.
-	if (m_pInput->CreateDevice(GUID_SysMouse, &m_pMou, NULL) != DI_OK) return;
-	//마우스 디바이스의 렵력 레벨 설정.
-	if (m_pMou->SetCooperativeLevel(ENGINE->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK) return;
-	//디바이스의 데이터 포맷 설정.
-	if (m_pMou->SetDataFormat(&c_dfDIMouse) != DI_OK) return;
-	//디바이스 접근 제어권 얻기.
-	if (m_pMou->Acquire() != DI_OK) return;
+	ZeroMemory(m_keyState, sizeof(BYTE)* 256);
+	ZeroMemory(m_keyPressState, sizeof(BYTE)* 256);
+	ZeroMemory(&m_CurrentmouseState, sizeof(DIMOUSESTATE));
+	ZeroMemory(&m_PreviousmouseState, sizeof(DIMOUSESTATE));
 }
 
 Input::~Input()
 {
-	if (m_pKey)
+	if (m_keyboardDevice)
 	{
-		m_pKey->Unacquire();
-		SRELEASE(m_pKey);
+		m_keyboardDevice->Unacquire();
+		SRELEASE(m_keyboardDevice);
 	}
-	if (m_pMou)
+	if (m_mouseDevice)
 	{
-		m_pMou->Unacquire();
-		SRELEASE(m_pMou);
+		m_mouseDevice->Unacquire();
+		SRELEASE(m_mouseDevice);
 	}
-	SRELEASE(m_pInput);
+	SRELEASE(m_dInput);
 }
 
-void Input::Update()
+bool Input::Init()
 {
-	memcpy(m_byLStk, m_byCStk, sizeof(BYTE)* 256);
-	if (m_pKey && m_pKey->GetDeviceState(256, (LPVOID)m_byCStk))
+	// Create a direct input object
+	if (FAILED(DirectInput8Create(ENGINE->instance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_dInput, NULL)))	
+		return false;
+
+	// Create a device for monitoring the keyboard
+	if (FAILED(m_dInput->CreateDevice(GUID_SysKeyboard, &m_keyboardDevice, NULL)))
+		return false;
+	if (FAILED(m_keyboardDevice->SetCooperativeLevel(ENGINE->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE))) //DISCL_BACKGROUND, DISCL_EXCLUSIVE
+		return false;
+	if (FAILED(m_keyboardDevice->SetDataFormat(&c_dfDIKeyboard)))
+		return false;
+	//if (FAILED(m_keyboardDevice->Acquire()))
+	//	return false;
+
+	// Create a device for monitoring the mouse
+	if (FAILED(m_dInput->CreateDevice(GUID_SysMouse, &m_mouseDevice, NULL)))
+		return false;
+	if (FAILED(m_mouseDevice->SetCooperativeLevel(ENGINE->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
+		return false;
+	if (FAILED(m_mouseDevice->SetDataFormat(&c_dfDIMouse)))
+		return false;
+	//if (FAILED(m_mouseDevice->Acquire()))
+	//	return false;
+
+	return true;
+}
+
+void Input::Capture()
+{
+	HRESULT hr;
+
+	// keyboard
+	hr = m_keyboardDevice->GetDeviceState(sizeof(BYTE)* 256, (LPVOID)m_keyState);
+	if (hr)
 	{
-		memset(m_byCStk, 0, sizeof(BYTE)* 256);
-		m_pKey->Acquire();
+		m_keyboardDevice->Acquire();
 	}
-	memcpy(&m_LStm, &m_CStm, sizeof(DIMOUSESTATE));
-	if (m_pMou && m_pMou->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_CStm))
+
+	// mouse
+	memcpy(&m_PreviousmouseState, &m_CurrentmouseState, sizeof(DIMOUSESTATE));
+	hr = m_mouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_CurrentmouseState);
+	if (hr)
 	{
-		memset(&m_CStm, 0, sizeof(DIMOUSESTATE));
-		m_pMou->Acquire();
+		memset(&m_CurrentmouseState, 0, sizeof(DIMOUSESTATE));
+		m_mouseDevice->Acquire();
 	}
 }
 
-bool Input::mouPos(HWND hWnd)
+bool Input::keyDown(DWORD key)
+{ 
+	return (m_keyState[key] & 0x80) ? true : false; 
+}
+
+bool Input::keyUp(DWORD key)
+{
+	return (m_keyState[key] & 0x80) ? false : true;
+}
+
+bool Input::keyPress(DWORD key)
+{ 
+	//check for keydown
+	if (keyDown(key)){
+		m_keyPressState[key] = 1;
+	}
+	//check for key reaching the keydown state
+	if (m_keyPressState[key] == 1){
+		//check for key release
+		if (keyUp(key))
+			m_keyPressState[key] = 2;
+	}
+
+	//check if key has been pressed and released
+	if (m_keyPressState[key] == 2){
+		//reset the key status
+		m_keyPressState[key] = 0;
+		return true;
+	}
+
+	return false;
+}
+
+bool Input::isButtonDown(int button)
+{ 
+	// 0 = left, 1 = right, 2 = middle
+	return (m_CurrentmouseState.rgbButtons[button] & 0x80) ? true : false;
+}
+
+bool Input::isButtonPress(int button)
+{ 
+	return ((m_CurrentmouseState.rgbButtons[button] & 0x80) && (m_CurrentmouseState.rgbButtons[button] != m_PreviousmouseState.rgbButtons[button])) ? true : false;
+}
+
+int Input::getMouseMovingX()
+{
+	return m_CurrentmouseState.lX;
+}
+
+int Input::getMouseMovingY()
+{
+	return m_CurrentmouseState.lY;
+}
+
+int Input::getMouseMovingZ()
+{
+	return m_CurrentmouseState.lZ;
+}
+
+bool Input::CalcMousePosToWinRect(HWND hWnd)
 {
 	RECT rtWinRect;
 
@@ -85,15 +157,16 @@ bool Input::mouPos(HWND hWnd)
 	return true;
 }
 
-bool Input::MouseRectSection(int x, int y, int w, int h)
+bool Input::isMouseContain(int x, int y, int w, int h)
 {
-	//if (mouPos(g_pApp->GethWnd()))
-	//{
-	//	if (GetInput().m_ptAbsMousePos.x > x && GetInput().m_ptAbsMousePos.x < x + w &&
-	//		GetInput().m_ptAbsMousePos.y > y && GetInput().m_ptAbsMousePos.y < y + h)
-	//	{
-	//		return true;
-	//	}
-	//}
+	if (CalcMousePosToWinRect(ENGINE->Handle()) )
+	{
+		long absx = ENGINE->INPUT()->getMouseAbsX();
+		long absy = ENGINE->INPUT()->getMouseAbsY();
+		if (absx > x && absx < x + w && absy > y && absy < y + h)
+		{
+			return true;
+		}
+	}
 	return false;
 }
