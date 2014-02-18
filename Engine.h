@@ -13,8 +13,10 @@ public:
 	lua_State *LuaState()		const { return m_lua;	}
 	HWND Handle()				const { return m_hwnd;	}
 	HINSTANCE instance()		const { return m_hInst; }
+	LPD3DXSPRITE Sprite()		const { return m_pd3dSprite; }
 	Time *TIME()				const { return time;	}
 	Input *INPUT()				const { return input;	}
+	TextureManager *GRAPHICS()  const { return textureManager; }
 	static  LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 
 	void addFromSceneQueue(GameScene *scene);
@@ -35,12 +37,14 @@ private:
 private:
 	LPDIRECT3D9 m_pD3D = nullptr;
 	LPDIRECT3DDEVICE9 m_pd3dDevice = nullptr;
+	LPD3DXSPRITE m_pd3dSprite = nullptr;
 	HWND m_hwnd = nullptr;
 	HINSTANCE m_hInst = nullptr;
 	lua_State *m_lua = nullptr;
 	Font *frameRateFont;
 	Time *time = nullptr;
 	Input *input = nullptr;
+	TextureManager *textureManager = nullptr;
 	D3DPRESENT_PARAMETERS d3dpp;
 	DWORD m_dwStyle;
 	std::string m_caption;

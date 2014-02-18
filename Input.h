@@ -1,8 +1,8 @@
 #pragma once
 
+enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
 class Input
 {
-	enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
 public:
 	Input();
 	~Input();

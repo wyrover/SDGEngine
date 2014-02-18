@@ -14,4 +14,5 @@ public:
 	virtual EMessageResult HandleMessage(const Message &msg) override;
 
 private:
+	Texture *m_texture = nullptr;
 };

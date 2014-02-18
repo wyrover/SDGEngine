@@ -4,14 +4,14 @@ class Texture
 {
 public:
 	Texture();
-	~Texture(){ Destroy(); }
+	~Texture();
 
-	void AddReference();
-	void ReleaseReference();
+	HRESULT LoadFromFile(LPDIRECT3DDEVICE9 pDev, std::string &sFile, DWORD colorkey);
+	HRESULT LoadFromMemory(LPDIRECT3DDEVICE9 pDev, std::string &szEntityName);
 
 private:
-	HRESULT LoadFromFile(LPDIRECT3DDEVICE9 pDev, std::string sFile, DWORD colorkey);
-	HRESULT LoadFromMemory(LPDIRECT3DDEVICE9 pDev, std::string szEntityName);
+	void AddReference();
+	void ReleaseReference();
 	void Destroy();
 
 public:
@@ -26,4 +26,6 @@ private:
 	LPDIRECT3DDEVICE9	m_pDev = nullptr;
 	D3DXIMAGE_INFO		m_ImgInfo;
 	LPDIRECT3DTEXTURE9	m_pTex = nullptr;
+
+	friend class TextureManager;
 };

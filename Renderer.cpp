@@ -12,12 +12,12 @@ Renderer::~Renderer()
 
 void Renderer::Init()
 {
-
+	m_texture = ENGINE->GRAPHICS()->LoadTexture("texture/desk.jpg", D3DXCOLOR(1,1,1,1));
 }
 
 void Renderer::Destroy()
 {
-
+	ENGINE->GRAPHICS()->ReleaseTexture("texture/desk.jpg");
 }
 
 void Renderer::Update(float delta)
@@ -27,7 +27,7 @@ void Renderer::Update(float delta)
 
 void Renderer::Render()
 {
-	std::cout << "Renderer Render" << std::endl;
+	ENGINE->Sprite()->Draw(m_texture->texture(), nullptr, nullptr, nullptr, D3DXCOLOR(1,1,1,1));
 }
 
 EMessageResult Renderer::HandleMessage(const Message &msg)

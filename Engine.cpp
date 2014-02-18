@@ -51,11 +51,16 @@ HRESULT Engine::OnInit()
 
 	m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	if (FAILED(D3DXCreateSprite(m_pd3dDevice, &m_pd3dSprite)))
+		return E_FAIL;
+
 	m_lua = Lua::CreateEnvironment();
 
 	time = new Time;
 	input = new Input;
-	if (!input->Init()) return E_FAIL;
+	if (!input->Init())
+		return E_FAIL;
+	textureManager = new TextureManager;
 	frameRateFont = new Font("Arial", 14);
 	addFromSceneQueue(new LogoScene);
 	addFromSceneQueue(new TitleScene);
@@ -69,6 +74,7 @@ void Engine::OnCleanUp()
 	SDELETE(frameRateFont);
 	SDELETE(time);
 	SDELETE(input);
+	SDELETE(textureManager);
 	SRELEASE(m_pd3dDevice);
 	SRELEASE(m_pD3D);
 }
@@ -81,6 +87,8 @@ void Engine::OnRender()
 	m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::Black, 1.0f, 0);
 	if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 	{
+		m_pd3dSprite->Begin(D3DXSPRITE_ALPHABLEND);
+
 		frameRateFont->PrintFormat(10, 20, "frameRate: %ld", time->frameRate());
 		if (m_SceneQueue.empty()) 
 			return;
@@ -95,6 +103,7 @@ void Engine::OnRender()
 			removeFromSceneQueue();
 		}
 
+		m_pd3dSprite->End();
 		m_pd3dDevice->EndScene();
 	}
 

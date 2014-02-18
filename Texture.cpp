@@ -5,7 +5,12 @@ Texture::Texture()
 	ZeroMemory(&m_ImgInfo, sizeof(m_ImgInfo));
 }
 
-HRESULT Texture::LoadFromFile(LPDIRECT3DDEVICE9 pDev, std::string sFile, DWORD colorkey)
+Texture::~Texture()
+{
+	Destroy();
+}
+
+HRESULT Texture::LoadFromFile(LPDIRECT3DDEVICE9 pDev, std::string &sFile, DWORD colorkey)
 {
 	assert(m_pTex == nullptr);
 	m_pDev = pDev;
@@ -29,7 +34,7 @@ HRESULT Texture::LoadFromFile(LPDIRECT3DDEVICE9 pDev, std::string sFile, DWORD c
 	return S_OK;
 }
 
-HRESULT Texture::LoadFromMemory(LPDIRECT3DDEVICE9 pDev, std::string szEntityName)
+HRESULT Texture::LoadFromMemory(LPDIRECT3DDEVICE9 pDev, std::string &szEntityName)
 {
 	AddReference();
 	return S_OK;

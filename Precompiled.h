@@ -216,7 +216,7 @@ namespace Colours
 #include "Input.h"
 #include "Time.h"
 #include "Texture.h"
-#include "Graphics.h"
+#include "TextureManager.h"
 #include "AnimationClip.h"
 #include "AnimationState.h"
 #include "AnimationEnums.h"
@@ -232,12 +232,12 @@ namespace Colours
 
 #include "Ime.h"
 
-#include "TextComponent.h"
 #include "Collider.h"
 #include "AABBTreeCollider.h"
 #include "OBBTreeCollider.h"
 #include "Renderer.h"
 #include "Behaviour.h"
+#include "Controller.h"
 #include "Animation.h"
 
 #include "LogoScene.h"
