@@ -1,21 +1,24 @@
 #pragma once
 
-enum EWrapMode
+namespace sidescroll
 {
-	Once,
-	Loop,
-	Default,
-	ClampForever
-};
+	enum EWrapMode
+	{
+		Once,
+		Loop,
+		Default,
+		ClampForever
+	};
 
-enum EPlayMode
-{
-	StopSameLayer,
-	StopAll
-};
+	enum EPlayMode
+	{
+		StopSameLayer,
+		StopAll
+	};
 
-enum EQueueMode
-{
-	CompleteOthers,
-	PlayNow
-};
+	enum EQueueMode
+	{
+		CompleteOthers,
+		PlayNow
+	};
+}

@@ -1,18 +1,21 @@
 #pragma once
 
-class Renderer : public Component
+namespace sidescroll
 {
-public:
-	Renderer();
-	virtual ~Renderer();
+	class Renderer : public Component
+	{
+	public:
+		Renderer();
+		virtual ~Renderer();
 
-	virtual void Init() override;
-	virtual void Destroy() override;
-	virtual void Update(float delta) override;
-	virtual void Render() override;
+		virtual void Init() override;
+		virtual void Destroy() override;
+		virtual void Update(float delta) override;
+		virtual void Render() override;
 
-	virtual EMessageResult HandleMessage(const Message &msg) override;
+		virtual EMessageResult HandleMessage(const Message &msg) override;
 
-private:
-	Texture *m_texture = nullptr;
-};
+	private:
+		Texture *m_texture = nullptr;
+	};
+}

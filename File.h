@@ -1,15 +1,18 @@
 #pragma once
 
-class File
+namespace sidescroll
 {
-public:
-	File(void);
-	File(const char* pp, const char* r);
-	File(const std::string s, const char* r);
-	~File();
+	class File
+	{
+	public:
+		File(void);
+		File(const char* pp, const char* r);
+		File(const std::string s, const char* r);
+		~File();
 
-	const char* File_error(const char* s, const char* r);
+		const char* File_error(const char* s, const char* r);
 
-private:
-	FILE* p;
-};
+	private:
+		FILE* p;
+	};
+}

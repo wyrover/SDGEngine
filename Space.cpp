@@ -1,67 +1,70 @@
 #include "Precompiled.h"
 
-void Space::Init()
+namespace sidescroll
 {
-	if (_initialized) 
-		throw std::logic_error("The scene has already been initialized.");
-
-	for (auto gameObject : m_gameObjects)
+	void Space::Init()
 	{
-		gameObject->Init();
-	}
-	_initialized = true;
-}
+		if (_initialized)
+			throw std::logic_error("The scene has already been initialized.");
 
-void Space::Destroy()
-{
-	if (_destroyed) 
-		throw std::logic_error("The scene has already been destroyed.");
-	
-	for (auto gameObject : m_gameObjects)
+		for (auto gameObject : m_gameObjects)
+		{
+			gameObject->Init();
+		}
+		_initialized = true;
+	}
+
+	void Space::Destroy()
 	{
-		gameObject->Destroy();
-	}
-	_destroyed = true;
-}
+		if (_destroyed)
+			throw std::logic_error("The scene has already been destroyed.");
 
-void Space::Update(float delta)
-{
-	for (auto gameObject : m_gameObjects)
+		for (auto gameObject : m_gameObjects)
+		{
+			gameObject->Destroy();
+		}
+		_destroyed = true;
+	}
+
+	void Space::Update(float delta)
 	{
-		if (gameObject->Active())
-			gameObject->Update(delta);
+		for (auto gameObject : m_gameObjects)
+		{
+			if (gameObject->Active())
+				gameObject->Update(delta);
+		}
 	}
-}
 
-void Space::Render()
-{
-	for (auto gameObject : m_gameObjects)
+	void Space::Render()
 	{
-		if (gameObject->Active())
-			gameObject->Render();
+		for (auto gameObject : m_gameObjects)
+		{
+			if (gameObject->Active())
+				gameObject->Render();
+		}
 	}
-}
 
-void Space::Add(GameObject *object)
-{
-	if (object == nullptr) 
-		throw std::invalid_argument("The object argument can't be null.");
-	
-	auto obj_it = std::find(m_gameObjects.begin(), m_gameObjects.end(), object);
-	if (obj_it != m_gameObjects.end())
-		throw std::logic_error("The object is already attached.");
+	void Space::Add(GameObject *object)
+	{
+		if (object == nullptr)
+			throw std::invalid_argument("The object argument can't be null.");
 
-	m_gameObjects.push_back(object);
-}
+		auto obj_it = std::find(m_gameObjects.begin(), m_gameObjects.end(), object);
+		if (obj_it != m_gameObjects.end())
+			throw std::logic_error("The object is already attached.");
 
-void Space::Remove(GameObject *object)
-{
-	if (object == nullptr)
-		throw std::invalid_argument("The object argument can't be null.");
+		m_gameObjects.push_back(object);
+	}
 
-	auto obj_it = std::find(m_gameObjects.begin(), m_gameObjects.end(), object);
-	if (obj_it == m_gameObjects.end())
-		throw std::logic_error("The object is not attached.");
+	void Space::Remove(GameObject *object)
+	{
+		if (object == nullptr)
+			throw std::invalid_argument("The object argument can't be null.");
 
-	m_gameObjects.erase(obj_it);
+		auto obj_it = std::find(m_gameObjects.begin(), m_gameObjects.end(), object);
+		if (obj_it == m_gameObjects.end())
+			throw std::logic_error("The object is not attached.");
+
+		m_gameObjects.erase(obj_it);
+	}
 }

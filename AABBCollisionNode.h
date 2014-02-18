@@ -1,23 +1,26 @@
 #pragma once
 
-class AABBCollisionNode
+namespace sidescroll
 {
-public:
-	AABBCollisionNode();
-	~AABBCollisionNode();
+	class AABBCollisionNode
+	{
+	public:
+		AABBCollisionNode();
+		~AABBCollisionNode();
 
-private:
-	/*
-	  1------2
-	 / |    /|
-	/  |   / |
-	5-----4  |
-	|  0--|--3
-	| /   | /
-	|/    |/
-	6-----7
-	*/
-	D3DXVECTOR2 min, max;
+	private:
+		/*
+		1------2
+		/ |    /|
+		/  |   / |
+		5-----4  |
+		|  0--|--3
+		| /   | /
+		|/    |/
+		6-----7
+		*/
+		D3DXVECTOR2 min, max;
 
-	friend class AABBTreeCollider;
-};
+		friend class AABBTreeCollider;
+	};
+}

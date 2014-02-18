@@ -10,15 +10,18 @@
 
 #pragma once
 
-class TextureManager
+namespace sidescroll
 {
-public:
-	TextureManager();
-	~TextureManager();
+	class TextureManager
+	{
+	public:
+		TextureManager();
+		~TextureManager();
 
-	Texture *LoadTexture(std::string name, DWORD colorkey);
-	bool ReleaseTexture(std::string name);
+		Texture *LoadTexture(std::string name, DWORD colorkey);
+		bool ReleaseTexture(std::string name);
 
-private:
-	std::map<std::string, Texture*> m_Textures;
-};
+	private:
+		std::map<std::string, Texture*> m_Textures;
+	};
+}

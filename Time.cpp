@@ -1,39 +1,42 @@
 #include "Precompiled.h"
 
-Time::Time()
+namespace sidescroll
 {
-	if (QueryPerformanceFrequency((LARGE_INTEGER*)&m_countsPerSec))
+	Time::Time()
 	{
-		m_bPerfHardware = true;
-		QueryPerformanceCounter((LARGE_INTEGER*)&m_prevTime);
-		m_secPerCount = 1.0f / m_countsPerSec;
+		if (QueryPerformanceFrequency((LARGE_INTEGER*)&m_countsPerSec))
+		{
+			m_bPerfHardware = true;
+			QueryPerformanceCounter((LARGE_INTEGER*)&m_prevTime);
+			m_secPerCount = 1.0f / m_countsPerSec;
+		}
+		else
+		{
+			m_bPerfHardware = false;
+			m_prevTime = timeGetTime();
+			m_secPerCount = 0.001f;
+		}
 	}
-	else
+
+	void Time::MeasureTheTime()
 	{
-		m_bPerfHardware = false;
-		m_prevTime = timeGetTime();
-		m_secPerCount = 0.001f;
-	}
-}
+		if (m_bPerfHardware)
+			QueryPerformanceCounter((LARGE_INTEGER*)&m_curTime);
+		else
+			m_curTime = timeGetTime();
 
-void Time::MeasureTheTime()
-{
-	if (m_bPerfHardware)
-		QueryPerformanceCounter((LARGE_INTEGER*)&m_curTime);
-	else
-		m_curTime = timeGetTime();
+		m_deltaTime = (m_curTime - m_prevTime) * m_secPerCount;
+		m_prevTime = m_curTime;
 
-	m_deltaTime = (m_curTime - m_prevTime) * m_secPerCount;
-	m_prevTime = m_curTime;
+		m_frameCnt++;
+		m_elapsedTime += m_deltaTime;
+		if (m_elapsedTime >= 1.0f)
+		{
+			m_fps = m_frameCnt;
 
-	m_frameCnt++;
-	m_elapsedTime += m_deltaTime;
-	if (m_elapsedTime >= 1.0f)
-	{
-		m_fps = m_frameCnt;
-
-		//Reset elapsed time and frame count
-		m_frameCnt = 0;
-		m_elapsedTime = 0.0f;
+			//Reset elapsed time and frame count
+			m_frameCnt = 0;
+			m_elapsedTime = 0.0f;
+		}
 	}
 }

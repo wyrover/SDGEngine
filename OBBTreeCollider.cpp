@@ -1,9 +1,12 @@
 #include "Precompiled.h"
 
-OBBTreeCollider::OBBTreeCollider()
+namespace sidescroll
 {
-}
+	OBBTreeCollider::OBBTreeCollider()
+	{
+	}
 
-OBBTreeCollider::~OBBTreeCollider()
-{
+	OBBTreeCollider::~OBBTreeCollider()
+	{
+	}
 }

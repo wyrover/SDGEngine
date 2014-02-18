@@ -1,17 +1,20 @@
 #pragma once
 
-class LogoScene : public GameScene
+namespace sidescroll
 {
-public:
-	LogoScene();
-	virtual ~LogoScene();
+	class LogoScene : public GameScene
+	{
+	public:
+		LogoScene();
+		virtual ~LogoScene();
 
-	virtual void Start() override;
-	virtual void Finish() override;
+		virtual void Start() override;
+		virtual void Finish() override;
 
-	virtual void OnUpdate(float delta) override;
-	virtual void OnRender() override;
+		virtual void OnUpdate(float delta) override;
+		virtual void OnRender() override;
 
-private:
+	private:
 
-};
+	};
+}

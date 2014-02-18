@@ -1,11 +1,14 @@
 #pragma once
 
-class Collider : public Component
+namespace sidescroll
 {
-public:
-	Collider() {}
-	virtual ~Collider() {}
+	class Collider : public Component
+	{
+	public:
+		Collider() {}
+		virtual ~Collider() {}
 
-private:
-	bool collide = false;
-};
+	private:
+		bool collide = false;
+	};
+}

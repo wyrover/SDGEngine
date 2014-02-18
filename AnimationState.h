@@ -1,9 +1,12 @@
 #pragma once
 
-class AnimationState
+namespace sidescroll
 {
-	AnimationState();
-	~AnimationState();
+	class AnimationState
+	{
+		AnimationState();
+		~AnimationState();
 
-private:
-};
+	private:
+	};
+}

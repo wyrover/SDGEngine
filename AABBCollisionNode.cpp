@@ -1,9 +1,12 @@
 #include "Precompiled.h"
 
-AABBCollisionNode::AABBCollisionNode()
+namespace sidescroll
 {
-}
+	AABBCollisionNode::AABBCollisionNode()
+	{
+	}
 
-AABBCollisionNode::~AABBCollisionNode()
-{
+	AABBCollisionNode::~AABBCollisionNode()
+	{
+	}
 }

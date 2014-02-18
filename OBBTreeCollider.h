@@ -1,8 +1,11 @@
 #pragma once
 
-class OBBTreeCollider : public Collider
+namespace sidescroll
 {
-public:
-	OBBTreeCollider();
-	virtual ~OBBTreeCollider();
-};
+	class OBBTreeCollider : public Collider
+	{
+	public:
+		OBBTreeCollider();
+		virtual ~OBBTreeCollider();
+	};
+}
