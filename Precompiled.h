@@ -18,6 +18,7 @@
 #pragma comment(lib, "lua5.1.lib")
 #pragma comment(lib, "lua51.lib")
 #pragma comment(lib, "imm32.lib")
+#pragma comment(lib, "tinyxml/tinyxml.lib")
 #pragma comment(lib, "vld.lib")
 
 extern "C"
@@ -47,6 +48,7 @@ extern "C"
 #include <algorithm>
 #include <iterator>
 #include <imm.h>
+#include "tinyxml.h"
 
 #define randomize() srand((unsigned)time(nullptr))
 #define random(n) (rand() % (n))
@@ -56,7 +58,6 @@ extern "C"
 #define SRELEASE(p)      { if(p) { (p)->Release(); (p)=nullptr; } }
 #define UNUSED(p) (void)p
 
-#include "Singleton.h"
 #include "RemoveQualifier.h"
 #include "Meta.h"
 #include "MetaMacro.h"
@@ -210,15 +211,21 @@ namespace Colours
 	const D3DCOLOR White = D3DCOLOR_ARGB(255, 255, 255, 255);				//D3DCOLOR_ARGB(255, 255, 255, 255)
 }
 
+#include "Asset.h"
+#include "Assets.h"
+#include "TextureAsset.h"
+#include "TextureAtlas.h"
+//#include "AudioAsset.h"
+//#include "TTFFontAsset.h"
+//#include "FontAsset.h"
 #include "MemPooler.h"
 #include "Object.h"
 #include "Font.h"
 #include "Input.h"
 #include "Time.h"
-#include "Texture.h"
-#include "TextureManager.h"
+#include "Bounds.h"
+#include "Sprite.h"
 #include "AnimationClip.h"
-#include "AnimationState.h"
 #include "AnimationEnums.h"
 #include "File.h"
 #include "MessageEnums.h"
@@ -227,16 +234,15 @@ namespace Colours
 #include "Component.h"
 #include "GameObject.h"
 #include "GameScene.h"
-#include "AABBCollisionNode.h"
+#include "SceneQueue.h"
 #include "Engine.h"
 
 #include "Ime.h"
 
 #include "Collider.h"
-#include "AABBTreeCollider.h"
-#include "OBBTreeCollider.h"
 #include "Renderer.h"
 #include "Behaviour.h"
+#include "SpriteRenderer.h"
 #include "Controller.h"
 #include "Animation.h"
 

@@ -5,17 +5,13 @@ namespace sidescroll
 	class Renderer : public Component
 	{
 	public:
-		Renderer();
-		virtual ~Renderer();
+		Renderer() {}
+		virtual ~Renderer() {}
 
-		virtual void Init() override;
-		virtual void Destroy() override;
-		virtual void Update(float delta) override;
-		virtual void Render() override;
-
-		virtual EMessageResult HandleMessage(const Message &msg) override;
+		bool IsVisible() { return m_isVisible; }
+		void setVisible(bool flag) { m_isVisible = flag; }
 
 	private:
-		Texture *m_texture = nullptr;
+		bool m_isVisible = true;
 	};
 }

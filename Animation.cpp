@@ -37,21 +37,6 @@ namespace sidescroll
 		return true;
 	}
 
-	void Animation::CrossFade(std::string animation, float fadeLength, EPlayMode mode)
-	{
-
-	}
-
-	AnimationState *Animation::CrossFadeQueued(std::string animation, float fadeLength, EQueueMode queue, EPlayMode mode)
-	{
-		return nullptr;
-	}
-
-	AnimationState *Animation::PlayQueued(std::string animation, EQueueMode queue, EPlayMode mode)
-	{
-		return nullptr;
-	}
-
 	void Animation::AddClip(AnimationClip *const clip, std::string newName)
 	{
 		m_clips[newName] = clip;

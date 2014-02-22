@@ -2,13 +2,15 @@
 
 namespace sidescroll
 {
+	Input *INPUT = nullptr;
 	Input::Input()
 		: m_dInput(nullptr), m_keyboardDevice(nullptr), m_mouseDevice(nullptr)
 	{
+		INPUT = this;
 		ZeroMemory(m_keyState, sizeof(BYTE)* 256);
 		ZeroMemory(m_keyPressState, sizeof(BYTE)* 256);
-		ZeroMemory(&m_CurrentmouseState, sizeof(DIMOUSESTATE));
-		ZeroMemory(&m_PreviousmouseState, sizeof(DIMOUSESTATE));
+		ZeroMemory(&m_mouseState, sizeof(DIMOUSESTATE));
+		ZeroMemory(&m_mousePressState, sizeof(DIMOUSESTATE));
 	}
 
 	Input::~Input()
@@ -24,6 +26,7 @@ namespace sidescroll
 			SRELEASE(m_mouseDevice);
 		}
 		SRELEASE(m_dInput);
+		INPUT = nullptr;
 	}
 
 	bool Input::Init()
@@ -67,11 +70,11 @@ namespace sidescroll
 		}
 
 		// mouse
-		memcpy(&m_PreviousmouseState, &m_CurrentmouseState, sizeof(DIMOUSESTATE));
-		hr = m_mouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_CurrentmouseState);
+		memcpy(&m_mousePressState, &m_mouseState, sizeof(DIMOUSESTATE));
+		hr = m_mouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_mouseState);
 		if (hr)
 		{
-			memset(&m_CurrentmouseState, 0, sizeof(DIMOUSESTATE));
+			memset(&m_mouseState, 0, sizeof(DIMOUSESTATE));
 			m_mouseDevice->Acquire();
 		}
 	}
@@ -112,27 +115,31 @@ namespace sidescroll
 	bool Input::isButtonDown(int button)
 	{
 		// 0 = left, 1 = right, 2 = middle
-		return (m_CurrentmouseState.rgbButtons[button] & 0x80) ? true : false;
+		return (m_mouseState.rgbButtons[button] & 0x80) ? true : false;
 	}
 
 	bool Input::isButtonPress(int button)
 	{
-		return ((m_CurrentmouseState.rgbButtons[button] & 0x80) && (m_CurrentmouseState.rgbButtons[button] != m_PreviousmouseState.rgbButtons[button])) ? true : false;
+		if ((m_mouseState.rgbButtons[button] & 0x80) && 
+			(m_mouseState.rgbButtons[button] != m_mousePressState.rgbButtons[button]))
+			return true;
+		else
+			return false;
 	}
 
 	int Input::getMouseMovingX()
 	{
-		return m_CurrentmouseState.lX;
+		return m_mouseState.lX;
 	}
 
 	int Input::getMouseMovingY()
 	{
-		return m_CurrentmouseState.lY;
+		return m_mouseState.lY;
 	}
 
 	int Input::getMouseMovingZ()
 	{
-		return m_CurrentmouseState.lZ;
+		return m_mouseState.lZ;
 	}
 
 	bool Input::CalcMousePosToWinRect(HWND hWnd)
@@ -163,8 +170,8 @@ namespace sidescroll
 	{
 		if (CalcMousePosToWinRect(ENGINE->Handle()))
 		{
-			long absx = ENGINE->INPUT()->getMouseAbsX();
-			long absy = ENGINE->INPUT()->getMouseAbsY();
+			long absx = INPUT->getMouseAbsX();
+			long absy = INPUT->getMouseAbsY();
 			if (absx > x && absx < x + w && absy > y && absy < y + h)
 			{
 				return true;

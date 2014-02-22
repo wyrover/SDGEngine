@@ -3,6 +3,8 @@
 namespace sidescroll
 {
 	enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
+	class Input;
+	extern Input *INPUT;
 	class Input
 	{
 	public:
@@ -34,7 +36,7 @@ namespace sidescroll
 		BYTE					m_keyPressState[256]; // used for the keyPressed function
 
 		LPDIRECTINPUTDEVICE8	m_mouseDevice;
-		DIMOUSESTATE			m_CurrentmouseState, m_PreviousmouseState; // state of the keys(current, previous)
+		DIMOUSESTATE			m_mouseState, m_mousePressState; // state of the keys(current, previous)
 		POINT					m_ptAbsMousePos;
 	};
 }

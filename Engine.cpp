@@ -54,30 +54,26 @@ namespace sidescroll
 
 		m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-		if (FAILED(D3DXCreateSprite(m_pd3dDevice, &m_pd3dSprite)))
-			return E_FAIL;
-
 		m_lua = CreateEnvironment();
 
 		time = new Time;
 		input = new Input;
-		if (!input->Init())
-			return E_FAIL;
-		textureManager = new TextureManager;
+		if (!input->Init()) return E_FAIL;
 		frameRateFont = new Font("Arial", 14);
-		addFromSceneQueue(new LogoScene);
-		addFromSceneQueue(new TitleScene);
+		m_sceneQueue = new SceneQueue;
+		m_sceneQueue->addFromSceneQueue(new LogoScene);
+		m_sceneQueue->addFromSceneQueue(new TitleScene);
 
 		return S_OK;
 	}
 
 	void Engine::OnCleanUp()
 	{
-		deleteAllFromRemovedQueue();
+		m_sceneQueue->Destroy();
+		SDELETE(m_sceneQueue);
 		SDELETE(frameRateFont);
 		SDELETE(time);
 		SDELETE(input);
-		SDELETE(textureManager);
 		SRELEASE(m_pd3dDevice);
 		SRELEASE(m_pD3D);
 	}
@@ -87,26 +83,11 @@ namespace sidescroll
 		if (nullptr == m_pd3dDevice)
 			return;
 
-		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::Black, 1.0f, 0);
+		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
-			m_pd3dSprite->Begin(D3DXSPRITE_ALPHABLEND);
-
 			frameRateFont->PrintFormat(10, 20, "frameRate: %ld", time->frameRate());
-			if (m_SceneQueue.empty())
-				return;
-
-			GameScene *scene = m_SceneQueue.front();
-			if (scene && !scene->isFinished() && scene->isActive())
-			{
-				scene->Render();
-			}
-			else if (scene->isFinished())
-			{
-				removeFromSceneQueue();
-			}
-
-			m_pd3dSprite->End();
+			m_sceneQueue->Render();
 			m_pd3dDevice->EndScene();
 		}
 
@@ -116,49 +97,7 @@ namespace sidescroll
 	void Engine::OnUpdate(float delta)
 	{
 		input->Capture();
-		if (m_SceneQueue.empty())
-			return;
-
-		GameScene *scene = m_SceneQueue.front();
-		if (scene && !scene->isFinished() && scene->isActive())
-		{
-			scene->Update(delta);
-		}
-	}
-
-	void Engine::addFromSceneQueue(GameScene *scene)
-	{
-		scene->Init();
-		m_SceneQueue.push(scene);
-	}
-
-	void Engine::removeFromSceneQueue()
-	{
-		if (m_SceneQueue.empty())
-			return;
-		m_SceneQueue.front()->Destroy();
-		m_RemovedSceneQueue.push(m_SceneQueue.front());
-		m_SceneQueue.pop();
-	}
-
-	void Engine::removeAllFromSceneQueue()
-	{
-		unsigned i = getSceneQueueSize();
-		for (unsigned j = 0; j < i; j++) {
-			m_SceneQueue.front()->Destroy();
-			m_RemovedSceneQueue.push(m_SceneQueue.front());
-			m_SceneQueue.pop();
-		}
-	}
-
-	void Engine::deleteAllFromRemovedQueue()
-	{
-		removeAllFromSceneQueue();
-		unsigned i = m_RemovedSceneQueue.size();
-		for (unsigned j = 0; j < i; j++) {
-			SDELETE(m_RemovedSceneQueue.front());
-			m_RemovedSceneQueue.pop();
-		}
+		m_sceneQueue->Update(delta);
 	}
 
 	void Engine::ParseEngineiniFile()
@@ -166,7 +105,7 @@ namespace sidescroll
 		// incomplete
 		try
 		{
-			File file("game.ini", "rb");
+			
 		}
 		catch (const char *exception)
 		{
