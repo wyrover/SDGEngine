@@ -14,7 +14,7 @@ namespace sidescroll
 
 	}
 	
-	void TextureAtlasEntry::Save(XMLFile *file)
+	void TextureAtlasEntry::Save(XMLFileNode *file)
 	{
 		file->Write("name", name);
 
@@ -24,7 +24,7 @@ namespace sidescroll
 		file->Write("height", height);
 	}
 
-	void TextureAtlasEntry::Load(XMLFile *file)
+	void TextureAtlasEntry::Load(XMLFileNode *file)
 	{
 		file->Read("name", name);
 
@@ -77,7 +77,7 @@ namespace sidescroll
 	{
 		TiXmlElement xmlTextureAtlas("TextureAtlas");
 
-		XMLFile xmlOut(&xmlTextureAtlas);
+		XMLFileNode xmlOut(&xmlTextureAtlas);
 		xmlOut.Write("image", m_image);
 		xmlOut.Write("width", m_width);
 		xmlOut.Write("height", m_height);
@@ -88,7 +88,7 @@ namespace sidescroll
 			TextureAtlasEntry *textureAtlasEntry = i.second;
 
 			TiXmlElement xmlAtlasEntry("TextureAtlasEntry");
-			XMLFile xmlFileNode(&xmlAtlasEntry);
+			XMLFileNode xmlFileNode(&xmlAtlasEntry);
 			textureAtlasEntry->Save(&xmlFileNode);
 
 			xmlTextureAtlas.InsertEndChild(xmlAtlasEntry);
@@ -99,7 +99,7 @@ namespace sidescroll
 
 	void TextureAtlas::Load(TiXmlElement *element)
 	{
-		XMLFile xmlFileNodeTextureAtlas(element);
+		XMLFileNode xmlFileNodeTextureAtlas(element);
 		xmlFileNodeTextureAtlas.Read("image", m_image);
 		xmlFileNodeTextureAtlas.Read("width", m_width);
 		xmlFileNodeTextureAtlas.Read("height", m_height);
@@ -108,7 +108,7 @@ namespace sidescroll
 		TiXmlElement *xmlAtlasEntry = element->FirstChildElement("TextureAtlasEntry");
 		while (xmlAtlasEntry)
 		{
-			XMLFile xmlFileNode(xmlAtlasEntry);
+			XMLFileNode xmlFileNode(xmlAtlasEntry);
 
 			TextureAtlasEntry *textureAtlasEntry = new TextureAtlasEntry(this);
 			textureAtlasEntry->Load(&xmlFileNode);

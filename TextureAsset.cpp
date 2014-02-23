@@ -25,6 +25,7 @@ namespace sidescroll
 			std::cout << errorMsg.c_str() << std::endl;
 			return false;
 		}
+
 		return true;
 	}
 

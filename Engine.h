@@ -35,6 +35,7 @@ namespace sidescroll
 		Time *time = nullptr;
 		Input *input = nullptr;
 		SceneQueue *m_sceneQueue = nullptr;
+		Assets *m_assets;
 		Font *frameRateFont = nullptr;
 		D3DPRESENT_PARAMETERS d3dpp;
 		DWORD m_dwStyle;

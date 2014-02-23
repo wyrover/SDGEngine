@@ -15,6 +15,9 @@ namespace sidescroll
 		setActive(true);
 		GameObject *hero = new GameObject(m_space, "hero");
 		auto comp2 = hero->AddComponent<SpriteRenderer>();
+		hero->SubscribeToMessageType<SpriteRenderer>(MT_OBJECT_CREATED);
+		Message msg(MT_OBJECT_CREATED, "texture/desk.jpg");
+		hero->PostMessage<SpriteRenderer>(msg);
 	}
 
 	void LogoScene::Finish()

@@ -211,8 +211,9 @@ namespace Colours
 	const D3DCOLOR White = D3DCOLOR_ARGB(255, 255, 255, 255);				//D3DCOLOR_ARGB(255, 255, 255, 255)
 }
 
+#include "Debug.h"
 #include "File.h"
-#include "XMLFile.h"
+#include "XMLFileNode.h"
 #include "Asset.h"
 #include "Assets.h"
 #include "TextureAsset.h"

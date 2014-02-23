@@ -24,6 +24,7 @@ namespace sidescroll
 			if (asset->Load(filename))
 			{
 				StoreAsset(asset);
+				std::cout << asset->m_filename << ": Load" << std::endl;
 			}
 			else
 			{
@@ -32,7 +33,10 @@ namespace sidescroll
 		}
 
 		if (asset)
+		{
 			asset->AddReference();
+			std::cout << asset->m_filename << ": addReference (" << asset->m_iRefCount << ")" << std::endl;
+		}
 
 		return asset;
 	}

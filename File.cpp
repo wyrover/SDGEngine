@@ -13,7 +13,7 @@ namespace sidescroll
 		if (p == 0) throw File_error(pp, r);
 	}
 
-	File::File(const std::string s, const char* r)
+	File::File(const std::string &s, const char* r)
 	{
 		p = fopen(s.c_str(), r);
 		if (p == 0) throw File_error(s.c_str(), r);
