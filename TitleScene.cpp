@@ -13,8 +13,6 @@ namespace sidescroll
 	void TitleScene::Start()
 	{
 		setActive(true);
-		//setDeserialize(function);
-		//Deserialize(File("file.txt", "rb"));
 	}
 
 	void TitleScene::Finish()

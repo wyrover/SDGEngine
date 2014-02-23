@@ -211,6 +211,7 @@ namespace Colours
 	const D3DCOLOR White = D3DCOLOR_ARGB(255, 255, 255, 255);				//D3DCOLOR_ARGB(255, 255, 255, 255)
 }
 
+#include "Object.h"
 #include "Debug.h"
 #include "File.h"
 #include "XMLFileNode.h"
@@ -222,10 +223,10 @@ namespace Colours
 //#include "TTFFontAsset.h"
 //#include "FontAsset.h"
 #include "MemPooler.h"
-#include "Object.h"
 #include "Font.h"
 #include "Input.h"
 #include "Time.h"
+#include "Graphics.h"
 #include "Bounds.h"
 #include "Sprite.h"
 #include "AnimationClip.h"

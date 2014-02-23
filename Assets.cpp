@@ -2,15 +2,15 @@
 
 namespace sidescroll
 {
-	Assets *assets = nullptr;
+	Assets *ASSETS = nullptr;
 	Assets::Assets()
 	{
-		assets = this;
+		ASSETS = this;
 	}
 
 	Assets::~Assets()
 	{
-		assets = nullptr;
+		ASSETS = nullptr;
 	}
 
 	TextureAsset *Assets::RequestTexture(const std::string &filename)

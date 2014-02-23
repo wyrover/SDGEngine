@@ -12,7 +12,9 @@ namespace sidescroll
 
 	void SpriteRenderer::Init()
 	{
-
+		//TextureAtlas textureAtlas;
+		//TiXmlElement element("script/test.xml");
+		//textureAtlas.Load(&element);
 	}
 
 	void SpriteRenderer::Destroy()
@@ -35,7 +37,6 @@ namespace sidescroll
 		switch (msg.m_type)
 		{
 		case MT_OBJECT_CREATED:
-			assets->RequestTexture(std::string(static_cast<const char *>(msg.m_data)));
 			return MR_TRUE;
 		case MT_UPDATE:
 			return MR_TRUE;

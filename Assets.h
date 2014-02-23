@@ -14,7 +14,7 @@ namespace sidescroll
 {
 	class TextureAsset;
 	class Assets;
-	extern Assets *assets;
+	extern Assets *ASSETS;
 	class Assets
 	{
 	public:

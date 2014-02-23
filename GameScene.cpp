@@ -27,17 +27,4 @@ namespace sidescroll
 		m_space->Render();
 		OnRender();
 	}
-
-	void GameScene::setDeserialize(DeserializeFn fn)
-	{
-		m_deserialize = fn;
-	}
-
-	void GameScene::Deserialize(File &file)
-	{
-		if (m_deserialize)
-		{
-			m_deserialize(file);
-		}
-	}
 }

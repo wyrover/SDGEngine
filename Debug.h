@@ -2,6 +2,8 @@
 
 namespace sidescroll
 {
+	class Debug;
+	extern Debug *LOGGER;
 	class Debug
 	{
 	public:

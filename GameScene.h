@@ -2,7 +2,6 @@
 
 namespace sidescroll
 {
-	typedef void(*DeserializeFn)(File &file);
 	class GameScene : public Object
 	{
 	public:
@@ -13,8 +12,6 @@ namespace sidescroll
 		bool isFinished() { return m_finished; }
 		void setActive(bool active) { m_active = active; }
 		void setFinished(bool finish) { m_finished = finish; }
-		void setDeserialize(DeserializeFn fn = nullptr);
-		void Deserialize(File &file);
 
 		virtual void Init() final;
 		virtual void Destroy() final;
@@ -30,6 +27,5 @@ namespace sidescroll
 		Space *m_space;
 		bool m_active = false;
 		bool m_finished = false;
-		DeserializeFn m_deserialize;
 	};
 }

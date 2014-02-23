@@ -20,7 +20,7 @@ namespace sidescroll
 			if (!m_isCached)
 			{
 				Unload();
-				assets->RemoveAsset(this);
+				ASSETS->RemoveAsset(this);
 			}
 		}
 	}

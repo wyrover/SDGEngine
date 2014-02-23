@@ -60,6 +60,7 @@ namespace sidescroll
 		input = new Input;
 		if (!input->Init()) return E_FAIL;
 		m_assets = new Assets;
+		m_debug = new Debug;
 		frameRateFont = new Font("Arial", 14);
 		m_sceneQueue = new SceneQueue;
 		m_sceneQueue->addFromSceneQueue(new LogoScene);
@@ -71,6 +72,7 @@ namespace sidescroll
 	void Engine::OnCleanUp()
 	{
 		m_sceneQueue->Destroy();
+		SDELETE(m_debug);
 		SDELETE(m_assets);
 		SDELETE(m_sceneQueue);
 		SDELETE(frameRateFont);
