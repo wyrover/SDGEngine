@@ -14,24 +14,24 @@ namespace sidescroll
 
 	}
 	
-	void TextureAtlasEntry::Save(File &file)
+	void TextureAtlasEntry::Save(XMLFile *file)
 	{
-		file.Write("name", name);
+		file->Write("name", name);
 
-		file.Write("x", x);
-		file.Write("y", y);
-		file.Write("width", width);
-		file.Write("height", height);
+		file->Write("x", x);
+		file->Write("y", y);
+		file->Write("width", width);
+		file->Write("height", height);
 	}
 
-	void TextureAtlasEntry::Load(File &file)
+	void TextureAtlasEntry::Load(XMLFile *file)
 	{
-		file.Read("name", name);
+		file->Read("name", name);
 
-		file.Read("x", x);
-		file.Read("y", y);
-		file.Read("width", width);
-		file.Read("height", height);
+		file->Read("x", x);
+		file->Read("y", y);
+		file->Read("width", width);
+		file->Read("height", height);
 	}
 
 	D3DXVECTOR2 TextureAtlasEntry::TextureOffset()
@@ -75,48 +75,48 @@ namespace sidescroll
 
 	void TextureAtlas::Save(TiXmlDocument *document)
 	{
-		//TiXmlElement xmlTextureAtlas("TextureAtlas");
+		TiXmlElement xmlTextureAtlas("TextureAtlas");
 
-		//XMLFileNode xmlOut(&xmlTextureAtlas);
-		//xmlOut.Write("image", image);
-		//xmlOut.Write("width", width);
-		//xmlOut.Write("height", height);
-		//xmlOut.Write("scale", scale);
+		XMLFile xmlOut(&xmlTextureAtlas);
+		xmlOut.Write("image", m_image);
+		xmlOut.Write("width", m_width);
+		xmlOut.Write("height", m_height);
+		xmlOut.Write("scale", m_scale);
 
-		//for (std::map<std::string, TextureAtlasEntry*>::iterator i = entries.begin(); i != entries.end(); ++i)
-		//{
-		//	TextureAtlasEntry *textureAtlasEntry = (*i).second;
+		for (auto i : m_entries)
+		{
+			TextureAtlasEntry *textureAtlasEntry = i.second;
 
-		//	TiXmlElement xmlAtlasEntry("TextureAtlasEntry");
-		//	XMLFileNode xmlFileNode(&xmlAtlasEntry);
-		//	textureAtlasEntry->Save(&xmlFileNode);
+			TiXmlElement xmlAtlasEntry("TextureAtlasEntry");
+			XMLFile xmlFileNode(&xmlAtlasEntry);
+			textureAtlasEntry->Save(&xmlFileNode);
 
-		//	xmlTextureAtlas.InsertEndChild(xmlAtlasEntry);
-		//}
+			xmlTextureAtlas.InsertEndChild(xmlAtlasEntry);
+		}
 
-		//document->InsertEndChild(xmlTextureAtlas);
+		document->InsertEndChild(xmlTextureAtlas);
 	}
 
 	void TextureAtlas::Load(TiXmlElement *element)
 	{
-		//XMLFileNode xmlFileNodeTextureAtlas(element);
-		//xmlFileNodeTextureAtlas.Read("image", image);
-		//xmlFileNodeTextureAtlas.Read("width", width);
-		//xmlFileNodeTextureAtlas.Read("height", height);
-		//xmlFileNodeTextureAtlas.Read("scale", scale);
+		XMLFile xmlFileNodeTextureAtlas(element);
+		xmlFileNodeTextureAtlas.Read("image", m_image);
+		xmlFileNodeTextureAtlas.Read("width", m_width);
+		xmlFileNodeTextureAtlas.Read("height", m_height);
+		xmlFileNodeTextureAtlas.Read("scale", m_scale);
 
-		//TiXmlElement *xmlAtlasEntry = element->FirstChildElement("TextureAtlasEntry");
-		//while (xmlAtlasEntry)
-		//{
-		//	XMLFileNode xmlFileNode(xmlAtlasEntry);
+		TiXmlElement *xmlAtlasEntry = element->FirstChildElement("TextureAtlasEntry");
+		while (xmlAtlasEntry)
+		{
+			XMLFile xmlFileNode(xmlAtlasEntry);
 
-		//	TextureAtlasEntry *textureAtlasEntry = new TextureAtlasEntry(this);
-		//	textureAtlasEntry->Load(&xmlFileNode);
-		//	if (textureAtlasEntry->name != "")
-		//		entries[textureAtlasEntry->name] = textureAtlasEntry;
+			TextureAtlasEntry *textureAtlasEntry = new TextureAtlasEntry(this);
+			textureAtlasEntry->Load(&xmlFileNode);
+			if (textureAtlasEntry->name != "")
+				m_entries[textureAtlasEntry->name] = textureAtlasEntry;
 
-		//	xmlAtlasEntry = xmlAtlasEntry->NextSiblingElement("TextureAtlasEntry");
-		//}
+			xmlAtlasEntry = xmlAtlasEntry->NextSiblingElement("TextureAtlasEntry");
+		}
 	}
 
 	std::string TextureAtlas::GetImageName()

@@ -10,8 +10,8 @@ namespace sidescroll
 		TextureAtlasEntry();
 		TextureAtlasEntry(TextureAtlas *textureAtlas);
 
-		void Save(File &file);
-		void Load(File &file);
+		void Save(XMLFile *file);
+		void Load(XMLFile *file);
 
 		D3DXVECTOR2 TextureOffset();
 		D3DXVECTOR2 TextureScale();
@@ -22,6 +22,7 @@ namespace sidescroll
 		std::string name;
 		int x, y, width, height;
 		TextureAtlas *textureAtlas;
+		friend class TextureAtlas;
 	};
 
 	class TextureAtlas

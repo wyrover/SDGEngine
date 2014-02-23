@@ -211,6 +211,8 @@ namespace Colours
 	const D3DCOLOR White = D3DCOLOR_ARGB(255, 255, 255, 255);				//D3DCOLOR_ARGB(255, 255, 255, 255)
 }
 
+#include "File.h"
+#include "XMLFile.h"
 #include "Asset.h"
 #include "Assets.h"
 #include "TextureAsset.h"
@@ -227,7 +229,6 @@ namespace Colours
 #include "Sprite.h"
 #include "AnimationClip.h"
 #include "AnimationEnums.h"
-#include "File.h"
 #include "MessageEnums.h"
 #include "Message.h"
 #include "Space.h"
