@@ -9,7 +9,26 @@ namespace sidescroll
 
 	void Graphics::RenderQuad(unsigned w, unsigned h, D3DXVECTOR2 off, D3DXVECTOR2 scale)
 	{
+		//float halfWidth = width*0.5f;
+		//float halfHeight = height*0.5f;
 
+		//glBegin(GL_QUADS);
+		//// UL
+		//glTexCoord2f(textureOffset.x, textureOffset.y);
+		//glVertex3f(-halfWidth + position.x, -halfHeight + position.y, 0.0f);
+
+		////UR
+		//glTexCoord2f(textureOffset.x + textureScale.x, textureOffset.y);
+		//glVertex3f(halfWidth + position.x, -halfHeight + position.y, 0.0f);
+
+		////LR
+		//glTexCoord2f(textureOffset.x + textureScale.x, textureOffset.y + textureScale.y);
+		//glVertex3f(halfWidth + position.x, halfHeight + position.y, 0.0f);
+
+		////LL
+		//glTexCoord2f(textureOffset.x, textureOffset.y + textureScale.y);
+		//glVertex3f(-halfWidth + position.x, halfHeight + position.y, 0.0f);
+		//glEnd();
 	}
 	
 	void Graphics::RenderBox(D3DXVECTOR2 min, D3DXVECTOR2 max)
