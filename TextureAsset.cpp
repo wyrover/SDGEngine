@@ -31,7 +31,7 @@ namespace sidescroll
 
 	unsigned int TextureAsset::width()
 	{
-		return m_texturInfo.Height;
+		return m_texturInfo.Width;
 	}
 
 	unsigned int TextureAsset::height()

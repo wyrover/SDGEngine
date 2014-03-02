@@ -11,7 +11,7 @@ namespace sidescroll
 		bool IsVisible() { return m_isVisible; }
 		void setVisible(bool flag) { m_isVisible = flag; }
 
-	private:
+	protected:
 		bool m_isVisible = true;
 	};
 }

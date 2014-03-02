@@ -18,6 +18,7 @@ namespace sidescroll
 		hero->SubscribeToMessageType<SpriteRenderer>(MT_OBJECT_CREATED);
 		Message msg(MT_OBJECT_CREATED, "texture/desk.jpg");
 		hero->PostMessage<SpriteRenderer>(msg);
+		hero->SetActiveRecursively(true);
 	}
 
 	void LogoScene::Finish()

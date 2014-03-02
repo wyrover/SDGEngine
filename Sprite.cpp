@@ -8,27 +8,33 @@ namespace sidescroll
 	}
 
 	Sprite::Sprite(const std::string &filename)
-		:width(0), height(0), textureOffset(), textureScale()
+		: width(0), height(0), textureOffset(), textureScale()
 	{
-		texture = ASSETS->RequestTexture(filename);
-		if (texture)
+		m_texture = ASSETS->RequestTexture(filename);
+		if (m_texture)
 		{
-			width = texture->width();
-			height = texture->height();
+			width = m_texture->width();
+			height = m_texture->height();
 		}
+		m_bounds = new Bounds(D3DXVECTOR2(500.f, 500.f), D3DXVECTOR2(width, height));
 	}
 
 	Sprite::~Sprite()
 	{
-		if (texture)
+		if (m_texture)
 		{
-			texture->RemoveReference();
-			texture = nullptr;
+			m_texture->RemoveReference();
+			m_texture = nullptr;
 		}
+		SDELETE(m_bounds);
 	}
 
 	void Sprite::Render()
 	{
+		Graphics::SetAlphatest(true);
+		Graphics::BindTexture(m_texture);
+		Graphics::RenderBox(m_bounds->getMin(), m_bounds->getMax());
+		Graphics::SetAlphatest(false);
 		//Graphics::PushMatrix();
 
 		//Graphics::Translate(position.x, position.y, 0.0f);
@@ -85,5 +91,21 @@ namespace sidescroll
 
 		//	Graphics::PopMatrix();
 		//}
+	}
+
+	void Sprite::setOffPosition(float x, float y)
+	{
+		m_bounds->getMin().x += x;
+		m_bounds->getMin().y += y;
+		m_bounds->getMax().x += x;
+		m_bounds->getMax().y += y;
+	}
+
+	void Sprite::setPosition(float x, float y)
+	{
+		m_bounds->getMin().x = x;
+		m_bounds->getMin().y = y;
+		m_bounds->getMax().x = x;
+		m_bounds->getMax().y = y;
 	}
 }

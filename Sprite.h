@@ -10,10 +10,12 @@ namespace sidescroll
 		~Sprite();
 
 		void Render();
+		void setOffPosition(float x, float y);
+		void setPosition(float x, float y);
 
 	private:
-		Bounds m_bounds;
-		TextureAsset *texture = nullptr;
+		Bounds *m_bounds;
+		TextureAsset *m_texture = nullptr;
 		unsigned int width, height;
 		D3DXVECTOR2 textureOffset;
 		D3DXVECTOR2 textureScale;
