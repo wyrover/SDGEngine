@@ -24,7 +24,7 @@ namespace sidescroll
 		virtual void OnRender() {}
 
 	protected:
-		Space *m_space;
+		Space *m_space = nullptr;
 		bool m_active = false;
 		bool m_finished = false;
 	};

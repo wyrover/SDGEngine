@@ -6,8 +6,7 @@ namespace sidescroll
 	{
 		float x, y, z = 0.f, rhw = 1.0f;
 		float tu, tv;
-		DWORD color = Colours::Black;
-		static const DWORD BoundsFvF = D3DFVF_XYZRHW | D3DFVF_TEX1 | D3DFVF_DIFFUSE;
+		static const DWORD BoundsFvF = D3DFVF_XYZRHW | D3DFVF_TEX1;
 	};
 
 	class Bounds

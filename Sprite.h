@@ -14,10 +14,10 @@ namespace sidescroll
 		void setPosition(float x, float y);
 
 	private:
-		Bounds *m_bounds;
 		TextureAsset *m_texture = nullptr;
 		unsigned int width, height;
 		D3DXVECTOR2 textureOffset;
 		D3DXVECTOR2 textureScale;
+		D3DXVECTOR2 position;
 	};
 }

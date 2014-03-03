@@ -13,6 +13,7 @@
 namespace sidescroll
 {
 	class TextureAsset;
+	class FontAsset;
 	class Assets;
 	extern Assets *ASSETS;
 	class Assets
@@ -22,14 +23,18 @@ namespace sidescroll
 		~Assets();
 
 		TextureAsset *RequestTexture(const std::string &filename);
-		//FontAsset *RequestFont(const std::string &filename, float size, int textureWidth = -1, int textureHeight = -1);
+		FontAsset *RequestFont(const std::string &filename, int size);
 		//AudioAsset *RequestAudio(const std::string &filename, bool streamFromDisk = false, std::string decodeString = "");
 
 		void RemoveAsset(Asset *asset);
 		void StoreAsset(Asset *asset);
 		Asset *GetAssetByFilename(const std::string &filename);
+		void SetContentPath(const std::string &contentPath);
+		const std::string &GetContentPath();
+		std::string GetDefaultContentPath();
 
 	private:
 		std::list<Asset *> m_assets;
+		std::string m_contentPath;
 	};
 }

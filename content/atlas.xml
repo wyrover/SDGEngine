@@ -1,0 +1,12 @@
+﻿<TextureAtlas image="graphics/monocleman.png" width="512" height="512">
+	<TextureAtlasEntry name="torso" coords="262 2 90 118"/>
+	<TextureAtlasEntry name="tortilla" coords="2 2 258 183"/>
+	<TextureAtlasEntry name="mustache" coords="262 122 109 43"/>
+	<TextureAtlasEntry name="nose" coords="354 2 40 81"/>
+	<TextureAtlasEntry name="hat" coords="396 2 86 69"/>
+	<TextureAtlasEntry name="eye-left" coords="62 249 12 15"/>
+	<TextureAtlasEntry name="eye-right" coords="76 249 12 14"/>
+	<TextureAtlasEntry name="eyeunderline-left" coords="396 73 28 10"/>
+	<TextureAtlasEntry name="eyebrow" coords="46 281 42 16"/>
+	<TextureAtlasEntry name="monocle" coords="119 187 54 50"/>
+</TextureAtlas>

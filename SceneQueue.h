@@ -13,15 +13,14 @@ namespace sidescroll
 		virtual void Update(float delta) override;
 		virtual void Render() override;
 
-		void addFromSceneQueue(GameScene *scene);
-		void removeFromSceneQueue();
-		void removeAllFromSceneQueue();
-		void deleteAllFromRemovedQueue();
-		size_t getSceneQueueSize();
+		void add(GameScene *scene);
+		void remove();
+		void removeAll();
+		size_t getSize();
 		bool isEmpty();
 		
 	private:
 		std::queue<GameScene *> m_SceneQueue;
-		std::queue<GameScene *> m_RemovedSceneQueue;
+		static GameScene *m_current;
 	};
 }

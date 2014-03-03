@@ -13,12 +13,19 @@ namespace sidescroll
 	void LogoScene::Start()
 	{
 		setActive(true);
-		GameObject *hero = new GameObject(m_space, "hero");
+		GameObject *hero = new GameObject(m_space, "logo");
 		hero->AddComponent<SpriteRenderer>();
 		hero->SubscribeToMessageType<SpriteRenderer>(MT_OBJECT_CREATED);
-		Message msg(MT_OBJECT_CREATED, "texture/desk.jpg");
+		Message msg(MT_OBJECT_CREATED, "logo.png");
 		hero->PostMessage<SpriteRenderer>(msg);
 		hero->SetActiveRecursively(true);
+
+		//TiXmlDocument xmlDoc(ASSETS->GetContentPath() + "atlas.xml");
+		//TiXmlElement *xmlTextureAtlas = xmlDoc.FirstChildElement("TextureAtlas");
+		//if (xmlTextureAtlas)
+		//{
+		//	textureAtlas.Load(xmlTextureAtlas);
+		//}
 	}
 
 	void LogoScene::Finish()

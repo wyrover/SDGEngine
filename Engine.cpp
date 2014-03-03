@@ -53,18 +53,30 @@ namespace sidescroll
 			return E_FAIL;
 
 		m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-		m_lua = CreateEnvironment();
-
+		
 		time = new Time;
 		input = new Input;
 		if (!input->Init()) return E_FAIL;
 		m_assets = new Assets;
+		m_lua = CreateEnvironment();
 		m_debug = new Debug;
-		frameRateFont = new Font("Arial", 14);
 		m_sceneQueue = new SceneQueue;
-		m_sceneQueue->addFromSceneQueue(new LogoScene);
-		m_sceneQueue->addFromSceneQueue(new TitleScene);
+		m_sceneQueue->add(new LogoScene);
+		m_sceneQueue->add(new TitleScene);
+		FPS = ASSETS->RequestFont("Arial", 14);
+
+		//ID3DXConstantTable *TransformConstantTable = 0;
+		//ID3DXBuffer *shader = 0;
+		//ID3DXBuffer *errorBuffer = 0;
+		//HRESULT hr = D3DXCompileShaderFromFile("Transform.hlsl", 0, 0, "main", "vs_2_0", D3DXSHADER_DEBUG, &shader, &errorBuffer, &TransformConstantTable);
+		//if (errorBuffer)
+		//{
+		//	std::cout << (char *)errorBuffer->GetBufferPointer() << std::endl;
+		//	SRELEASE(errorBuffer);
+		//}
+
+		//if (FAILED(hr))
+		//	std::cout << "D3DXCreateEffectFromFile() - FAILED" << std::endl;
 
 		return S_OK;
 	}
@@ -75,7 +87,6 @@ namespace sidescroll
 		SDELETE(m_debug);
 		SDELETE(m_assets);
 		SDELETE(m_sceneQueue);
-		SDELETE(frameRateFont);
 		SDELETE(time);
 		SDELETE(input);
 		SRELEASE(m_pd3dDevice);
@@ -90,7 +101,7 @@ namespace sidescroll
 		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
-			frameRateFont->PrintFormat(10, 20, "frameRate: %ld", time->frameRate());
+			Graphics::RenderText(*FPS, 10, 10, "frameRate: %ld", time->frameRate());
 			m_sceneQueue->Render();
 			m_pd3dDevice->EndScene();
 		}
@@ -135,7 +146,7 @@ namespace sidescroll
 			}
 			else
 			{
-				time->MeasureTheTime();
+				time->Start();
 				OnRender();
 				OnUpdate(time->deltaTime());
 			}

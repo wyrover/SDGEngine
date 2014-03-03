@@ -37,7 +37,7 @@ namespace sidescroll
 		SceneQueue *m_sceneQueue = nullptr;
 		Assets *m_assets = nullptr;
 		Debug *m_debug = nullptr;
-		Font *frameRateFont = nullptr;
+		FontAsset *FPS = nullptr;
 		D3DPRESENT_PARAMETERS d3dpp;
 		DWORD m_dwStyle;
 		std::string m_caption;

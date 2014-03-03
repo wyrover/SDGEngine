@@ -28,7 +28,6 @@ namespace sidescroll
 		bool isKorean; // 한글(true)/영문(false)
 		int offset; // 캐럿의 위치
 		int fontHeight; // 캐럿의 높이
-		Font* m_imeFont;
 		HIMC hImc; // context 핸들
 		char tmpChar[3], *tmpComp;
 		int length;

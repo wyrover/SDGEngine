@@ -12,7 +12,7 @@ namespace sidescroll
 	void GameScene::Destroy()
 	{
 		Finish();
-		m_space->Destroy();
+		if (m_space) m_space->Destroy();
 		SDELETE(m_space);
 	}
 

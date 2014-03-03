@@ -2,6 +2,7 @@
 
 namespace sidescroll
 {
+	GameScene *SceneQueue::m_current = nullptr;
 	void SceneQueue::Init()
 	{
 
@@ -9,7 +10,8 @@ namespace sidescroll
 
 	void SceneQueue::Destroy()
 	{
-		deleteAllFromRemovedQueue();
+		m_current = nullptr;
+		removeAll();
 	}
 
 	void SceneQueue::Update(float delta)
@@ -17,10 +19,18 @@ namespace sidescroll
 		if (m_SceneQueue.empty())
 			return;
 
-		GameScene *scene = m_SceneQueue.front();
-		if (scene && !scene->isFinished() && scene->isActive())
+		GameScene *q = m_SceneQueue.front();
+		if (m_current != q)
 		{
-			scene->Update(delta);
+			m_current = q;
+			m_current->Init();
+		}
+		else
+		{
+			if (m_current && !m_current->isFinished() && m_current->isActive())
+			{
+				m_current->Update(delta);
+			}
 		}
 	}
 
@@ -29,53 +39,49 @@ namespace sidescroll
 		if (m_SceneQueue.empty())
 			return;
 
-		GameScene *scene = m_SceneQueue.front();
-		if (scene && !scene->isFinished() && scene->isActive())
+		GameScene *q = m_SceneQueue.front();
+		if (m_current != q)
 		{
-			scene->Render();
+			m_current = q;
+			m_current->Init();
 		}
-		else if (scene->isFinished())
+		else
 		{
-			removeFromSceneQueue();
+			if (m_current && !m_current->isFinished() && m_current->isActive())
+			{
+				m_current->Render();
+			}
+			else if (m_current->isFinished())
+			{
+				remove();
+			}
 		}
 	}
 
-	void SceneQueue::addFromSceneQueue(GameScene *scene)
+	void SceneQueue::add(GameScene *scene)
 	{
-		scene->Init();
 		m_SceneQueue.push(scene);
 	}
 
-	void SceneQueue::removeFromSceneQueue()
+	void SceneQueue::remove()
 	{
 		if (m_SceneQueue.empty())
 			return;
 		m_SceneQueue.front()->Destroy();
-		m_RemovedSceneQueue.push(m_SceneQueue.front());
 		m_SceneQueue.pop();
 	}
 
-	void SceneQueue::removeAllFromSceneQueue()
+	void SceneQueue::removeAll()
 	{
-		unsigned i = getSceneQueueSize();
+		unsigned i = getSize();
 		for (unsigned j = 0; j < i; j++) {
 			m_SceneQueue.front()->Destroy();
-			m_RemovedSceneQueue.push(m_SceneQueue.front());
+			SDELETE(m_SceneQueue.front());
 			m_SceneQueue.pop();
 		}
 	}
 
-	void SceneQueue::deleteAllFromRemovedQueue()
-	{
-		removeAllFromSceneQueue();
-		unsigned i = m_RemovedSceneQueue.size();
-		for (unsigned j = 0; j < i; j++) {
-			SDELETE(m_RemovedSceneQueue.front());
-			m_RemovedSceneQueue.pop();
-		}
-	}
-
-	size_t SceneQueue::getSceneQueueSize()
+	size_t SceneQueue::getSize()
 	{ 
 		return m_SceneQueue.size(); 
 	}

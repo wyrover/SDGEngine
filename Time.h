@@ -10,7 +10,7 @@ namespace sidescroll
 		Time();
 		~Time();
 
-		void MeasureTheTime();
+		void Start();
 		float deltaTime() { return m_deltaTime; }
 		unsigned long frameRate() { return m_fps; }
 

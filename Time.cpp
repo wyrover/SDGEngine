@@ -25,7 +25,7 @@ namespace sidescroll
 		TIME = nullptr;
 	}
 
-	void Time::MeasureTheTime()
+	void Time::Start()
 	{
 		if (m_bPerfHardware)
 			QueryPerformanceCounter((LARGE_INTEGER*)&m_curTime);

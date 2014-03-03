@@ -8,13 +8,11 @@ namespace sidescroll
 		buf = (char *)malloc(256);
 		memset(buf, 0, 256);
 		offset = 0;
-		m_imeFont = new Font(font, size);
 	}
 
 	Ime::~Ime()
 	{
 		free(buf);
-		SDELETE(m_imeFont);
 	}
 
 	int Ime::GetCharWidth(HDC hdc, char *ch, int len)

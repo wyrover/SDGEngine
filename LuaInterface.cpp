@@ -140,7 +140,8 @@ namespace sidescroll
 
 		void LoadLuaFile(lua_State *L, std::string path)
 		{
-			if (luaL_dofile(L, path.c_str()))
+			std::string name = ASSETS->GetContentPath() + path;
+			if (luaL_dofile(L, name.c_str()))
 			{
 				ErrorFunc(L);
 			}
@@ -151,7 +152,7 @@ namespace sidescroll
 			lua_State *Lua = lua_open();
 			luaL_openlibs(Lua);
 
-			LoadLuaFile(Lua, "script/test.lua");
+			LoadLuaFile(Lua, "test.lua");
 
 			return Lua;
 		}
