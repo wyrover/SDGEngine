@@ -77,40 +77,38 @@ namespace sidescroll
 		return asset;
 	}
 
-	//AudioAsset *Assets::RequestAudio(const std::string &filename, bool streamFromDisk = false, std::string decodeString = "")
-	//{
-	//	AudioAsset *asset = NULL;
-	//	std::string fullFilename = instance->contentPath + filename;
+	AudioAsset *Assets::RequestAudio(const std::string &filename)
+	{
+		AudioAsset *asset = NULL;
+		std::string name = GetContentPath() + filename;
 
-	//	//Debug::Log("instance->contentPath + filename: " + fullFilename);
+		// check to see if we have one stored already
+		asset = (AudioAsset*)GetAssetByFilename(name);
 
-	//	// check to see if we have one stored already
-	//	asset = (AudioAsset*)instance->GetAssetByFilename(fullFilename);
+		// if not, load it and store it
+		if (!asset)
+		{
+			asset = new AudioAsset();
+			if (asset->Load(name))
+			{
+				StoreAsset(asset);
+				std::cout << asset->m_filename << ": Load" << std::endl;
+			}
+			else
+			{
+				SDELETE(asset);
+			}
+		}
 
-	//	// if not, load it and store it
-	//	if (!asset)
-	//	{
-	//		asset = new AudioAsset();
-	//		asset->SetDecodeString(decodeString);
-	//		asset->Load(fullFilename, streamFromDisk);
+		if (asset)
+		{
+			asset->AddReference();
+			std::cout << asset->m_filename << ": addReference (" << asset->m_iRefCount << ")" << std::endl;
+		}
 
-	//		// Return NULL if there was no asset...
-	//		if (!asset->GetDataSize()){
-	//			delete asset;
-	//			return NULL;
-	//		}
-
-	//		instance->StoreAsset((Asset*)asset);
-	//	}
-
-	//	if (asset)
-	//	{
-	//		asset->AddReference();
-	//	}
-
-	//	// return what we found
-	//	return asset;
-	//}
+		// return what we found
+		return asset;
+	}
 
 	void Assets::StoreAsset(Asset *asset)
 	{

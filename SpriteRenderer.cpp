@@ -8,7 +8,7 @@ namespace sidescroll
 
 	SpriteRenderer::~SpriteRenderer()
 	{
-		SDELETE(m_sprites);
+
 	}
 
 	void SpriteRenderer::Init()
@@ -18,19 +18,12 @@ namespace sidescroll
 
 	void SpriteRenderer::Destroy()
 	{
-
+		SDELETE(m_sprites);
 	}
 
 	void SpriteRenderer::Update(float delta)
 	{
-		if (INPUT->keyDown(DIK_RIGHT))
-			m_sprites->setOffPosition(300 * delta, 0);
-		else if (INPUT->keyDown(DIK_LEFT))
-			m_sprites->setOffPosition(-300 * delta, 0);
-		else if (INPUT->keyDown(DIK_UP))
-			m_sprites->setOffPosition(0, -300 * delta);
-		else if (INPUT->keyDown(DIK_DOWN))
-			m_sprites->setOffPosition(0, 300 * delta);
+
 	}
 
 	void SpriteRenderer::Render()

@@ -10,9 +10,14 @@ namespace sidescroll
 	{
 	}
 
-	void Animation::Stop(std::string clipName)
+	void Animation::Render()
 	{
 
+	}
+
+	void Animation::Stop(std::string clipName)
+	{
+		m_clips[clipName]->isPlaying = false;
 	}
 
 	void Animation::Rewind(std::string animation)
@@ -22,12 +27,13 @@ namespace sidescroll
 
 	bool Animation::IsPlaying(std::string animation)
 	{
-		return m_clips[animation]->IsPlaying();
+		return m_clips[animation]->isPlaying;
 	}
 
-	bool Animation::Play(std::string animation, EPlayMode mode)
+	bool Animation::Play(std::string animation)
 	{
 		m_currentClip = m_clips.find(animation);
+		m_currentClip->second->isPlaying = true;
 		if (m_currentClip == m_clips.end())
 		{
 			std::cout << "Unable to play " << animation.c_str() << ". Animation not found" << std::endl;
@@ -37,9 +43,9 @@ namespace sidescroll
 		return true;
 	}
 
-	void Animation::AddClip(AnimationClip *const clip, std::string newName)
+	void Animation::AddClip(AnimationClip *const clip)
 	{
-		m_clips[newName] = clip;
+		m_clips[clip->name] = clip;
 	}
 
 	void Animation::RemoveClip(std::string clipName)

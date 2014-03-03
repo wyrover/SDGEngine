@@ -8,11 +8,16 @@ namespace sidescroll
 		Animation();
 		virtual ~Animation();
 
+		virtual void Init() override {};
+		virtual void Destroy() override {};
+		virtual void Update(float delta) override {};
+		virtual void Render() override;
+
+		void AddClip(AnimationClip *const clip);
+		bool Play(std::string);
 		void Stop(std::string);
 		void Rewind(std::string);
 		bool IsPlaying(std::string);
-		bool Play(std::string, EPlayMode mode = EPlayMode::StopSameLayer);
-		void AddClip(AnimationClip *const clip, std::string newName);
 		void RemoveClip(std::string clipName);
 		int GetClipCount();
 

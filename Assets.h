@@ -12,6 +12,7 @@
 
 namespace sidescroll
 {
+	class AudioAsset;
 	class TextureAsset;
 	class FontAsset;
 	class Assets;
@@ -24,7 +25,7 @@ namespace sidescroll
 
 		TextureAsset *RequestTexture(const std::string &filename);
 		FontAsset *RequestFont(const std::string &filename, int size);
-		//AudioAsset *RequestAudio(const std::string &filename, bool streamFromDisk = false, std::string decodeString = "");
+		AudioAsset *RequestAudio(const std::string &filename);
 
 		void RemoveAsset(Asset *asset);
 		void StoreAsset(Asset *asset);

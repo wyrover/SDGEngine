@@ -1,4 +1,4 @@
-﻿<TextureAtlas image="graphics/monocleman.png" width="512" height="512">
+﻿<TextureAtlas image="logo.png" width="256" height="128">
 	<TextureAtlasEntry name="torso" coords="262 2 90 118"/>
 	<TextureAtlasEntry name="tortilla" coords="2 2 258 183"/>
 	<TextureAtlasEntry name="mustache" coords="262 122 109 43"/>
@@ -10,3 +10,9 @@
 	<TextureAtlasEntry name="eyebrow" coords="46 281 42 16"/>
 	<TextureAtlasEntry name="monocle" coords="119 187 54 50"/>
 </TextureAtlas>
+
+<Animation>
+	<AnimationClip name="idle" coords="100 100 50 50" time="1.0" index="5"/>
+	<AnimationClip name="walk" coords="100 100 50 50" time="1.0" index="6"/>
+	<AnimationClip name="jump" coords="100 100 50 50" time="1.0" index="1"/>
+</Animation>

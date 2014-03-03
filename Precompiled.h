@@ -219,7 +219,7 @@ namespace Colours
 #include "Assets.h"
 #include "TextureAsset.h"
 #include "TextureAtlas.h"
-//#include "AudioAsset.h"
+#include "AudioAsset.h"
 //#include "TTFFontAsset.h"
 #include "FontAsset.h"
 #include "MemPooler.h"
@@ -245,7 +245,6 @@ namespace Colours
 #include "Renderer.h"
 #include "Behaviour.h"
 #include "SpriteRenderer.h"
-#include "Controller.h"
 #include "Animation.h"
 
 #include "LogoScene.h"

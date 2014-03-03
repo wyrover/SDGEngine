@@ -15,6 +15,6 @@ namespace sidescroll
 		virtual void OnRender() override;
 
 	private:
-		TextureAtlas textureAtlas;
+		
 	};
 }

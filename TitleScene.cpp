@@ -13,12 +13,6 @@ namespace sidescroll
 	void TitleScene::Start()
 	{
 		setActive(true);
-		GameObject *hero = new GameObject(m_space, "title");
-		hero->AddComponent<SpriteRenderer>();
-		hero->SubscribeToMessageType<SpriteRenderer>(MT_OBJECT_CREATED);
-		Message msg(MT_OBJECT_CREATED, "desk.jpg");
-		hero->PostMessage<SpriteRenderer>(msg);
-		hero->SetActiveRecursively(true);
 	}
 
 	void TitleScene::Finish()

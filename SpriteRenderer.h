@@ -16,6 +16,5 @@ namespace sidescroll
 
 	private:
 		Sprite *m_sprites = nullptr;
-		DWORD m_color;
 	};
 }

@@ -2,7 +2,6 @@
 
 namespace sidescroll
 {
-	class File;
 	class TextureAtlas;
 	class TextureAtlasEntry
 	{

@@ -5,8 +5,6 @@ namespace sidescroll
 	Sprite::Sprite()
 		:width(0), height(0), textureOffset(0.f, 0.f), textureScale(0.f, 0.f), position(500.f, 500.f)
 	{
-		textureScale.x = float(width);
-		textureScale.y = float(height);
 	}
 
 	Sprite::Sprite(const std::string &filename)
@@ -18,8 +16,6 @@ namespace sidescroll
 			width = m_texture->width();
 			height = m_texture->height();
 		}
-		textureScale.x = float(width);
-		textureScale.y = float(height);
 	}
 
 	Sprite::~Sprite()
