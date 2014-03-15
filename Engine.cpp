@@ -110,6 +110,7 @@ namespace sidescroll
 		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
+			m_TileEngine->Update();
 			MySingleton<SceneManager>::GetSingleton()->Render();
 #ifdef DEBUG
 			Graphics::RenderText(*m_FPS, 10, 10, "frameRate: %ld", MySingleton<Time>::GetSingleton()->frameRate());
