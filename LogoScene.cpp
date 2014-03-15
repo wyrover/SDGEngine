@@ -24,8 +24,8 @@ namespace sidescroll
 
 		Fighter = new Sprite("002-Fighter01.png");
 		back = new TileSet("tileset.png", 32.f, 32.f, 2);
-		//AudioAsset *res = MySingleton<Assets>::GetSingleton()->RequestAudio("battle_with_red1.mp3");
-		//res->Play();
+		AudioAsset *res = MySingleton<Assets>::GetSingleton()->RequestAudio("battle_with_red1.mp3");
+		res->Play();
 	}
 
 	void LogoScene::Finish()

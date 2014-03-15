@@ -20,6 +20,7 @@ namespace sidescroll
 	{
 		Lua::DefaultRegistration();
 		m_lua = Lua::CreateEnvironment(m_filepath);
+
 		WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
 			GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,
 			m_caption.c_str(), nullptr };
@@ -71,6 +72,27 @@ namespace sidescroll
 #ifdef _DEBUG
 		m_FPS = MySingleton<Assets>::GetSingleton()->RequestFont("Arial", 14);
 #endif
+
+		// 타일 이미지 관리 객체 생성
+		if (!(m_TileTempalte = new CTileTemplateMgr(CRect(0, 0, 65, 65), 12, 4, 3)))
+		{
+			return E_FAIL;
+		}
+		m_TileTempalte->Create(m_pd3dDevice, "TempTile.bmp");
+
+		// 타일 맵 관리 객체 생성
+		if (!(m_TileMapInfo = new CTileMapInfo(m_TileTempalte, 10, 10)))
+		{
+			return E_FAIL;
+		}
+
+		// 타일 엔진 객체 생성
+		if (!(m_TileEngine = new CTileMapEngine(m_pd3dDevice, CRect(0, 0, 65 * 5, 65 * 5))))
+		{
+			return E_FAIL;
+		}
+		m_TileEngine->SetTileMapInfo(m_TileMapInfo);
+
 		return S_OK;
 	}
 

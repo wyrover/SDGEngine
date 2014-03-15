@@ -30,6 +30,10 @@ namespace sidescroll
 #ifdef _DEBUG
 		FontAsset *m_FPS = nullptr;
 #endif
+		CTileTemplateMgr*		m_TileTempalte;
+		CTileMapInfo*			m_TileMapInfo;
+		CTileMapEngine*			m_TileEngine;
+
 		D3DPRESENT_PARAMETERS m_d3dpp;
 		DWORD m_dwStyle;
 		std::string m_caption;
