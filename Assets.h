@@ -12,12 +12,11 @@
 
 namespace sidescroll
 {
+	class Asset;
 	class AudioAsset;
 	class TextureAsset;
 	class FontAsset;
-	class Assets;
-	extern Assets *ASSETS;
-	class Assets
+	class Assets : public MySingleton<Assets>
 	{
 	public:
 		Assets();
@@ -25,7 +24,7 @@ namespace sidescroll
 
 		TextureAsset *RequestTexture(const std::string &filename);
 		FontAsset *RequestFont(const std::string &filename, int size);
-		AudioAsset *RequestAudio(const std::string &filename);
+		AudioAsset *RequestAudio(const std::string &filename, FMOD_MODE mode = FMOD_LOOP_OFF);
 
 		void RemoveAsset(Asset *asset);
 		void StoreAsset(Asset *asset);

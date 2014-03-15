@@ -2,10 +2,16 @@
 
 namespace sidescroll
 {
-	Time *TIME = nullptr;
 	Time::Time()
 	{
-		TIME = this;
+	}
+
+	Time::~Time()
+	{
+	}
+
+	bool Time::Init()
+	{
 		if (QueryPerformanceFrequency((LARGE_INTEGER*)&m_countsPerSec))
 		{
 			m_bPerfHardware = true;
@@ -18,11 +24,8 @@ namespace sidescroll
 			m_prevTime = timeGetTime();
 			m_secPerCount = 0.001f;
 		}
-	}
 
-	Time::~Time()
-	{
-		TIME = nullptr;
+		return true;
 	}
 
 	void Time::Start()

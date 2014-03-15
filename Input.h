@@ -3,9 +3,7 @@
 namespace sidescroll
 {
 	enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
-	class Input;
-	extern Input *INPUT;
-	class Input
+	class Input : public MySingleton<Input>
 	{
 	public:
 		Input();

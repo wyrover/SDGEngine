@@ -2,13 +2,6 @@
 
 namespace sidescroll
 {
-	struct BoundsVerts
-	{
-		float x, y, z = 0.f, rhw = 1.0f;
-		float tu, tv;
-		static const DWORD BoundsFvF = D3DFVF_XYZRHW | D3DFVF_TEX1;
-	};
-
 	class Bounds
 	{
 	public:

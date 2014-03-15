@@ -15,6 +15,8 @@ namespace sidescroll
 		virtual void OnRender() override;
 
 	private:
-		
+		/*GameObject *hero = nullptr;*/
+		Sprite *Fighter;
+		TileSet *back;
 	};
 }

@@ -2,8 +2,12 @@
 
 using namespace sidescroll;
 
+HINSTANCE g_hInstance;
 int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE, LPSTR, int)
 {
-	Engine engine(hThisInstance);
-	return engine.Run();
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+	g_hInstance = hThisInstance;
+	return MySingleton<Engine>::GetSingleton()->Run();
 }

@@ -2,9 +2,7 @@
 
 namespace sidescroll
 {
-	class Debug;
-	extern Debug *LOGGER;
-	class Debug
+	class Debug : public MySingleton<Debug>
 	{
 	public:
 		Debug();

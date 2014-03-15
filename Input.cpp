@@ -2,11 +2,9 @@
 
 namespace sidescroll
 {
-	Input *INPUT = nullptr;
 	Input::Input()
 		: m_dInput(nullptr), m_keyboardDevice(nullptr), m_mouseDevice(nullptr)
 	{
-		INPUT = this;
 		ZeroMemory(m_keyState, sizeof(BYTE)* 256);
 		ZeroMemory(m_keyPressState, sizeof(BYTE)* 256);
 		ZeroMemory(&m_mouseState, sizeof(DIMOUSESTATE));
@@ -26,34 +24,29 @@ namespace sidescroll
 			SRELEASE(m_mouseDevice);
 		}
 		SRELEASE(m_dInput);
-		INPUT = nullptr;
 	}
 
 	bool Input::Init()
 	{
 		// Create a direct input object
-		if (FAILED(DirectInput8Create(ENGINE->instance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_dInput, NULL)))
+		if (FAILED(DirectInput8Create(g_hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_dInput, NULL)))
 			return false;
 
 		// Create a device for monitoring the keyboard
 		if (FAILED(m_dInput->CreateDevice(GUID_SysKeyboard, &m_keyboardDevice, NULL)))
 			return false;
-		if (FAILED(m_keyboardDevice->SetCooperativeLevel(ENGINE->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE))) //DISCL_BACKGROUND, DISCL_EXCLUSIVE
+		if (FAILED(m_keyboardDevice->SetCooperativeLevel(MySingleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE))) //DISCL_BACKGROUND, DISCL_EXCLUSIVE
 			return false;
 		if (FAILED(m_keyboardDevice->SetDataFormat(&c_dfDIKeyboard)))
 			return false;
-		//if (FAILED(m_keyboardDevice->Acquire()))
-		//	return false;
 
 		// Create a device for monitoring the mouse
 		if (FAILED(m_dInput->CreateDevice(GUID_SysMouse, &m_mouseDevice, NULL)))
 			return false;
-		if (FAILED(m_mouseDevice->SetCooperativeLevel(ENGINE->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
+		if (FAILED(m_mouseDevice->SetCooperativeLevel(MySingleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
 			return false;
 		if (FAILED(m_mouseDevice->SetDataFormat(&c_dfDIMouse)))
 			return false;
-		//if (FAILED(m_mouseDevice->Acquire()))
-		//	return false;
 
 		return true;
 	}
@@ -168,10 +161,10 @@ namespace sidescroll
 
 	bool Input::isMouseContain(int x, int y, int w, int h)
 	{
-		if (CalcMousePosToWinRect(ENGINE->Handle()))
+		if (CalcMousePosToWinRect(MySingleton<Engine>::GetSingleton()->Handle()))
 		{
-			long absx = INPUT->getMouseAbsX();
-			long absy = INPUT->getMouseAbsY();
+			long absx = MySingleton<Input>::GetSingleton()->getMouseAbsX();
+			long absy = MySingleton<Input>::GetSingleton()->getMouseAbsY();
 			if (absx > x && absx < x + w && absy > y && absy < y + h)
 			{
 				return true;

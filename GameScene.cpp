@@ -27,4 +27,9 @@ namespace sidescroll
 		m_space->Render();
 		OnRender();
 	}
+
+	void GameScene::ChangeScene(GameScene* state)
+	{
+		MySingleton<SceneManager>::GetSingleton()->ChangeScene(state);
+	}
 }

@@ -5,10 +5,6 @@
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
 
-#ifdef _DEBUG
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-#endif
-
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
 #pragma comment(lib, "winmm.lib")
@@ -19,7 +15,7 @@
 #pragma comment(lib, "lua51.lib")
 #pragma comment(lib, "imm32.lib")
 #pragma comment(lib, "tinyxml/tinyxml.lib")
-#pragma comment(lib, "vld.lib")
+#pragma comment(lib, "fmodex_vc.lib")
 
 extern "C"
 {
@@ -49,6 +45,15 @@ extern "C"
 #include <iterator>
 #include <imm.h>
 #include "tinyxml.h"
+#include <fmod.hpp>
+#include <fmod_errors.h>
+#include <memory>
+
+#ifdef _DEBUG
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#include <crtdbg.h>
+//#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif
 
 #define randomize() srand((unsigned)time(nullptr))
 #define random(n) (rand() % (n))
@@ -211,6 +216,9 @@ namespace Colours
 	const D3DCOLOR White = D3DCOLOR_ARGB(255, 255, 255, 255);				//D3DCOLOR_ARGB(255, 255, 255, 255)
 }
 
+extern HINSTANCE g_hInstance;
+#include "Singleton.h"
+#include "MemPooler.h"
 #include "Object.h"
 #include "Debug.h"
 #include "File.h"
@@ -219,10 +227,10 @@ namespace Colours
 #include "Assets.h"
 #include "TextureAsset.h"
 #include "TextureAtlas.h"
+#include "AudioManager.h"
 #include "AudioAsset.h"
 //#include "TTFFontAsset.h"
 #include "FontAsset.h"
-#include "MemPooler.h"
 #include "Input.h"
 #include "Time.h"
 #include "Graphics.h"
@@ -235,9 +243,7 @@ namespace Colours
 #include "Space.h"
 #include "Component.h"
 #include "GameObject.h"
-#include "GameScene.h"
-#include "SceneQueue.h"
-#include "Engine.h"
+#include "TileSet.h"
 
 #include "Ime.h"
 
@@ -247,9 +253,8 @@ namespace Colours
 #include "SpriteRenderer.h"
 #include "Animation.h"
 
+#include "GameScene.h"
 #include "LogoScene.h"
 #include "TitleScene.h"
-
-#ifdef _DEBUG
-#include "vld.h"
-#endif
+#include "SceneManager.h"
+#include "Engine.h"

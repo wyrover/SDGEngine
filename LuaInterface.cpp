@@ -138,21 +138,21 @@ namespace sidescroll
 			CallFuncFinal(L, funcName, NULL, 0);
 		}
 
-		void LoadLuaFile(lua_State *L, std::string path)
+		void LoadLuaFile(lua_State *L, std::string &path)
 		{
-			std::string name = ASSETS->GetContentPath() + path;
+			std::string name = MySingleton<Assets>::GetSingleton()->GetContentPath() + path;
 			if (luaL_dofile(L, name.c_str()))
 			{
 				ErrorFunc(L);
 			}
 		}
 
-		lua_State *CreateEnvironment()
+		lua_State *CreateEnvironment(std::string &str)
 		{
 			lua_State *Lua = lua_open();
 			luaL_openlibs(Lua);
 
-			LoadLuaFile(Lua, "test.lua");
+			LoadLuaFile(Lua, str);
 
 			return Lua;
 		}

@@ -1,0 +1,6 @@
+﻿<Animation image="002-Fighter01.png" width="128" height="192" autoplay="0">
+	<AnimationClip name="front" offset="0 0" scale="32 48" time="1.0" index="4"/>
+	<AnimationClip name="left" offset="0 48" scale="32 48" time="1.0" index="4"/>
+	<AnimationClip name="right" offset="0 96" scale="32 48" time="1.0" index="4"/>
+	<AnimationClip name="back" offset="0 144" scale="32 48" time="1.0" index="4"/>
+</Animation>

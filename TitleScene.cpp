@@ -22,7 +22,7 @@ namespace sidescroll
 
 	void TitleScene::OnUpdate(float delta)
 	{
-		
+
 	}
 
 	void TitleScene::OnRender()

@@ -20,7 +20,7 @@ namespace sidescroll
 			if (!m_isCached)
 			{
 				Unload();
-				ASSETS->RemoveAsset(this);
+				MySingleton<Assets>::GetSingleton()->RemoveAsset(this);
 			}
 		}
 	}

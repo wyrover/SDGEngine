@@ -22,8 +22,8 @@ namespace sidescroll
 		void CallFunc(lua_State *L, const char *funcName, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4);
 		template <typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5>
 		void CallFunc(lua_State *L, const char *funcName, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5);
-		void LoadLuaFile(lua_State *L, std::string path);
-		lua_State *CreateEnvironment();
+		void LoadLuaFile(lua_State *L, std::string &path);
+		lua_State *CreateEnvironment(std::string &str);
 		void BindFunctionToLua(lua_State *L, Function *fn, const char *name);
 
 		template <typename Arg1>

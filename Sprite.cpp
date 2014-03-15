@@ -3,18 +3,18 @@
 namespace sidescroll
 {
 	Sprite::Sprite()
-		:width(0), height(0), textureOffset(0.f, 0.f), textureScale(0.f, 0.f), position(500.f, 500.f)
+		:width(0), height(0), textureOffset(0.f, 0.f), textureScale(0.f, 0.f), position(0.f, 0.f)
 	{
 	}
 
 	Sprite::Sprite(const std::string &filename)
-		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(0.f, 0.f), position(500.f, 500.f)
+		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(32.f, 48.f), position(100.f, 100.f)
 	{
-		m_texture = ASSETS->RequestTexture(filename);
+		m_texture = MySingleton<Assets>::GetSingleton()->RequestTexture(filename);
 		if (m_texture)
 		{
 			width = m_texture->width();
-			height = m_texture->height();
+			height =  m_texture->height();
 		}
 	}
 
@@ -34,13 +34,7 @@ namespace sidescroll
 		Graphics::RenderQuad(width, height, textureOffset, textureScale, position);
 		Graphics::SetAlphatest(false);
 		Graphics::BindTexture(nullptr);
-
-		//Graphics::PushMatrix();
-		//Graphics::Translate(position.x, position.y, 0.0f);
-		//Graphics::Rotate(rotation, 0, 0, 1);
-		//Graphics::PopMatrix();
-		//Graphics::RenderLineRect(0, 0, width, height);
-		//Graphics::RenderLine(Vector2(width*0.5f, -height*0.5f), Vector2(-width*0.5f, height*0.5f));
+		Graphics::RenderLineRect(-textureScale.x*0.5f + position.x, -textureScale.y*0.5f + position.y, textureScale.x, textureScale.y);
 	}
 
 	void Sprite::setOffPosition(float x, float y)

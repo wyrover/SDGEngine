@@ -2,27 +2,24 @@
 
 namespace sidescroll
 {
-	using namespace sidescroll::Lua;
-	Engine *ENGINE = nullptr;
-	Engine::Engine(HINSTANCE inst)
+	Engine::Engine()
 	{
-		ENGINE = this;
-		m_hInst = inst;
 		m_dwStyle = WS_CAPTION | WS_SYSMENU;
 		m_caption = "Test application";
+		m_filepath = "test.lua";
 		m_dwScreenWidth = 1024;
 		m_dwScreenHeight = 800;
 	}
 
 	Engine::~Engine()
 	{
-		ENGINE = nullptr;
 		lua_close(m_lua);
 	}
 
 	HRESULT Engine::OnInit()
 	{
 		Lua::DefaultRegistration();
+		m_lua = Lua::CreateEnvironment(m_filepath);
 		WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
 			GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,
 			m_caption.c_str(), nullptr };
@@ -38,57 +35,47 @@ namespace sidescroll
 
 		m_hwnd = CreateWindow(m_caption.c_str(), m_caption.c_str(),
 			m_dwStyle, m_uiClientPosX, m_uiClientPosY, m_dwScreenWidth, m_dwScreenHeight,
-			GetDesktopWindow(), nullptr, m_hInst, nullptr);
+			GetDesktopWindow(), nullptr, g_hInstance, nullptr);
+		if (!m_hwnd)
+			return E_FAIL;
 
 		if (nullptr == (m_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
 			return E_FAIL;
 
-		ZeroMemory(&d3dpp, sizeof(d3dpp));
-		d3dpp.Windowed = TRUE;
-		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+		ZeroMemory(&m_d3dpp, sizeof(m_d3dpp));
+		m_d3dpp.Windowed = TRUE;
+		m_d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		m_d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 
 		if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd,
-			D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &m_pd3dDevice)))
+			D3DCREATE_HARDWARE_VERTEXPROCESSING, &m_d3dpp, &m_pd3dDevice)))
 			return E_FAIL;
 
-		m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-		
-		time = new Time;
-		input = new Input;
-		if (!input->Init()) return E_FAIL;
-		m_assets = new Assets;
-		m_lua = CreateEnvironment();
-		m_debug = new Debug;
-		m_sceneQueue = new SceneQueue;
-		m_sceneQueue->add(new LogoScene);
-		m_sceneQueue->add(new TitleScene);
-		FPS = ASSETS->RequestFont("Arial", 14);
+		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)))
+			return E_FAIL;
 
-		//ID3DXConstantTable *TransformConstantTable = 0;
-		//ID3DXBuffer *shader = 0;
-		//ID3DXBuffer *errorBuffer = 0;
-		//HRESULT hr = D3DXCompileShaderFromFile("Transform.hlsl", 0, 0, "main", "vs_2_0", D3DXSHADER_DEBUG, &shader, &errorBuffer, &TransformConstantTable);
-		//if (errorBuffer)
-		//{
-		//	std::cout << (char *)errorBuffer->GetBufferPointer() << std::endl;
-		//	SRELEASE(errorBuffer);
-		//}
+		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
+			return E_FAIL;
+	
+		if (!MySingleton<Time>::GetSingleton()->Init())
+			return E_FAIL;
 
-		//if (FAILED(hr))
-		//	std::cout << "D3DXCreateEffectFromFile() - FAILED" << std::endl;
+		if (!MySingleton<Input>::GetSingleton()->Init())
+			return E_FAIL;
 
+		if (!MySingleton<AudioManager>::GetSingleton()->Init())
+			return E_FAIL;
+
+		MySingleton<SceneManager>::GetSingleton()->Init();
+		MySingleton<SceneManager>::GetSingleton()->ChangeScene(new LogoScene);
+#ifdef _DEBUG
+		m_FPS = MySingleton<Assets>::GetSingleton()->RequestFont("Arial", 14);
+#endif
 		return S_OK;
 	}
 
 	void Engine::OnCleanUp()
 	{
-		m_sceneQueue->Destroy();
-		SDELETE(m_debug);
-		SDELETE(m_assets);
-		SDELETE(m_sceneQueue);
-		SDELETE(time);
-		SDELETE(input);
 		SRELEASE(m_pd3dDevice);
 		SRELEASE(m_pD3D);
 	}
@@ -101,8 +88,10 @@ namespace sidescroll
 		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
-			Graphics::RenderText(*FPS, 10, 10, "frameRate: %ld", time->frameRate());
-			m_sceneQueue->Render();
+			MySingleton<SceneManager>::GetSingleton()->Render();
+#ifdef DEBUG
+			Graphics::RenderText(*m_FPS, 10, 10, "frameRate: %ld", MySingleton<Time>::GetSingleton()->frameRate());
+#endif
 			m_pd3dDevice->EndScene();
 		}
 
@@ -111,21 +100,7 @@ namespace sidescroll
 
 	void Engine::OnUpdate(float delta)
 	{
-		input->Capture();
-		m_sceneQueue->Update(delta);
-	}
-
-	void Engine::ParseEngineiniFile()
-	{
-		// incomplete
-		try
-		{
-			
-		}
-		catch (const char *exception)
-		{
-			::MessageBox(Handle(), exception, nullptr, MB_OK);
-		}
+		MySingleton<SceneManager>::GetSingleton()->Update(delta);
 	}
 
 	int Engine::Run()
@@ -146,13 +121,15 @@ namespace sidescroll
 			}
 			else
 			{
-				time->Start();
+				MySingleton<Time>::GetSingleton()->Start();
+				MySingleton<Input>::GetSingleton()->Capture();
+				MySingleton<AudioManager>::GetSingleton()->AudioSystem()->update();
 				OnRender();
-				OnUpdate(time->deltaTime());
+				OnUpdate(MySingleton<Time>::GetSingleton()->deltaTime());
 			}
 		}
 
-		UnregisterClass(m_caption.c_str(), m_hInst);
+		UnregisterClass(m_caption.c_str(), g_hInstance);
 
 		return 0;
 	}
@@ -161,6 +138,16 @@ namespace sidescroll
 	{
 		switch (msg)
 		{
+#ifdef _DEBUG
+		case WM_KEYDOWN:
+			switch (wParam)
+			{
+			case VK_ESCAPE:
+				PostQuitMessage(0);
+				return 0;
+			}
+			break;
+#endif
 		case WM_IME_STARTCOMPOSITION:
 			return 0;
 		case WM_DESTROY:
@@ -174,6 +161,6 @@ namespace sidescroll
 
 	LRESULT WINAPI Engine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		return ENGINE->WndProc(hWnd, msg, wParam, lParam);
+		return MySingleton<Engine>::GetSingleton()->WndProc(hWnd, msg, wParam, lParam);
 	}
 }

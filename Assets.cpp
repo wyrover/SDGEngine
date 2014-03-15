@@ -2,16 +2,14 @@
 
 namespace sidescroll
 {
-	Assets *ASSETS = nullptr;
 	Assets::Assets()
 	{
-		ASSETS = this;
 		SetContentPath(GetDefaultContentPath());
 	}
 
 	Assets::~Assets()
 	{
-		ASSETS = nullptr;
+
 	}
 
 	std::string Assets::GetDefaultContentPath()
@@ -42,7 +40,7 @@ namespace sidescroll
 		if (asset)
 		{
 			asset->AddReference();
-			std::cout << asset->m_filename << ": addReference (" << asset->m_iRefCount << ")" << std::endl;
+			std::cout << asset->m_filename << ": RefCount (" << asset->m_iRefCount << ")" << std::endl;
 		}
 
 		return asset;
@@ -71,13 +69,13 @@ namespace sidescroll
 		if (asset)
 		{
 			asset->AddReference();
-			std::cout << asset->m_filename << ": addReference (" << asset->m_iRefCount << ")" << std::endl;
+			std::cout << asset->m_filename << ": RefCount (" << asset->m_iRefCount << ")" << std::endl;
 		}
 
 		return asset;
 	}
 
-	AudioAsset *Assets::RequestAudio(const std::string &filename)
+	AudioAsset *Assets::RequestAudio(const std::string &filename, FMOD_MODE mode)
 	{
 		AudioAsset *asset = NULL;
 		std::string name = GetContentPath() + filename;
@@ -89,7 +87,7 @@ namespace sidescroll
 		if (!asset)
 		{
 			asset = new AudioAsset();
-			if (asset->Load(name))
+			if (asset->Load(name, mode))
 			{
 				StoreAsset(asset);
 				std::cout << asset->m_filename << ": Load" << std::endl;
@@ -103,7 +101,7 @@ namespace sidescroll
 		if (asset)
 		{
 			asset->AddReference();
-			std::cout << asset->m_filename << ": addReference (" << asset->m_iRefCount << ")" << std::endl;
+			std::cout << asset->m_filename << ": RefCount (" << asset->m_iRefCount << ")" << std::endl;
 		}
 
 		// return what we found

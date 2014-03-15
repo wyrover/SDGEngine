@@ -2,14 +2,13 @@
 
 namespace sidescroll
 {
-	class Time;
-	extern Time *TIME;
-	class Time
+	class Time : public MySingleton<Time>
 	{
 	public:
 		Time();
 		~Time();
 
+		bool Init();
 		void Start();
 		float deltaTime() { return m_deltaTime; }
 		unsigned long frameRate() { return m_fps; }

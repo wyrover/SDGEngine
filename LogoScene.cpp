@@ -14,39 +14,44 @@ namespace sidescroll
 	{
 		setActive(true);
 
-		//TextureAtlas textureAtlas;
-		//TiXmlDocument xmlDoc;
-		//if (xmlDoc.LoadFile(ASSETS->GetContentPath() + "atlas.xml") == false)
-		//	std::cout << "LoadFile failed!" << std::endl;
-		//TiXmlElement *xmlTextureAtlas = xmlDoc.FirstChildElement("TextureAtlas");
-		//if (xmlTextureAtlas)
-		//{
-		//	textureAtlas.Load(xmlTextureAtlas);
-		//}
-
-		//GameObject *hero = new GameObject(m_space, "logo");
-		//hero->AddComponent<SpriteRenderer>();
-		//hero->SubscribeToMessageType<SpriteRenderer>(MT_OBJECT_CREATED);
-		//Message msg(MT_OBJECT_CREATED, "logo.png");
-		//hero->PostMessage<SpriteRenderer>(msg);
+		// you don't have delete this memory
+		//GameObject *hero = new GameObject(m_space, "hero");
+		//hero->AddComponent<Sprite>();
+		//hero->SubscribeToMessageType<Sprite>(MT_OBJECT_CREATED);
+		//Message msg(MT_OBJECT_CREATED, "002-Fighter01.png");
+		//hero->PostMessage<Sprite>(msg);
 		//hero->SetActiveRecursively(true);
+
+		Fighter = new Sprite("002-Fighter01.png");
+		back = new TileSet("tileset.png", 32.f, 32.f, 2);
+		//AudioAsset *res = MySingleton<Assets>::GetSingleton()->RequestAudio("battle_with_red1.mp3");
+		//res->Play();
 	}
 
 	void LogoScene::Finish()
 	{
-
+		SDELETE(Fighter);
 	}
 
 	void LogoScene::OnUpdate(float delta)
 	{
-		if (INPUT->isButtonPress(MOUSE_RIGHT))
+		if (MySingleton<Input>::GetSingleton()->isButtonPress(MOUSE_RIGHT))
 		{
-			setFinished(true);
+			ChangeScene(new TitleScene);
 		}
+		if (MySingleton<Input>::GetSingleton()->keyDown(DIK_A))
+			Fighter->setOffPosition(-300.f*delta, 0);
+		else if (MySingleton<Input>::GetSingleton()->keyDown(DIK_D))
+			Fighter->setOffPosition(300.f*delta, 0);
+		else if (MySingleton<Input>::GetSingleton()->keyDown(DIK_W))
+			Fighter->setOffPosition(0, -300.f*delta);
+		else if (MySingleton<Input>::GetSingleton()->keyDown(DIK_S))
+			Fighter->setOffPosition(0, 300.f*delta);
 	}
 
 	void LogoScene::OnRender()
 	{
-
+		back->Render();
+		Fighter->Render();
 	}
 }

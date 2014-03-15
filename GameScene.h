@@ -9,9 +9,7 @@ namespace sidescroll
 		virtual ~GameScene() {}
 
 		bool isActive() { return m_active; }
-		bool isFinished() { return m_finished; }
 		void setActive(bool active) { m_active = active; }
-		void setFinished(bool finish) { m_finished = finish; }
 
 		virtual void Init() final;
 		virtual void Destroy() final;
@@ -23,9 +21,10 @@ namespace sidescroll
 		virtual void OnUpdate(float delta) { UNUSED(delta); }
 		virtual void OnRender() {}
 
+		void ChangeScene(GameScene* state);
+
 	protected:
 		Space *m_space = nullptr;
 		bool m_active = false;
-		bool m_finished = false;
 	};
 }
