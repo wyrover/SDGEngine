@@ -115,6 +115,7 @@ namespace sidescroll
 
 	void Assets::RemoveAsset(Asset *asset)
 	{
+		SDELETE(asset);
 		m_assets.remove(asset);
 	}
 

@@ -77,6 +77,7 @@ namespace sidescroll
 
 	void Engine::OnCleanUp()
 	{
+		m_FPS->RemoveReference();
 		SRELEASE(m_pd3dDevice);
 		SRELEASE(m_pD3D);
 	}

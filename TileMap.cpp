@@ -21,6 +21,7 @@ namespace sidescroll
 		{
 			SDELETE(i);
 		}
+		m_TileTexture->RemoveReference();
 	}
 
 	bool TileMap::CreateTiles()

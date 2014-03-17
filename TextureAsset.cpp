@@ -9,7 +9,7 @@ namespace sidescroll
 
 	TextureAsset::~TextureAsset()
 	{
-		Unload();
+
 	}
 
 	bool TextureAsset::Load(const std::string data)
@@ -63,6 +63,6 @@ namespace sidescroll
 
 	void TextureAsset::Unload()
 	{
-		SDELETE(m_texture);
+		SRELEASE(m_texture);
 	}
 }

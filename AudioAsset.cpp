@@ -10,7 +10,7 @@ namespace sidescroll
 
 	AudioAsset::~AudioAsset()
 	{
-		Unload();
+
 	}
 
 	bool AudioAsset::Load(const std::string &filename, FMOD_MODE mode)

@@ -9,7 +9,7 @@ namespace sidescroll
 
 	FontAsset::~FontAsset()
 	{
-		Unload();
+
 	}
 
 	bool FontAsset::Load(const std::string data, int size, D3DCOLOR color)
