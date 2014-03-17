@@ -16,11 +16,11 @@ namespace sidescroll
 	class AudioAsset;
 	class TextureAsset;
 	class FontAsset;
-	class Assets : public MySingleton<Assets>
+	class Assets : public Singleton<Assets>
 	{
 	public:
 		Assets();
-		~Assets();
+		virtual ~Assets();
 
 		TextureAsset *RequestTexture(const std::string &filename);
 		FontAsset *RequestFont(const std::string &filename, int size);
@@ -36,5 +36,6 @@ namespace sidescroll
 	private:
 		std::list<Asset *> m_assets;
 		std::string m_contentPath;
+		DISALLOW_COPY_AND_ASSIGN(Assets);
 	};
 }

@@ -9,7 +9,7 @@ namespace sidescroll
 	{
 	public:
 		// »ý¼ºÀÚ 
-		MemPooler(int nNumOfBlock) :m_nNumofBlock(nNumOfBlock),
+		explicit MemPooler(int nNumOfBlock) :m_nNumofBlock(nNumOfBlock),
 			m_pFreeList(NULL),
 			m_pMemBlock(NULL),
 			m_nAllocCount(0)

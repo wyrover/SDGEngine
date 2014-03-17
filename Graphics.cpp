@@ -5,9 +5,9 @@ namespace sidescroll
 	void Graphics::BindTexture(TextureAsset *texture)
 	{
 		if (texture)
-			MySingleton<Engine>::GetSingleton()->Device()->SetTexture(0, texture->texture() ? texture->texture() : nullptr);
+			Singleton<Engine>::GetSingleton()->Device()->SetTexture(0, texture->texture() ? texture->texture() : nullptr);
 		else
-			MySingleton<Engine>::GetSingleton()->Device()->SetTexture(0, nullptr);
+			Singleton<Engine>::GetSingleton()->Device()->SetTexture(0, nullptr);
 	}
 
 	void Graphics::RenderQuad(unsigned w, unsigned h, const D3DXVECTOR2 &textureOffset, const D3DXVECTOR2 &textureScale, const D3DXVECTOR2 &position)
@@ -51,8 +51,8 @@ namespace sidescroll
 		verts[3].x = halfWidth + position.x;
 		verts[3].y = halfHeight + position.y;
 
-		MySingleton<Engine>::GetSingleton()->Device()->SetFVF(BoundsVerts::FvF);
-		MySingleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, verts, sizeof(BoundsVerts));
+		Singleton<Engine>::GetSingleton()->Device()->SetFVF(BoundsVerts::FvF);
+		Singleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, verts, sizeof(BoundsVerts));
 	}
 
 	void Graphics::RenderLine(const D3DXVECTOR2& pos1, const D3DXVECTOR2 &pos2)
@@ -64,8 +64,8 @@ namespace sidescroll
 		verts[1].x = pos2.x;
 		verts[1].y = pos2.y;
 
-		MySingleton<Engine>::GetSingleton()->Device()->SetFVF(GeneralVerts::FvF);
-		MySingleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_LINESTRIP, 2, verts, sizeof(GeneralVerts));
+		Singleton<Engine>::GetSingleton()->Device()->SetFVF(GeneralVerts::FvF);
+		Singleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_LINESTRIP, 2, verts, sizeof(GeneralVerts));
 	}
 
 	void Graphics::RenderLineRect(float x, float y, float w, float h)
@@ -89,8 +89,8 @@ namespace sidescroll
 		verts[4].x = x;
 		verts[4].y = y;
 
-		MySingleton<Engine>::GetSingleton()->Device()->SetFVF(GeneralVerts::FvF);
-		MySingleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_LINESTRIP, 4, verts, sizeof(GeneralVerts));
+		Singleton<Engine>::GetSingleton()->Device()->SetFVF(GeneralVerts::FvF);
+		Singleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_LINESTRIP, 4, verts, sizeof(GeneralVerts));
 	}
 
 	void Graphics::RenderTriangle(float size)
@@ -126,45 +126,45 @@ namespace sidescroll
 	{
 		if (flag)
 		{
-			MySingleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHATESTENABLE, true);
-			MySingleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_NOTEQUAL);
-			MySingleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHAREF, 0);
+			Singleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHATESTENABLE, true);
+			Singleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_NOTEQUAL);
+			Singleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHAREF, 0);
 		}
 		else
-			MySingleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHATESTENABLE, false);
+			Singleton<Engine>::GetSingleton()->Device()->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	}
 
 	void Graphics::SetAddressModes(D3DTEXTUREADDRESS address)
 	{
 		// WRAP, BORDER, CLAMP, MIRROR
-		MySingleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_ADDRESSU, address);
-		MySingleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_ADDRESSV, address);
+		Singleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_ADDRESSU, address);
+		Singleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_ADDRESSV, address);
 		if (address == D3DTADDRESS_BORDER)
-			MySingleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_BORDERCOLOR, 0x000000ff);
+			Singleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_BORDERCOLOR, 0x000000ff);
 	}
 
 	void Graphics::SetTextureFilter(D3DTEXTUREFILTERTYPE texfilter)
 	{
 		// POINT, LINEAR, ANISOTROPIC
-		MySingleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_MAGFILTER, texfilter);
-		MySingleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_MINFILTER, texfilter);
+		Singleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_MAGFILTER, texfilter);
+		Singleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_MINFILTER, texfilter);
 	}
 
 	void Graphics::SetMipmapFilter(D3DTEXTUREFILTERTYPE mipfilter)
 	{
 		// NONE, POINT, LINEAR
-		MySingleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_MIPFILTER, mipfilter);
+		Singleton<Engine>::GetSingleton()->Device()->SetSamplerState(0, D3DSAMP_MIPFILTER, mipfilter);
 	}
 
 	void Graphics::SetTextureAlphaChannel()
 	{
-		MySingleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-		MySingleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+		Singleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		Singleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	}
 
 	void Graphics::SetShadeAlphaChannel()
 	{
-		MySingleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
-		MySingleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+		Singleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
+		Singleton<Engine>::GetSingleton()->Device()->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	}
 }

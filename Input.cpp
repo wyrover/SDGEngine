@@ -35,7 +35,7 @@ namespace sidescroll
 		// Create a device for monitoring the keyboard
 		if (FAILED(m_dInput->CreateDevice(GUID_SysKeyboard, &m_keyboardDevice, NULL)))
 			return false;
-		if (FAILED(m_keyboardDevice->SetCooperativeLevel(MySingleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE))) //DISCL_BACKGROUND, DISCL_EXCLUSIVE
+		if (FAILED(m_keyboardDevice->SetCooperativeLevel(Singleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE))) //DISCL_BACKGROUND, DISCL_EXCLUSIVE
 			return false;
 		if (FAILED(m_keyboardDevice->SetDataFormat(&c_dfDIKeyboard)))
 			return false;
@@ -43,7 +43,7 @@ namespace sidescroll
 		// Create a device for monitoring the mouse
 		if (FAILED(m_dInput->CreateDevice(GUID_SysMouse, &m_mouseDevice, NULL)))
 			return false;
-		if (FAILED(m_mouseDevice->SetCooperativeLevel(MySingleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
+		if (FAILED(m_mouseDevice->SetCooperativeLevel(Singleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
 			return false;
 		if (FAILED(m_mouseDevice->SetDataFormat(&c_dfDIMouse)))
 			return false;
@@ -161,10 +161,10 @@ namespace sidescroll
 
 	bool Input::isMouseContain(int x, int y, int w, int h)
 	{
-		if (CalcMousePosToWinRect(MySingleton<Engine>::GetSingleton()->Handle()))
+		if (CalcMousePosToWinRect(Singleton<Engine>::GetSingleton()->Handle()))
 		{
-			long absx = MySingleton<Input>::GetSingleton()->getMouseAbsX();
-			long absy = MySingleton<Input>::GetSingleton()->getMouseAbsY();
+			long absx = Singleton<Input>::GetSingleton()->getMouseAbsX();
+			long absy = Singleton<Input>::GetSingleton()->getMouseAbsY();
 			if (absx > x && absx < x + w && absy > y && absy < y + h)
 			{
 				return true;

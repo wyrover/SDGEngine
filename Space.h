@@ -8,8 +8,6 @@ namespace sidescroll
 	public:
 		Space() {}
 		virtual ~Space() {}
-		Space(const Space &rhs) = delete;
-		void operator = (const Space &rhs) = delete;
 
 		virtual void Init() override;
 		virtual void Destroy() override;
@@ -24,5 +22,6 @@ namespace sidescroll
 		std::vector<GameObject *> m_gameObjects;
 		bool _initialized = false;
 		bool _destroyed = false;
+		DISALLOW_COPY_AND_ASSIGN(Space);
 	};
 }

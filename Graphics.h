@@ -34,5 +34,8 @@ namespace sidescroll
 		static void SetMipmapFilter(D3DTEXTUREFILTERTYPE mipfilter);
 		static void SetTextureAlphaChannel();
 		static void SetShadeAlphaChannel();
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Graphics);
 	};
 }

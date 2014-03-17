@@ -10,7 +10,7 @@ namespace sidescroll
 	Sprite::Sprite(const std::string &filename)
 		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(32.f, 48.f), position(100.f, 100.f)
 	{
-		m_texture = MySingleton<Assets>::GetSingleton()->RequestTexture(filename);
+		m_texture = Singleton<Assets>::GetSingleton()->RequestTexture(filename);
 		if (m_texture)
 		{
 			width = m_texture->width();

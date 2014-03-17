@@ -60,7 +60,7 @@ namespace sidescroll
 	TileSet::TileSet(const std::string &str, float scalex, float scaley, int layer)
 		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(scalex, scaley), position(0.f, 0.f), cellid(nullptr), layerNum(layer)
 	{
-		texture = MySingleton<Assets>::GetSingleton()->RequestTexture(str);
+		texture = Singleton<Assets>::GetSingleton()->RequestTexture(str);
 		if (texture)
 		{
 			width = texture->width();

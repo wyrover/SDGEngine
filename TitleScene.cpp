@@ -8,6 +8,7 @@ namespace sidescroll
 
 	TitleScene::~TitleScene()
 	{
+		Destroy();
 	}
 
 	void TitleScene::Start()

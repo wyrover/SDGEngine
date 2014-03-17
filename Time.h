@@ -2,11 +2,11 @@
 
 namespace sidescroll
 {
-	class Time : public MySingleton<Time>
+	class Time : public Singleton<Time>
 	{
 	public:
 		Time();
-		~Time();
+		virtual ~Time();
 
 		bool Init();
 		void Start();
@@ -24,5 +24,6 @@ namespace sidescroll
 		unsigned long m_fps = 0;
 		unsigned long m_frameCnt = 0;
 		float m_elapsedTime = 0.f;
+		DISALLOW_COPY_AND_ASSIGN(Time);
 	};
 }

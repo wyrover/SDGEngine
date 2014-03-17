@@ -23,7 +23,7 @@ namespace sidescroll
 	class Asset
 	{
 	public:
-		Asset(AssetType type);
+		explicit Asset(AssetType type);
 		virtual ~Asset() {}
 
 		void AddReference();

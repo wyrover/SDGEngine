@@ -16,7 +16,7 @@ namespace sidescroll
 
 	private:
 		/*GameObject *hero = nullptr;*/
-		Sprite *Fighter;
-		TileSet *back;
+		TileMap* m_TileTempalte;
+		Viewport* m_TileEngine;
 	};
 }

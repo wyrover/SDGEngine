@@ -2,21 +2,21 @@
 
 namespace sidescroll
 {
-	SceneManager::SceneManager()
+	SceneSystem::SceneSystem()
 	{
 	}
 
-	SceneManager::~SceneManager()
-	{
-		Destroy();
-	}
-
-	void SceneManager::Init()
+	SceneSystem::~SceneSystem()
 	{
 		Destroy();
 	}
 
-	void SceneManager::Destroy()
+	void SceneSystem::Init()
+	{
+		Destroy();
+	}
+
+	void SceneSystem::Destroy()
 	{
 		for (auto i : m_scene)
 		{
@@ -25,28 +25,28 @@ namespace sidescroll
 		m_scene.clear();
 	}
 
-	void SceneManager::Update(float delta)
+	void SceneSystem::Update(float delta)
 	{
 		// let the state update the game
 		GameScene *scene = m_scene.back();
 		if (scene && scene->isActive()) scene->Update(delta);
 	}
 
-	void SceneManager::Render()
+	void SceneSystem::Render()
 	{
 		// let the state update the game
 		GameScene *scene = m_scene.back();
 		if (scene && scene->isActive()) scene->Render();
 	}
 
-	void SceneManager::PushScene(GameScene* state)
+	void SceneSystem::PushScene(GameScene* state)
 	{
 		// store and init the new state
 		m_scene.push_back(state);
 		m_scene.back()->Init();
 	}
 
-	void SceneManager::PopScene()
+	void SceneSystem::PopScene()
 	{
 		// cleanup the current state
 		if (!m_scene.empty()) {
@@ -55,7 +55,7 @@ namespace sidescroll
 		}
 	}
 
-	void SceneManager::ChangeScene(GameScene* state)
+	void SceneSystem::ChangeScene(GameScene* state)
 	{
 		// cleanup the current state
 		if (!m_scene.empty()) {

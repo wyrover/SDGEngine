@@ -6,7 +6,7 @@ namespace sidescroll
 	{
 	public:
 		FontAsset();
-		~FontAsset();
+		virtual ~FontAsset();
 
 		bool Load(const std::string data, int size, D3DCOLOR color = D3DXCOLOR(0, 0, 0, 1));
 		virtual void Reload() override;

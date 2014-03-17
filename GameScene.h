@@ -26,5 +26,8 @@ namespace sidescroll
 	protected:
 		Space *m_space = nullptr;
 		bool m_active = false;
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(GameScene);
 	};
 }

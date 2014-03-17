@@ -2,9 +2,10 @@
 
 namespace sidescroll
 {
-	class Renderer;
-	struct Object
+	class Object
 	{
+	public:
+		Object() {}
 		virtual ~Object() {}
 		virtual void Init() = 0;
 		virtual void Destroy() = 0;

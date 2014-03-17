@@ -18,12 +18,12 @@ namespace sidescroll
 		m_filename = filename;
 		m_mode = mode;
 		FMOD_RESULT result;
-		result = MySingleton<AudioManager>::GetSingleton()->AudioSystem()->createSound(filename.c_str(), FMOD_HARDWARE, 0, &m_sound);
-		if (!MySingleton<AudioManager>::GetSingleton()->ErrorHandle(result))
+		result = Singleton<FmodAudioSystem>::GetSingleton()->AudioSystem()->createSound(filename.c_str(), FMOD_HARDWARE, 0, &m_sound);
+		if (!Singleton<FmodAudioSystem>::GetSingleton()->ErrorHandle(result))
 			return false;
 		
 		result = m_sound->setMode(mode);
-		if (!MySingleton<AudioManager>::GetSingleton()->ErrorHandle(result))
+		if (!Singleton<FmodAudioSystem>::GetSingleton()->ErrorHandle(result))
 			return false;
 
 		return true;
@@ -39,13 +39,13 @@ namespace sidescroll
 	{
 		FMOD_RESULT result;
 		result = m_sound->release();
-		if (!MySingleton<AudioManager>::GetSingleton()->ErrorHandle(result))
+		if (!Singleton<FmodAudioSystem>::GetSingleton()->ErrorHandle(result))
 			return;
 	}
 
 	void AudioAsset::Play()
 	{
-		MySingleton<AudioManager>::GetSingleton()->AudioSystem()->playSound(FMOD_CHANNEL_FREE, m_sound, false, &m_channel);
+		Singleton<FmodAudioSystem>::GetSingleton()->AudioSystem()->playSound(FMOD_CHANNEL_FREE, m_sound, false, &m_channel);
 	}
 
 	bool AudioAsset::isPlaying()

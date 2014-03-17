@@ -5,7 +5,8 @@ namespace sidescroll
 	class Behaviour : public Component
 	{
 	public:
-		virtual ~Behaviour(){}
+		Behaviour() {}
+		virtual ~Behaviour() {}
 		bool enabled() { return m_enabled; }
 		void setEnable(bool flag) { m_enabled = flag; }
 

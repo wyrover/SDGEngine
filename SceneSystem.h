@@ -3,11 +3,11 @@
 namespace sidescroll
 {
 	class GameScene;
-	class SceneManager : public Object, public MySingleton<SceneManager>
+	class SceneSystem : public Object, public Singleton<SceneSystem>
 	{
 	public:
-		SceneManager();
-		~SceneManager();
+		SceneSystem();
+		virtual ~SceneSystem();
 
 		virtual void Init() override;
 		virtual void Destroy() override;
@@ -20,5 +20,6 @@ namespace sidescroll
 
 	private:
 		std::vector<GameScene*> m_scene;
+		DISALLOW_COPY_AND_ASSIGN(SceneSystem);
 	};
 }

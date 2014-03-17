@@ -7,10 +7,7 @@ namespace sidescroll
 	public:
 		GameObject(Space *space, std::string name); //when parent object
 		GameObject(GameObject *parent, std::string name); //when child object
-		~GameObject();
-		// disalbe copy and assign
-		GameObject(const GameObject &rhs) = delete;
-		void operator = (const GameObject &rhs) = delete;
+		virtual ~GameObject();
 
 		template<typename C>
 		C *AddComponent();
@@ -48,6 +45,7 @@ namespace sidescroll
 		bool _initialized = false;
 		bool _destroyed = false;
 		bool m_active = false;
+		DISALLOW_COPY_AND_ASSIGN(GameObject);
 	};
 
 	template<typename C>

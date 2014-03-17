@@ -6,7 +6,7 @@ namespace sidescroll
 	{
 	public:
 		TextureAsset();
-		~TextureAsset();
+		virtual ~TextureAsset();
 
 		bool Load(const std::string data);
 		unsigned int width();

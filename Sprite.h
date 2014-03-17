@@ -6,7 +6,7 @@ namespace sidescroll
 	{
 	public:
 		Sprite();
-		Sprite(const std::string &filename);
+		explicit Sprite(const std::string &filename);
 		~Sprite();
 
 		void Render();
@@ -19,5 +19,6 @@ namespace sidescroll
 		D3DXVECTOR2 textureOffset;
 		D3DXVECTOR2 textureScale;
 		D3DXVECTOR2 position;
+		DISALLOW_COPY_AND_ASSIGN(Sprite);
 	};
 }

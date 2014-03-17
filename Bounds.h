@@ -5,8 +5,8 @@ namespace sidescroll
 	class Bounds
 	{
 	public:
-		explicit Bounds() {}
-		explicit Bounds(D3DXVECTOR2 center, D3DXVECTOR2 size);
+		Bounds() {}
+		Bounds(D3DXVECTOR2 center, D3DXVECTOR2 size);
 		Bounds(const Bounds &bounds);
 
 		Bounds &operator = (const Bounds &bounds);

@@ -129,7 +129,7 @@ namespace sidescroll
 		{
 		case MT_OBJECT_CREATED:
 			str = std::string(static_cast<char *>(msg.m_data));
-			if (xmlDoc.LoadFile(MySingleton<Assets>::GetSingleton()->GetContentPath() + str) == false)
+			if (xmlDoc.LoadFile(Singleton<Assets>::GetSingleton()->GetContentPath() + str) == false)
 				std::cout << "LoadFile failed!: " << str << std::endl;
 			xmlElement = xmlDoc.FirstChildElement("Animation");
 			if (xmlElement)

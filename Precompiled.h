@@ -55,13 +55,19 @@ extern "C"
 //#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
-#define randomize() srand((unsigned)time(nullptr))
-#define random(n) (rand() % (n))
+#define RANDOMIZE() srand((unsigned)time(nullptr))
+#define RANDOM(n) (rand() % (n))
 
 #define SDELETE(p)       { if(p) { delete (p);     (p)=nullptr; } }
 #define SDELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=nullptr; } }
 #define SRELEASE(p)      { if(p) { (p)->Release(); (p)=nullptr; } }
 #define UNUSED(p) (void)p
+
+// A macro to disallow the copy constructor and operator= functions
+// This should be used in the private: declarations for a class
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+	TypeName(const TypeName&);               \
+	void operator=(const TypeName&)
 
 #include "RemoveQualifier.h"
 #include "Meta.h"
@@ -227,7 +233,7 @@ extern HINSTANCE g_hInstance;
 #include "Assets.h"
 #include "TextureAsset.h"
 #include "TextureAtlas.h"
-#include "AudioManager.h"
+#include "FmodAudioSystem.h"
 #include "AudioAsset.h"
 //#include "TTFFontAsset.h"
 #include "FontAsset.h"
@@ -243,10 +249,10 @@ extern HINSTANCE g_hInstance;
 #include "Space.h"
 #include "Component.h"
 #include "GameObject.h"
+
 #include "TileSet.h"
-#include "TileMapInfo.h"
-#include "TileTemplateMgr.h"
-#include "TileMapEngine.h"
+#include "TileMap.h"
+#include "Viewport.h"
 
 #include "Ime.h"
 
@@ -259,5 +265,5 @@ extern HINSTANCE g_hInstance;
 #include "GameScene.h"
 #include "LogoScene.h"
 #include "TitleScene.h"
-#include "SceneManager.h"
+#include "SceneSystem.h"
 #include "Engine.h"

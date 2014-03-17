@@ -58,41 +58,20 @@ namespace sidescroll
 		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
 			return E_FAIL;
 	
-		if (!MySingleton<Time>::GetSingleton()->Init())
+		if (!Singleton<Time>::GetSingleton()->Init())
 			return E_FAIL;
 
-		if (!MySingleton<Input>::GetSingleton()->Init())
+		if (!Singleton<Input>::GetSingleton()->Init())
 			return E_FAIL;
 
-		if (!MySingleton<AudioManager>::GetSingleton()->Init())
+		if (!Singleton<FmodAudioSystem>::GetSingleton()->Init())
 			return E_FAIL;
 
-		MySingleton<SceneManager>::GetSingleton()->Init();
-		MySingleton<SceneManager>::GetSingleton()->ChangeScene(new LogoScene);
+		Singleton<SceneSystem>::GetSingleton()->Init();
+		Singleton<SceneSystem>::GetSingleton()->ChangeScene(new LogoScene);
 #ifdef _DEBUG
-		m_FPS = MySingleton<Assets>::GetSingleton()->RequestFont("Arial", 14);
+		m_FPS = Singleton<Assets>::GetSingleton()->RequestFont("Arial", 14);
 #endif
-
-		// 타일 이미지 관리 객체 생성
-		if (!(m_TileTempalte = new CTileTemplateMgr(CRect(0, 0, 65, 65), 12, 4, 3)))
-		{
-			return E_FAIL;
-		}
-		m_TileTempalte->Create(m_pd3dDevice, "TempTile.bmp");
-
-		// 타일 맵 관리 객체 생성
-		if (!(m_TileMapInfo = new CTileMapInfo(m_TileTempalte, 10, 10)))
-		{
-			return E_FAIL;
-		}
-
-		// 타일 엔진 객체 생성
-		if (!(m_TileEngine = new CTileMapEngine(m_pd3dDevice, CRect(0, 0, 65 * 5, 65 * 5))))
-		{
-			return E_FAIL;
-		}
-		m_TileEngine->SetTileMapInfo(m_TileMapInfo);
-
 		return S_OK;
 	}
 
@@ -110,10 +89,9 @@ namespace sidescroll
 		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
-			m_TileEngine->Update();
-			MySingleton<SceneManager>::GetSingleton()->Render();
+			Singleton<SceneSystem>::GetSingleton()->Render();
 #ifdef DEBUG
-			Graphics::RenderText(*m_FPS, 10, 10, "frameRate: %ld", MySingleton<Time>::GetSingleton()->frameRate());
+			Graphics::RenderText(*m_FPS, 10, 10, "frameRate: %ld", Singleton<Time>::GetSingleton()->frameRate());
 #endif
 			m_pd3dDevice->EndScene();
 		}
@@ -123,7 +101,7 @@ namespace sidescroll
 
 	void Engine::OnUpdate(float delta)
 	{
-		MySingleton<SceneManager>::GetSingleton()->Update(delta);
+		Singleton<SceneSystem>::GetSingleton()->Update(delta);
 	}
 
 	int Engine::Run()
@@ -144,11 +122,11 @@ namespace sidescroll
 			}
 			else
 			{
-				MySingleton<Time>::GetSingleton()->Start();
-				MySingleton<Input>::GetSingleton()->Capture();
-				MySingleton<AudioManager>::GetSingleton()->AudioSystem()->update();
+				Singleton<Time>::GetSingleton()->Start();
+				Singleton<Input>::GetSingleton()->Capture();
+				Singleton<FmodAudioSystem>::GetSingleton()->AudioSystem()->update();
 				OnRender();
-				OnUpdate(MySingleton<Time>::GetSingleton()->deltaTime());
+				OnUpdate(Singleton<Time>::GetSingleton()->deltaTime());
 			}
 		}
 
@@ -184,6 +162,6 @@ namespace sidescroll
 
 	LRESULT WINAPI Engine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		return MySingleton<Engine>::GetSingleton()->WndProc(hWnd, msg, wParam, lParam);
+		return Singleton<Engine>::GetSingleton()->WndProc(hWnd, msg, wParam, lParam);
 	}
 }

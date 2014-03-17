@@ -2,11 +2,11 @@
 
 namespace sidescroll
 {
-	class Debug : public MySingleton<Debug>
+	class Debug : public Singleton<Debug>
 	{
 	public:
 		Debug();
-		~Debug();
+		virtual ~Debug();
 
 		template <typename T>
 		void Log(T type)
@@ -25,5 +25,8 @@ namespace sidescroll
 		{
 			std::cout << "r: " << type.r << " g: " << type.g << " b: " << type.b << " a: " << type.a << std::endl;
 		}
+
+	private:
+		DISALLOW_COPY_AND_ASSIGN(Debug);
 	};
 }

@@ -30,6 +30,6 @@ namespace sidescroll
 
 	void GameScene::ChangeScene(GameScene* state)
 	{
-		MySingleton<SceneManager>::GetSingleton()->ChangeScene(state);
+		Singleton<SceneSystem>::GetSingleton()->ChangeScene(state);
 	}
 }

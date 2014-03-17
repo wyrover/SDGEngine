@@ -18,7 +18,7 @@ namespace sidescroll
 		m_fontSize = size;
 		m_fontColor = color;
 
-		if (FAILED(D3DXCreateFont(MySingleton<Engine>::GetSingleton()->Device(), m_fontSize, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		if (FAILED(D3DXCreateFont(Singleton<Engine>::GetSingleton()->Device(), m_fontSize, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
 			DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, m_filename.c_str(), &m_Font)))
 		{
 			std::cout << "can not create Font: " << m_filename.c_str() << std::endl;

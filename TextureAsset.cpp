@@ -16,7 +16,7 @@ namespace sidescroll
 	{
 		m_filename = data;
 
-		if (FAILED(D3DXCreateTextureFromFileEx(MySingleton<Engine>::GetSingleton()->Device(), data.c_str(),
+		if (FAILED(D3DXCreateTextureFromFileEx(Singleton<Engine>::GetSingleton()->Device(), data.c_str(),
 			D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, 0,
 			D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE,
 			m_color, &m_texturInfo, nullptr, &m_texture)))

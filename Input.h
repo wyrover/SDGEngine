@@ -3,11 +3,11 @@
 namespace sidescroll
 {
 	enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
-	class Input : public MySingleton<Input>
+	class Input : public Singleton<Input>
 	{
 	public:
 		Input();
-		~Input();
+		virtual ~Input();
 
 		bool Init();
 
@@ -27,7 +27,7 @@ namespace sidescroll
 		bool CalcMousePosToWinRect(HWND hWnd);
 		bool isMouseContain(int x, int y, int w, int h);
 
-	public:
+	private:
 		LPDIRECTINPUT8			m_dInput;
 		LPDIRECTINPUTDEVICE8	m_keyboardDevice;
 		BYTE					m_keyState[256]; // state of the keys
@@ -36,5 +36,6 @@ namespace sidescroll
 		LPDIRECTINPUTDEVICE8	m_mouseDevice;
 		DIMOUSESTATE			m_mouseState, m_mousePressState; // state of the keys(current, previous)
 		POINT					m_ptAbsMousePos;
+		DISALLOW_COPY_AND_ASSIGN(Input);
 	};
 }

@@ -8,6 +8,7 @@ namespace sidescroll
 
 	LogoScene::~LogoScene()
 	{
+		Destroy();
 	}
 
 	void LogoScene::Start()
@@ -22,36 +23,27 @@ namespace sidescroll
 		//hero->PostMessage<Sprite>(msg);
 		//hero->SetActiveRecursively(true);
 
-		Fighter = new Sprite("002-Fighter01.png");
-		back = new TileSet("tileset.png", 32.f, 32.f, 2);
-		AudioAsset *res = MySingleton<Assets>::GetSingleton()->RequestAudio("battle_with_red1.mp3");
-		res->Play();
+		m_TileTempalte = new TileMap("tileset.png", 32, 32, 10, 10);
+		m_TileEngine = new Viewport(m_TileTempalte, 32 * 5, 32 * 5);
 	}
 
 	void LogoScene::Finish()
 	{
-		SDELETE(Fighter);
+		SDELETE(m_TileTempalte);
+		SDELETE(m_TileEngine);
 	}
 
 	void LogoScene::OnUpdate(float delta)
 	{
-		if (MySingleton<Input>::GetSingleton()->isButtonPress(MOUSE_RIGHT))
-		{
-			ChangeScene(new TitleScene);
-		}
-		if (MySingleton<Input>::GetSingleton()->keyDown(DIK_A))
-			Fighter->setOffPosition(-300.f*delta, 0);
-		else if (MySingleton<Input>::GetSingleton()->keyDown(DIK_D))
-			Fighter->setOffPosition(300.f*delta, 0);
-		else if (MySingleton<Input>::GetSingleton()->keyDown(DIK_W))
-			Fighter->setOffPosition(0, -300.f*delta);
-		else if (MySingleton<Input>::GetSingleton()->keyDown(DIK_S))
-			Fighter->setOffPosition(0, 300.f*delta);
+		m_TileEngine->Update();
+		//if (MySingleton<Input>::GetSingleton()->isButtonPress(MOUSE_RIGHT))
+		//{
+		//	ChangeScene(new TitleScene);
+		//}
 	}
 
 	void LogoScene::OnRender()
 	{
-		back->Render();
-		Fighter->Render();
+		m_TileEngine->Render();
 	}
 }

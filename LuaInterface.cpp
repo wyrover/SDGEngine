@@ -140,7 +140,7 @@ namespace sidescroll
 
 		void LoadLuaFile(lua_State *L, std::string &path)
 		{
-			std::string name = MySingleton<Assets>::GetSingleton()->GetContentPath() + path;
+			std::string name = Singleton<Assets>::GetSingleton()->GetContentPath() + path;
 			if (luaL_dofile(L, name.c_str()))
 			{
 				ErrorFunc(L);
