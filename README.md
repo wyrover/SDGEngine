@@ -1,9 +1,9 @@
-sidescroll source
+SDGEngine source
 ==========
 
-*sidescroll game source using directx9.0 in c++*
+*SDGEngine source using directx9.0 in c++*
 
-feature
+features
 ------------
 
 - directx9.0 framework
