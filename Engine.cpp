@@ -1,11 +1,11 @@
 ﻿#include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Engine::Engine()
 	{
 		m_dwStyle = WS_CAPTION | WS_SYSMENU;
-		m_caption = "Test application";
+		m_caption = "SDGEngine";
 		m_filepath = "test.lua";
 		m_dwScreenWidth = 1024;
 		m_dwScreenHeight = 800;
@@ -22,8 +22,8 @@ namespace sidescroll
 		m_lua = Lua::CreateEnvironment(m_filepath);
 
 		WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
-			GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,
-			m_caption.c_str(), nullptr };
+			GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
+			m_caption.c_str(), NULL };
 		RegisterClassEx(&wc);
 
 		RECT rt = { 0, 0, m_dwScreenWidth, m_dwScreenHeight };
@@ -36,11 +36,11 @@ namespace sidescroll
 
 		m_hwnd = CreateWindow(m_caption.c_str(), m_caption.c_str(),
 			m_dwStyle, m_uiClientPosX, m_uiClientPosY, m_dwScreenWidth, m_dwScreenHeight,
-			GetDesktopWindow(), nullptr, g_hInstance, nullptr);
+			GetDesktopWindow(), NULL, g_hInstance, NULL);
 		if (!m_hwnd)
 			return E_FAIL;
 
-		if (nullptr == (m_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
+		if (NULL == (m_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
 			return E_FAIL;
 
 		ZeroMemory(&m_d3dpp, sizeof(m_d3dpp));
@@ -84,10 +84,10 @@ namespace sidescroll
 
 	void Engine::OnRender()
 	{
-		if (nullptr == m_pd3dDevice)
+		if (NULL == m_pd3dDevice)
 			return;
 
-		m_pd3dDevice->Clear(0, nullptr, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
+		m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
 			Singleton<SceneSystem>::GetSingleton()->Render();
@@ -97,7 +97,7 @@ namespace sidescroll
 			m_pd3dDevice->EndScene();
 		}
 
-		m_pd3dDevice->Present(nullptr, nullptr, nullptr, nullptr);
+		m_pd3dDevice->Present(NULL, NULL, NULL, NULL);
 	}
 
 	void Engine::OnUpdate(float delta)
@@ -116,7 +116,7 @@ namespace sidescroll
 		MSG msg = { 0, };
 		while (msg.message != WM_QUIT)
 		{
-			if (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
+			if (::PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
 			{
 				::TranslateMessage(&msg);
 				::DispatchMessage(&msg);
@@ -145,7 +145,7 @@ namespace sidescroll
 			switch (wParam)
 			{
 			case VK_ESCAPE:
-				PostQuitMessage(0);
+				PostMessage(Handle(), WM_DESTROY, NULL, NULL);
 				return 0;
 			}
 			break;

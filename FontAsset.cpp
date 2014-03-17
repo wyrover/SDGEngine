@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	FontAsset::FontAsset()
 		: Asset(ASSET_FONT)

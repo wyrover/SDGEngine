@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	DEFINE_META_POD(unsigned);
 	DEFINE_META_POD(unsigned *);

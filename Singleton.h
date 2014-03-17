@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	/** Template class for creating single-instance global classes.
 	*/
@@ -12,7 +12,7 @@ namespace sidescroll
 		virtual ~Singleton() {}
 
 		static T* GetSingleton(){
-			if (nullptr == m_pInstance)
+			if (NULL == m_pInstance)
 				m_pInstance.reset(new T);
 
 			return m_pInstance.get();
@@ -21,5 +21,5 @@ namespace sidescroll
 	private:
 		static std::shared_ptr<T> m_pInstance;
 	};
-	template<typename T> std::shared_ptr<T> Singleton<T>::m_pInstance = nullptr;
+	template<typename T> std::shared_ptr<T> Singleton<T>::m_pInstance = NULL;
 }

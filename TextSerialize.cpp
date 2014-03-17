@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	// Takes a pointer and returns a pointer offset in bytes
 #define PTR_ADD( PTR, OFFSET ) \

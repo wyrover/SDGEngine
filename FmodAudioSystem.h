@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class FmodAudioSystem : public Singleton<FmodAudioSystem>
 	{
@@ -13,7 +13,7 @@ namespace sidescroll
 		bool ErrorHandle(FMOD_RESULT result);
 
 	private:
-		FMOD::System *m_system = nullptr;
+		FMOD::System *m_system = NULL;
 		unsigned int m_version;
 		DISALLOW_COPY_AND_ASSIGN(FmodAudioSystem);
 	};

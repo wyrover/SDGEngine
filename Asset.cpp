@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Asset::Asset(AssetType type)
 		:m_iRefCount(0), m_type(type), m_isCached(false)

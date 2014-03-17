@@ -1,11 +1,11 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	GameObject::GameObject(Space *space, std::string name)
 		:m_space(space), m_name(name)
 	{
-		if (space == nullptr)
+		if (space == NULL)
 			throw std::invalid_argument("space can't be nullptr.");
 
 		m_space->Add(this);
@@ -14,7 +14,7 @@ namespace sidescroll
 	GameObject::GameObject(GameObject *parent, std::string name)
 		:m_parent(parent), m_name(name)
 	{
-		if (parent == nullptr)
+		if (parent == NULL)
 			throw std::invalid_argument("parent can't be nullptr.");
 
 		m_space = parent->m_space;
@@ -106,7 +106,7 @@ namespace sidescroll
 	void GameObject::SetActiveRecursively(bool active)
 	{
 		// 부모가 없을때 까지
-		if (m_parent != nullptr)
+		if (m_parent != NULL)
 		{
 			m_parent->SetActiveRecursively(active);
 		}

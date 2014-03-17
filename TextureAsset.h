@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class TextureAsset : public Asset
 	{
@@ -18,7 +18,7 @@ namespace sidescroll
 
 	private:
 		D3DXIMAGE_INFO m_texturInfo;
-		IDirect3DTexture9 *m_texture = nullptr;
+		IDirect3DTexture9 *m_texture = NULL;
 		unsigned long m_color;
 	};
 }

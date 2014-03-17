@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	// Edited from C8MemPool class (Hitel, gma 7 3) - 1CoinClear -
 

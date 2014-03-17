@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Bounds::Bounds(D3DXVECTOR2 center, D3DXVECTOR2 size)
 		: m_center(center), m_size(size), m_extents(size / 2)

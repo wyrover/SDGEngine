@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-using namespace sidescroll;
+using namespace SDGEngine;
 
 HINSTANCE g_hInstance;
 int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE, LPSTR, int)

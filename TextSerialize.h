@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	void Padding(std::ostream& os);
 	void TextSerialize(std::ostream& os, RefVariable var);

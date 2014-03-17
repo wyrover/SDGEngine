@@ -10,7 +10,7 @@
 
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	enum AssetType
 	{

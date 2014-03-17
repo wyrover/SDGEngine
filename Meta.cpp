@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	MetaData::MetaData(std::string string, unsigned val)
 		:name(string), size(val), head(NULL), tail(NULL), m_toLua(NULL), m_fromLua(NULL), m_metatable(NULL)

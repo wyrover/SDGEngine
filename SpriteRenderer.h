@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class SpriteRenderer : public Renderer
 	{
@@ -15,6 +15,6 @@ namespace sidescroll
 		virtual EMessageResult HandleMessage(const Message &) override;
 
 	private:
-		Sprite *m_sprites = nullptr;
+		Sprite *m_sprites = NULL;
 	};
 }

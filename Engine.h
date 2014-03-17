@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class Engine : public Singleton<Engine>
 	{
@@ -23,12 +23,12 @@ namespace sidescroll
 		LRESULT					WndProc(HWND, UINT, WPARAM, LPARAM);
 
 	private:
-		LPDIRECT3D9				m_pD3D			= nullptr;
-		LPDIRECT3DDEVICE9		m_pd3dDevice	= nullptr;
-		HWND					m_hwnd			= nullptr;
-		lua_State				*m_lua			= nullptr;
+		LPDIRECT3D9				m_pD3D			= NULL;
+		LPDIRECT3DDEVICE9		m_pd3dDevice	= NULL;
+		HWND					m_hwnd			= NULL;
+		lua_State				*m_lua			= NULL;
 #ifdef _DEBUG
-		FontAsset				*m_FPS			= nullptr;
+		FontAsset				*m_FPS			= NULL;
 #endif
 		D3DPRESENT_PARAMETERS	m_d3dpp;
 		DWORD					m_dwStyle;

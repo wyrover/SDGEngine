@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class GameScene : public Object
 	{
@@ -24,7 +24,7 @@ namespace sidescroll
 		void ChangeScene(GameScene* state);
 
 	protected:
-		Space *m_space = nullptr;
+		Space *m_space = NULL;
 		bool m_active = false;
 
 	private:

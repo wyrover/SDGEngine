@@ -1,15 +1,15 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	XMLFileNode::XMLFileNode()
-		:m_element(nullptr), m_iterator(nullptr)
+		:m_element(NULL), m_iterator(NULL)
 	{
 
 	}
 
 	XMLFileNode::XMLFileNode(TiXmlElement *element)
-		: m_element(element), m_iterator(nullptr)
+		: m_element(element), m_iterator(NULL)
 	{
 	}
 
@@ -25,7 +25,7 @@ namespace sidescroll
 		else
 			m_iterator->m_element = m_element->FirstChildElement(name);
 
-		if (m_iterator != nullptr && m_iterator->m_element == nullptr)
+		if (m_iterator != NULL && m_iterator->m_element == NULL)
 		{
 			SDELETE(m_iterator);
 		}
@@ -42,7 +42,7 @@ namespace sidescroll
 				m_iterator->m_element = m_iterator->m_element->NextSiblingElement(name);
 			}
 
-			if (m_iterator->m_element == nullptr)
+			if (m_iterator->m_element == NULL)
 			{
 				SDELETE(m_iterator);
 			}

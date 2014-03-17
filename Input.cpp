@@ -1,9 +1,9 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Input::Input()
-		: m_dInput(nullptr), m_keyboardDevice(nullptr), m_mouseDevice(nullptr)
+		: m_dInput(NULL), m_keyboardDevice(NULL), m_mouseDevice(NULL)
 	{
 		ZeroMemory(m_keyState, sizeof(BYTE)* 256);
 		ZeroMemory(m_keyPressState, sizeof(BYTE)* 256);

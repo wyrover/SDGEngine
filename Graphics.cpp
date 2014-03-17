@@ -1,13 +1,13 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	void Graphics::BindTexture(TextureAsset *texture)
 	{
 		if (texture)
-			Singleton<Engine>::GetSingleton()->Device()->SetTexture(0, texture->texture() ? texture->texture() : nullptr);
+			Singleton<Engine>::GetSingleton()->Device()->SetTexture(0, texture->texture() ? texture->texture() : NULL);
 		else
-			Singleton<Engine>::GetSingleton()->Device()->SetTexture(0, nullptr);
+			Singleton<Engine>::GetSingleton()->Device()->SetTexture(0, NULL);
 	}
 
 	void Graphics::RenderQuad(unsigned w, unsigned h, const D3DXVECTOR2 &textureOffset, const D3DXVECTOR2 &textureScale, const D3DXVECTOR2 &position)

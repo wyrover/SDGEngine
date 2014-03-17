@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class Sprite
 	{
@@ -14,7 +14,7 @@ namespace sidescroll
 		void setPosition(float x, float y);
 
 	private:
-		TextureAsset *m_texture = nullptr;
+		TextureAsset *m_texture = NULL;
 		unsigned int width, height;
 		D3DXVECTOR2 textureOffset;
 		D3DXVECTOR2 textureScale;

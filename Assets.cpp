@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Assets::Assets()
 	{
@@ -19,7 +19,7 @@ namespace sidescroll
 
 	TextureAsset *Assets::RequestTexture(const std::string &filename)
 	{
-		TextureAsset *asset = nullptr;
+		TextureAsset *asset = NULL;
 		std::string name = GetContentPath() + filename;
 		asset = (TextureAsset *)GetAssetByFilename(name);
 
@@ -48,7 +48,7 @@ namespace sidescroll
 
 	FontAsset *Assets::RequestFont(const std::string &filename, int size)
 	{
-		FontAsset *asset = nullptr;
+		FontAsset *asset = NULL;
 		std::string name = filename; // GetContentPath() + filename;
 		asset = (FontAsset *)GetAssetByFilename(name);
 
@@ -129,7 +129,7 @@ namespace sidescroll
 			}
 		}
 
-		return nullptr;
+		return NULL;
 	}
 
 	void Assets::SetContentPath(const std::string &contentPath)

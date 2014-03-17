@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll 
+namespace SDGEngine 
 {
 	class GameObject : public Object
 	{
@@ -36,7 +36,7 @@ namespace sidescroll
 		void SetActiveRecursively(bool active);
 
 	private:
-		GameObject *m_parent = nullptr;
+		GameObject *m_parent = NULL;
 		std::vector<GameObject *> m_children;
 		std::unordered_map<std::type_index, Component *> m_components;
 		std::set<Component *> m_subscriber[NUM_MESSAGE_TPYES];
@@ -73,7 +73,7 @@ namespace sidescroll
 	C *GameObject::GetComponent()
 	{
 		auto it = m_components.find(typeid(C));
-		if (it == m_components.end()) return nullptr;
+		if (it == m_components.end()) return NULL;
 		return static_cast<C*>(it->second);
 	}
 
@@ -81,7 +81,7 @@ namespace sidescroll
 	void GameObject::SubscribeToMessageType(EMessageType msgType)
 	{
 		auto ret = GetComponent<C>();
-		assert(ret != nullptr);
+		assert(ret != NULL);
 
 		m_subscriber[msgType].insert(ret);
 	}
@@ -90,7 +90,7 @@ namespace sidescroll
 	void GameObject::PostMessage(const Message &msg)
 	{
 		auto ret = GetComponent<C>();
-		assert(ret != nullptr);
+		assert(ret != NULL);
 
 		for (auto compSet : m_subscriber[msg.m_type])
 		{

@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	void Space::Init()
 	{
@@ -46,7 +46,7 @@ namespace sidescroll
 
 	void Space::Add(GameObject *object)
 	{
-		if (object == nullptr)
+		if (object == NULL)
 			throw std::invalid_argument("The object argument can't be null.");
 
 		auto obj_it = std::find(m_gameObjects.begin(), m_gameObjects.end(), object);
@@ -58,7 +58,7 @@ namespace sidescroll
 
 	void Space::Remove(GameObject *object)
 	{
-		if (object == nullptr)
+		if (object == NULL)
 			throw std::invalid_argument("The object argument can't be null.");
 
 		auto obj_it = std::find(m_gameObjects.begin(), m_gameObjects.end(), object);

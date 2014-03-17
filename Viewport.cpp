@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Viewport::Viewport(TileMap *mapinfo, const int ViewportW, const int ViewportH)
 	{
@@ -107,6 +107,6 @@ namespace sidescroll
 			CurrPosY += TileSize->bottom;
 		}
 		Graphics::SetAlphatest(false);
-		Graphics::BindTexture(nullptr);
+		Graphics::BindTexture(NULL);
 	}
 }

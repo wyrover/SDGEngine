@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	const short layer1[25][32] = {
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -58,7 +58,7 @@ namespace sidescroll
 	};
 
 	TileSet::TileSet(const std::string &str, float scalex, float scaley, int layer)
-		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(scalex, scaley), position(0.f, 0.f), cellid(nullptr), layerNum(layer)
+		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(scalex, scaley), position(0.f, 0.f), cellid(NULL), layerNum(layer)
 	{
 		texture = Singleton<Assets>::GetSingleton()->RequestTexture(str);
 		if (texture)
@@ -112,6 +112,6 @@ namespace sidescroll
 			}
 		}
 		Graphics::SetAlphatest(false);
-		Graphics::BindTexture(nullptr);
+		Graphics::BindTexture(NULL);
 	}
 }

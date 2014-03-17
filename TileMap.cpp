@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	TileMap::TileMap(const std::string &path, const int width, const int height, int InMaxMapCellX, int InMaxMapCellY)
 	{
@@ -69,7 +69,7 @@ namespace sidescroll
 			return m_TileSet[cellid];
 		}
 
-		return nullptr;
+		return NULL;
 	}
 
 	int TileMap::GetTileId(int InX, int InY) const

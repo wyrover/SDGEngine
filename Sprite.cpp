@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Sprite::Sprite()
 		:width(0), height(0), textureOffset(0.f, 0.f), textureScale(0.f, 0.f), position(0.f, 0.f)
@@ -23,7 +23,7 @@ namespace sidescroll
 		if (m_texture)
 		{
 			m_texture->RemoveReference();
-			m_texture = nullptr;
+			m_texture = NULL;
 		}
 	}
 
@@ -33,7 +33,7 @@ namespace sidescroll
 		Graphics::BindTexture(m_texture);
 		Graphics::RenderQuad(width, height, textureOffset, textureScale, position);
 		Graphics::SetAlphatest(false);
-		Graphics::BindTexture(nullptr);
+		Graphics::BindTexture(NULL);
 		Graphics::RenderLineRect(-textureScale.x*0.5f + position.x, -textureScale.y*0.5f + position.y, textureScale.x, textureScale.y);
 	}
 

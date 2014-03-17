@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	enum MOUSE_STATE { MOUSE_LEFT = 0, MOUSE_RIGHT = 1, MOUSE_SCROLL = 2 };
 	class Input : public Singleton<Input>

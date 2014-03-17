@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 
-namespace sidescroll
+namespace SDGEngine
 {
 	Variable::Variable(void)
 		: VariableBase(NULL, NULL)

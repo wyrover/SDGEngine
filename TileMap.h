@@ -1,7 +1,7 @@
 // 2014-03-16
 #pragma once
 
-namespace sidescroll
+namespace SDGEngine
 {
 	class TextureAsset;
 	class TileMap
