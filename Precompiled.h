@@ -250,7 +250,7 @@ extern HINSTANCE g_hInstance;
 #include "Component.h"
 #include "GameObject.h"
 
-#include "TileSet.h"
+#include "Rect.h"
 #include "TileMap.h"
 #include "Viewport.h"
 

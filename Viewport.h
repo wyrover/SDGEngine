@@ -1,3 +1,4 @@
+// 2014-03-16 ~ 2014-03-18
 #pragma once
 
 namespace SDGEngine
@@ -6,14 +7,17 @@ namespace SDGEngine
 	class Viewport
 	{
 	public:
-		Viewport(TileMap *mapinfo, const int ViewportW, const int ViewportH);
+		Viewport(TileMap *mapinfo, int ViewportW, int ViewportH);
 		~Viewport() {}
 
 		void Update();
 		void Render();
 
 	private:
-		RECT m_ViewPort;
+		Rect m_ViewPort;
+		Rect m_TotalMapSize;
 		TileMap *m_TileMapInfo;
+		int m_ViewportX;
+		int m_ViewportY;
 	};
 }

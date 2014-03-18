@@ -23,27 +23,23 @@ namespace SDGEngine
 		//hero->PostMessage<Sprite>(msg);
 		//hero->SetActiveRecursively(true);
 
-		m_TileTempalte = new TileMap("tileset.png", 32, 32, 10, 10);
-		m_TileEngine = new Viewport(m_TileTempalte, 32 * 5, 32 * 5);
+		m_Tilemap = new TileMap("tileset.png", 32, 32, 32, 25);
+		m_Viewport = new Viewport(m_Tilemap, 20, 20);
 	}
 
 	void LogoScene::Finish()
 	{
-		SDELETE(m_TileTempalte);
-		SDELETE(m_TileEngine);
+		SDELETE(m_Tilemap);
+		SDELETE(m_Viewport);
 	}
 
 	void LogoScene::OnUpdate(float delta)
 	{
-		m_TileEngine->Update();
-		//if (MySingleton<Input>::GetSingleton()->isButtonPress(MOUSE_RIGHT))
-		//{
-		//	ChangeScene(new TitleScene);
-		//}
+		m_Viewport->Update();
 	}
 
 	void LogoScene::OnRender()
 	{
-		m_TileEngine->Render();
+		m_Viewport->Render();
 	}
 }

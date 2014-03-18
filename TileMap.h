@@ -1,4 +1,4 @@
-// 2014-03-16
+// 2014-03-16 ~ 2014-03-18
 #pragma once
 
 namespace SDGEngine
@@ -7,24 +7,25 @@ namespace SDGEngine
 	class TileMap
 	{
 	public:
-		TileMap(const std::string &path, const int width, const int height, int InMaxMapCellX, int InMaxMapCellY);
+		TileMap(const std::string &path, const float width, const float height, int InMaxMapCellX, int InMaxMapCellY);
 		~TileMap();
 
-		RECT *GetCellRect(unsigned int cellid);
-		RECT const *GetOneTileSize() const { return &m_FrameSize; }
+		Rect *GetTile(int InX, int InY);
+		Rect GetOneTileSize() const { return m_FrameSize; }
+		int TotalMapX() const { return m_MaxMapCellX; }
+		int TotalMapY() const { return m_MaxMapCellY; }
 
-		RECT *GetTile(int InX, int InY);
+	private:
+		Rect *GetCellRect(unsigned int cellid);
 		int GetTileId(int InX, int InY) const;
 		void CheckIsValidMapSize(int InX, int InY, int& OutX, int& OutY) const;
+		void CreateTiles();
+		void GetCellPos(const int InFrameNumber, Rect *OutTargetRect);
 
 	private:
-		bool CreateTiles();
-		bool GetCellPos(const int InFrameNumber, RECT *OutTargetRect);
-
-	private:
-		std::vector<RECT *> m_TileSet;
+		std::vector<Rect *> m_TileSet;
 		TextureAsset *m_TileTexture;	
-		RECT m_FrameSize;		// 텍스쳐의 셀 하나당 가로,세로
+		Rect m_FrameSize;		// 텍스쳐의 셀 하나당 가로,세로
 		int m_FrameCount;		// m_MaxCellXCount * m_MaxCellYCount
 		int m_MaxCellXCount;	// 텍스쳐의 x축 셀 개수
 		int m_MaxCellYCount;	// 텍스쳐의 y축 셀 개수

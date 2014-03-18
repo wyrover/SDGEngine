@@ -12,6 +12,7 @@ namespace SDGEngine
 		LPDIRECT3DDEVICE9		Device()		const { return m_pd3dDevice; }
 		lua_State				*LuaState()		const { return m_lua;		 }
 		HWND					Handle()		const { return m_hwnd;		 }
+		FontAsset				*GetFont()		const { return m_FPS;		 }	
 		static LRESULT WINAPI	MsgProc(HWND, UINT, WPARAM, LPARAM);
 
 	private:

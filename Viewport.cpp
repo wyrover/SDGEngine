@@ -2,74 +2,83 @@
 
 namespace SDGEngine
 {
-	Viewport::Viewport(TileMap *mapinfo, const int ViewportW, const int ViewportH)
+	Viewport::Viewport(TileMap *mapinfo, int ViewportW, int ViewportH)
+		:m_TileMapInfo(mapinfo)
 	{
-		SetRect(&m_ViewPort, 0, 0, ViewportW, ViewportH);
-		m_TileMapInfo = mapinfo;
+		assert(ViewportW <= m_TileMapInfo->TotalMapX() && "뷰포트의 시야가 전체 맵보다 클 수는 없습니다!: X");
+		assert(ViewportH <= m_TileMapInfo->TotalMapY() && "뷰포트의 시야가 전체 맵보다 클 수는 없습니다!: Y");
+
+		m_ViewportX = ViewportW;
+		m_ViewportY = ViewportH;
+
+		m_ViewPort.SetRect(0, 0, m_TileMapInfo->GetOneTileSize().right * m_ViewportX,
+			m_TileMapInfo->GetOneTileSize().bottom * m_ViewportY
+			);
+		m_TotalMapSize.SetRect(0, 0, m_TileMapInfo->GetOneTileSize().right * m_TileMapInfo->TotalMapX(),
+			m_TileMapInfo->GetOneTileSize().bottom * m_TileMapInfo->TotalMapY()
+			);
 	}
 
 	void Viewport::Update()
 	{
-		const float MoveUnit = 1.0f;
+		const float MoveUnit = 5.0f;
 
-		float TempViewPortLeft = m_ViewPort.left;
-		float TempViewPortTop = m_ViewPort.top;
-		float TempViewPortWidth = m_ViewPort.right;
-		float TempViewPortHeight = m_ViewPort.bottom;
-
-		RECT TotalMapSize;
-		SetRect(&TotalMapSize, 0, 0, 65 * 10, 65 * 10); // 요거 바꿀것 10
-
-		if (Singleton<Input>::GetSingleton()->keyDown(DIK_RIGHT))
+		if (Singleton<Input>::GetSingleton()->keyDown(DIK_D))
 		{
-			if ((TempViewPortLeft += MoveUnit) > TotalMapSize.right - TempViewPortWidth)
-			{
-				TempViewPortLeft = TotalMapSize.right - TempViewPortWidth;
+			if ((m_ViewPort.left + MoveUnit) > m_TotalMapSize.right - m_ViewPort.right) {
+				m_ViewPort.left = m_TotalMapSize.right - m_ViewPort.right;
+			}
+			else {
+				m_ViewPort.left += MoveUnit;
 			}
 		}
-		if (Singleton<Input>::GetSingleton()->keyDown(DIK_LEFT))
+		if (Singleton<Input>::GetSingleton()->keyDown(DIK_A))
 		{
-			if ((TempViewPortLeft -= MoveUnit) < TotalMapSize.left)
-			{
-				TempViewPortLeft = TotalMapSize.left;
+			if ((m_ViewPort.left - MoveUnit) < m_TotalMapSize.left) {
+				m_ViewPort.left = m_TotalMapSize.left;
+			}
+			else {
+				m_ViewPort.left -= MoveUnit;
 			}
 		}
-		if (Singleton<Input>::GetSingleton()->keyDown(DIK_DOWN))
+		if (Singleton<Input>::GetSingleton()->keyDown(DIK_S))
 		{
-			if ((TempViewPortTop += MoveUnit) > TotalMapSize.bottom - TempViewPortHeight)
-			{
-				TempViewPortTop = TotalMapSize.bottom - TempViewPortHeight;
+			if ((m_ViewPort.top + MoveUnit) > m_TotalMapSize.bottom - m_ViewPort.bottom) {
+				m_ViewPort.top = m_TotalMapSize.bottom - m_ViewPort.bottom;
+			}
+			else {
+				m_ViewPort.top += MoveUnit;
 			}
 		}
-		if (Singleton<Input>::GetSingleton()->keyDown(DIK_UP))
+		if (Singleton<Input>::GetSingleton()->keyDown(DIK_W))
 		{
-			if ((TempViewPortTop -= MoveUnit) < TotalMapSize.top)
-			{
-				TempViewPortTop = TotalMapSize.top;
+			if ((m_ViewPort.top - MoveUnit) < m_TotalMapSize.top) {
+				m_ViewPort.top = m_TotalMapSize.top;
+			}
+			else {
+				m_ViewPort.top -= MoveUnit;
 			}
 		}
 
-		SetRect(&m_ViewPort, TempViewPortLeft,
-			TempViewPortTop,
-			TempViewPortLeft + TempViewPortWidth,
-			TempViewPortTop + TempViewPortHeight
-			);
+		printf("left: %f\nright: %f\ntop: %f\nbottom: %f\n", m_ViewPort.left, m_ViewPort.left + m_ViewPort.right, m_ViewPort.top, m_ViewPort.top + m_ViewPort.bottom);
+		RECT scissor;
+		SetRect(&scissor, 0, 0, (int)m_ViewPort.right, (int)m_ViewPort.bottom);
+		Singleton<Engine>::GetSingleton()->Device()->SetScissorRect(&scissor);
 	}
 
 	void Viewport::Render()
 	{
-		const RECT *TileSize = m_TileMapInfo->GetOneTileSize();
+		Rect onetile_size = m_TileMapInfo->GetOneTileSize();
 
-		int FirstCellX = m_ViewPort.left / TileSize->right;
-		int FirstCellY = m_ViewPort.top / TileSize->bottom;
+		int FirstCellX = (int)(m_ViewPort.left / onetile_size.right);
+		int FirstCellY = (int)(m_ViewPort.top / onetile_size.bottom);
 
-		// 요거 바꿀것 5
-		int EndCellX = FirstCellX + 5;
-		int EndCellY = FirstCellY + 5;
+		int EndCellX = FirstCellX + m_ViewportX;
+		int EndCellY = FirstCellY + m_ViewportY;
 
 		// 뷰포트 x,y
-		int	OffsetX = -(static_cast<int>(m_ViewPort.left) % static_cast<int>(TileSize->right));
-		int OffsetY = -(static_cast<int>(m_ViewPort.top) % static_cast<int>(TileSize->bottom));
+		int OffsetX = -(static_cast<int>(m_ViewPort.left) % static_cast<int>(onetile_size.right));
+		int OffsetY = -(static_cast<int>(m_ViewPort.top) % static_cast<int>(onetile_size.bottom));
 
 		int CurrPosX = OffsetX;
 		int CurrPosY = OffsetY;
@@ -90,21 +99,21 @@ namespace SDGEngine
 		{
 			for (int CurrCellX = FirstCellX; CurrCellX < EndCellX; ++CurrCellX)
 			{
-				RECT* TempImageObject = m_TileMapInfo->GetTile(CurrCellX, CurrCellY);
-				if (TempImageObject)
+				Rect *tile_rect = m_TileMapInfo->GetTile(CurrCellX, CurrCellY);
+				if (tile_rect)
 				{
 					Graphics::RenderQuad(
 						m_TileMapInfo->m_TileTexture->width(),
 						m_TileMapInfo->m_TileTexture->height(),
-						D3DXVECTOR2(TempImageObject->left, TempImageObject->top),
-						D3DXVECTOR2(TempImageObject->right * 2, TempImageObject->bottom * 2),
-						D3DXVECTOR2(CurrPosX, CurrPosY)
+						D3DXVECTOR2(tile_rect->left, tile_rect->top),
+						D3DXVECTOR2(onetile_size.right, onetile_size.bottom),
+						D3DXVECTOR2(float(CurrPosX), float(CurrPosY))
 						);
 				}
-				CurrPosX += TileSize->right;
+				CurrPosX += (int)onetile_size.right;
 			}
 			CurrPosX = OffsetX;
-			CurrPosY += TileSize->bottom;
+			CurrPosY += (int)onetile_size.bottom;
 		}
 		Graphics::SetAlphatest(false);
 		Graphics::BindTexture(NULL);

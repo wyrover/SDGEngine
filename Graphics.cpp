@@ -19,8 +19,6 @@ namespace SDGEngine
 		2-------3
 		*/
 		static BoundsVerts verts[4];
-		float halfWidth = textureScale.x*0.5f;
-		float halfHeight = textureScale.y*0.5f;
 
 		float Left = (textureOffset.x + 0.5f) / w;
 		float Top = (textureOffset.y + 0.5f) / h;
@@ -30,26 +28,26 @@ namespace SDGEngine
 		// UL
 		verts[0].tu = Left;
 		verts[0].tv = Top;
-		verts[0].x = -halfWidth + position.x;
-		verts[0].y = -halfHeight + position.y;
+		verts[0].x = position.x;
+		verts[0].y = position.y;
 
 		//UR
 		verts[1].tu = Right;
 		verts[1].tv = Top;
-		verts[1].x = halfWidth + position.x;
-		verts[1].y = -halfHeight + position.y;
+		verts[1].x = position.x + textureScale.x;
+		verts[1].y = position.y;
 
 		//LR
 		verts[2].tu = Left;
 		verts[2].tv = Bottom;
-		verts[2].x = -halfWidth + position.x;
-		verts[2].y = halfHeight + position.y;
+		verts[2].x = position.x;
+		verts[2].y = position.y + textureScale.y;
 
 		//LL
 		verts[3].tu = Right;
 		verts[3].tv = Bottom;
-		verts[3].x = halfWidth + position.x;
-		verts[3].y = halfHeight + position.y;
+		verts[3].x = position.x + textureScale.x;
+		verts[3].y = position.y + textureScale.y;
 
 		Singleton<Engine>::GetSingleton()->Device()->SetFVF(BoundsVerts::FvF);
 		Singleton<Engine>::GetSingleton()->Device()->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, verts, sizeof(BoundsVerts));

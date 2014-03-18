@@ -15,8 +15,8 @@ namespace SDGEngine
 		virtual void OnRender() override;
 
 	private:
-		/*GameObject *hero = nullptr;*/
-		TileMap* m_TileTempalte;
-		Viewport* m_TileEngine;
+		//GameObject *hero = nullptr;
+		TileMap* m_Tilemap;
+		Viewport* m_Viewport;
 	};
 }

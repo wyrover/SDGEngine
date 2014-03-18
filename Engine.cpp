@@ -55,9 +55,12 @@ namespace SDGEngine
 		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)))
 			return E_FAIL;
 
-		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
+		//if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME)))
+		//	return E_FAIL;
+
+		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE)))
 			return E_FAIL;
-	
+
 		if (!Singleton<Time>::GetSingleton()->Init())
 			return E_FAIL;
 
@@ -77,7 +80,9 @@ namespace SDGEngine
 
 	void Engine::OnCleanUp()
 	{
+#ifdef _DEBUG
 		m_FPS->RemoveReference();
+#endif
 		SRELEASE(m_pd3dDevice);
 		SRELEASE(m_pD3D);
 	}

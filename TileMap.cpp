@@ -2,13 +2,13 @@
 
 namespace SDGEngine
 {
-	TileMap::TileMap(const std::string &path, const int width, const int height, int InMaxMapCellX, int InMaxMapCellY)
+	TileMap::TileMap(const std::string &path, const float width, const float height, int InMaxMapCellX, int InMaxMapCellY)
 	{
-		SetRect(&m_FrameSize, 0, 0, width, height);
+		m_FrameSize.SetRect(0, 0, width, height);
 		m_TileTexture = Singleton<Assets>::GetSingleton()->RequestTexture(path);
 		assert(m_TileTexture);
-		m_MaxCellXCount = m_TileTexture->width() / width;
-		m_MaxCellYCount = m_TileTexture->height() / height;
+		m_MaxCellXCount = static_cast<int>(m_TileTexture->width() / width);
+		m_MaxCellYCount = static_cast<int>(m_TileTexture->height() / height);
 		m_MaxMapCellX = InMaxMapCellX;
 		m_MaxMapCellY = InMaxMapCellY;
 		m_FrameCount = m_MaxCellXCount * m_MaxCellYCount;
@@ -24,25 +24,21 @@ namespace SDGEngine
 		m_TileTexture->RemoveReference();
 	}
 
-	bool TileMap::CreateTiles()
+	void TileMap::CreateTiles()
 	{
-		RECT TempTagetRect;
-		int retval = false;
+		Rect TempTagetRect;
 
 		for (int CurrFrame = 0; CurrFrame < m_FrameCount; ++CurrFrame)
 		{
 			GetCellPos(CurrFrame, &TempTagetRect);
 
-			RECT *tempRect = new RECT;
-			retval = SetRect(tempRect, TempTagetRect.left, TempTagetRect.top, TempTagetRect.right, TempTagetRect.bottom);
-			if (!retval) return false;
+			Rect *tempRect = new Rect;
+			tempRect->SetRect(TempTagetRect.left, TempTagetRect.top, TempTagetRect.right, TempTagetRect.bottom);
 			m_TileSet.push_back(tempRect);
 		}
-
-		return true;
 	}
 
-	bool TileMap::GetCellPos(const int InFrameNumber, RECT *OutTargetRect)
+	void TileMap::GetCellPos(const int InFrameNumber, Rect *OutTargetRect)
 	{
 		int TempCellX = 0;
 		int TempCellY = 0;
@@ -53,16 +49,13 @@ namespace SDGEngine
 			TempCellY = (InFrameNumber) / m_MaxCellXCount;
 		}
 
-		int TargetX = TempCellX * static_cast<int>(m_FrameSize.right);
-		int TargetY = TempCellY * static_cast<int>(m_FrameSize.bottom);
+		float TargetX = TempCellX * m_FrameSize.right;
+		float TargetY = TempCellY * m_FrameSize.bottom;
 
-		int retval = SetRect(OutTargetRect, TargetX, TargetY, TargetX + m_FrameSize.right, TargetY + m_FrameSize.bottom);
-		if (!retval) return false;
-
-		return true;
+		OutTargetRect->SetRect(TargetX, TargetY, static_cast<float>(TargetX + m_FrameSize.right), static_cast<float>(TargetY + m_FrameSize.bottom));
 	}
 
-	RECT* TileMap::GetCellRect(unsigned int cellid)
+	Rect *TileMap::GetCellRect(unsigned int cellid)
 	{
 		if (cellid < m_TileSet.size())
 		{
@@ -79,18 +72,33 @@ namespace SDGEngine
 
 		CheckIsValidMapSize(InX, InY, OutX, OutY);
 
-		static const int TestTileMapId[10][10] =
-		{
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 4, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 4, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 4, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		// y, x
+		static const int TestTileMapId[25][32] = {
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 30, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 45, 46, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 61, 62, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 69, 70, 71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 77, 78, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 85, 86, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 93, 94, 95, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 101, 102, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109, 110, 111, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 1, 1 }
 		};
 
 		return TestTileMapId[OutY][OutX];
@@ -125,7 +133,7 @@ namespace SDGEngine
 		OutY = TempMapCellY;
 	}
 
-	RECT *TileMap::GetTile(int InX, int InY)
+	Rect *TileMap::GetTile(int InX, int InY)
 	{
 		return GetCellRect(GetTileId(InX, InY));
 	}
