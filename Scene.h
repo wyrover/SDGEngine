@@ -2,14 +2,16 @@
 
 namespace SDGEngine
 {
-	class GameScene : public Object
+	class Scene : public Object
 	{
 	public:
-		GameScene() {}
-		virtual ~GameScene() {}
+		Scene() {}
+		virtual ~Scene() {}
 
 		bool isActive() { return m_active; }
 		void setActive(bool active) { m_active = active; }
+		void SetSpriteSort(bool b) { m_space->Sort(b); }
+		Space *GetSpace() { return m_space; }
 
 		virtual void Init() final;
 		virtual void Destroy() final;
@@ -21,13 +23,11 @@ namespace SDGEngine
 		virtual void OnUpdate(float delta) { UNUSED(delta); }
 		virtual void OnRender() {}
 
-		void ChangeScene(GameScene* state);
-
-	protected:
-		Space *m_space = NULL;
-		bool m_active = false;
+		void ChangeScene(Scene* state);
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(GameScene);
+		Space *m_space = NULL;
+		bool m_active = false;
+		DISALLOW_COPY_AND_ASSIGN(Scene);
 	};
 }

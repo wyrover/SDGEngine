@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	class TitleScene : public GameScene
+	class TitleScene : public Scene
 	{
 	public:
 		TitleScene();

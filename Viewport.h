@@ -3,6 +3,7 @@
 
 namespace SDGEngine
 {
+	class Sprite;
 	class TileMap;
 	class Viewport
 	{
@@ -19,5 +20,6 @@ namespace SDGEngine
 		TileMap *m_TileMapInfo;
 		int m_ViewportX;
 		int m_ViewportY;
+		DISALLOW_COPY_AND_ASSIGN(Viewport);
 	};
 }

@@ -55,9 +55,6 @@ namespace SDGEngine
 		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)))
 			return E_FAIL;
 
-		//if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME)))
-		//	return E_FAIL;
-
 		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE)))
 			return E_FAIL;
 
@@ -131,8 +128,8 @@ namespace SDGEngine
 				Singleton<Time>::GetSingleton()->Start();
 				Singleton<Input>::GetSingleton()->Capture();
 				Singleton<FmodAudioSystem>::GetSingleton()->AudioSystem()->update();
-				OnRender();
 				OnUpdate(Singleton<Time>::GetSingleton()->deltaTime());
+				OnRender();
 			}
 		}
 

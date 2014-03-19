@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	GameObject::GameObject(Space *space, std::string name)
+	Entity::Entity(Space *space, std::string name)
 		:m_space(space), m_name(name)
 	{
 		if (space == NULL)
@@ -11,7 +11,7 @@ namespace SDGEngine
 		m_space->Add(this);
 	}
 
-	GameObject::GameObject(GameObject *parent, std::string name)
+	Entity::Entity(Entity *parent, std::string name)
 		:m_parent(parent), m_name(name)
 	{
 		if (parent == NULL)
@@ -21,7 +21,7 @@ namespace SDGEngine
 		parent->m_children.push_back(this);
 	}
 
-	GameObject::~GameObject()
+	Entity::~Entity()
 	{
 		if (!_destroyed)
 		{
@@ -33,7 +33,7 @@ namespace SDGEngine
 		}
 	}
 
-	void GameObject::Init()
+	void Entity::Init()
 	{
 		if (_initialized)
 			throw std::logic_error("The game object has already been initialized.");
@@ -49,7 +49,7 @@ namespace SDGEngine
 		_initialized = true;
 	}
 
-	void GameObject::Destroy()
+	void Entity::Destroy()
 	{
 		if (_destroyed)
 			throw std::logic_error("The game object has already been destroyed.");
@@ -66,7 +66,7 @@ namespace SDGEngine
 		_destroyed = true;
 	}
 
-	void GameObject::Update(float delta)
+	void Entity::Update(float delta)
 	{
 		for (auto pair : m_components)
 		{
@@ -78,7 +78,7 @@ namespace SDGEngine
 		}
 	}
 
-	void GameObject::Render()
+	void Entity::Render()
 	{
 		for (auto pair : m_components)
 		{
@@ -90,7 +90,7 @@ namespace SDGEngine
 		}
 	}
 
-	void GameObject::BroadcastMessage(const Message &msg)
+	void Entity::BroadcastMessage(const Message &msg)
 	{
 		for (auto compSet : m_subscriber[msg.m_type])
 		{
@@ -98,12 +98,12 @@ namespace SDGEngine
 		}
 	}
 
-	void GameObject::SetActive(bool active)
+	void Entity::SetActive(bool active)
 	{
 		m_active = active;
 	}
 
-	void GameObject::SetActiveRecursively(bool active)
+	void Entity::SetActiveRecursively(bool active)
 	{
 		// 부모가 없을때 까지
 		if (m_parent != NULL)

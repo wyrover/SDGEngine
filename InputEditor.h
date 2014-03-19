@@ -2,11 +2,11 @@
 
 namespace SDGEngine
 {
-	class Ime
+	class InputEditor
 	{
 	public:
-		Ime(std::string font, int size);
-		~Ime();
+		InputEditor(std::string font, int size);
+		~InputEditor();
 
 		int GetCharWidth(HDC hdc, char *ch, int len);
 		void SetCaret();

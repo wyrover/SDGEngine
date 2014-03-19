@@ -32,6 +32,7 @@ namespace SDGEngine
 		int m_MaxMapCellX;		// 전체 맵의 x셀 개수
 		int m_MaxMapCellY;		// 전체 맵의 y셀 개수
 
+		DISALLOW_COPY_AND_ASSIGN(TileMap);
 		friend class Viewport;
 	};
 }

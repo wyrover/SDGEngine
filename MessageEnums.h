@@ -4,9 +4,14 @@ namespace SDGEngine
 {
 	enum EMessageType
 	{
-		MT_UPDATE,
 		MT_OBJECT_CREATED,
-		NUM_MESSAGE_TPYES
+		MT_SET_TEXSCALE,
+		MT_SET_TEXOFFSET,
+		MT_SET_POSITION,
+		MT_SET_ROTATION,
+		MT_SET_SCALE,
+		MT_SET_ZORDER,
+		NUM_MESSAGE_TYPES
 	};
 
 	enum EMessageResult

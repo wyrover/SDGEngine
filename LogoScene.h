@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	class LogoScene : public GameScene
+	class LogoScene : public Scene
 	{
 	public:
 		LogoScene();
@@ -15,7 +15,7 @@ namespace SDGEngine
 		virtual void OnRender() override;
 
 	private:
-		//GameObject *hero = nullptr;
+		Entity *hero, *hero2;
 		TileMap* m_Tilemap;
 		Viewport* m_Viewport;
 	};

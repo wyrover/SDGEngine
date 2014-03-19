@@ -3,22 +3,16 @@
 namespace SDGEngine
 {
 	Sprite::Sprite()
-		:width(0), height(0), textureOffset(0.f, 0.f), textureScale(0.f, 0.f), position(0.f, 0.f)
 	{
+
 	}
 
-	Sprite::Sprite(const std::string &filename)
-		: width(0), height(0), textureOffset(0.f, 0.f), textureScale(32.f, 48.f), position(100.f, 100.f)
+	void Sprite::Init()
 	{
-		m_texture = Singleton<Assets>::GetSingleton()->RequestTexture(filename);
-		if (m_texture)
-		{
-			width = m_texture->width();
-			height =  m_texture->height();
-		}
+
 	}
 
-	Sprite::~Sprite()
+	void Sprite::Destroy()
 	{
 		if (m_texture)
 		{
@@ -29,23 +23,49 @@ namespace SDGEngine
 
 	void Sprite::Render()
 	{
-		Graphics::SetAlphatest(true);
-		Graphics::BindTexture(m_texture);
-		Graphics::RenderQuad(width, height, textureOffset, textureScale, position);
-		Graphics::SetAlphatest(false);
-		Graphics::BindTexture(NULL);
-		Graphics::RenderLineRect(-textureScale.x*0.5f + position.x, -textureScale.y*0.5f + position.y, textureScale.x, textureScale.y);
+		if (m_texture)
+		{
+			Graphics::SetAlphatest(true);
+			Graphics::BindTexture(m_texture);
+			Graphics::RenderQuad(width, height, textureOffset, textureScale, m_tx.pos);
+			Graphics::SetAlphatest(false);
+			Graphics::BindTexture(NULL);
+			Graphics::RenderLineRect(textureOffset.x + m_tx.pos.x, textureOffset.y + m_tx.pos.y, textureScale.x, textureScale.y);
+		}
 	}
 
-	void Sprite::setOffPosition(float x, float y)
+	void Sprite::Update(float delta)
 	{
-		position.x += x;
-		position.y += y;
+
 	}
 
-	void Sprite::setPosition(float x, float y)
+	EMessageResult Sprite::HandleMessage(const Message &msg)
 	{
-		position.x = x;
-		position.y = y;
+		switch (msg.m_type)
+		{
+		case MT_OBJECT_CREATED:
+			name = static_cast<const char *>(msg.m_data);
+			m_texture = Singleton<Assets>::GetSingleton()->RequestTexture(name);
+			if (m_texture)
+			{
+				width = m_texture->width();
+				height = m_texture->height();
+			}
+			return MR_TRUE;
+		case MT_SET_TEXSCALE:
+			textureScale = *static_cast<D3DXVECTOR2 *>(msg.m_data);
+			return MR_TRUE;
+		case MT_SET_TEXOFFSET:
+			textureOffset = *static_cast<D3DXVECTOR2 *>(msg.m_data);
+			return MR_TRUE;
+		case MT_SET_POSITION:
+			m_tx.pos = *static_cast<D3DXVECTOR2 *>(msg.m_data);
+			return MR_TRUE;
+		case MT_SET_ZORDER:
+			m_tx.zorder = *static_cast<int *>(msg.m_data);
+			return MR_TRUE;
+		}
+
+		return MR_IGNORED;
 	}
 }

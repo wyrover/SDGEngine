@@ -2,33 +2,33 @@
 
 namespace SDGEngine
 {
-	void GameScene::Init()
+	void Scene::Init()
 	{
 		m_space = new Space;
 		Start();
 		m_space->Init();
 	}
 
-	void GameScene::Destroy()
+	void Scene::Destroy()
 	{
 		Finish();
 		if (m_space) m_space->Destroy();
 		SDELETE(m_space);
 	}
 
-	void GameScene::Update(float delta)
+	void Scene::Update(float delta)
 	{
 		m_space->Update(delta);
 		OnUpdate(delta);
 	}
 
-	void GameScene::Render()
+	void Scene::Render()
 	{
-		m_space->Render();
 		OnRender();
+		m_space->Render();
 	}
 
-	void GameScene::ChangeScene(GameScene* state)
+	void Scene::ChangeScene(Scene* state)
 	{
 		Singleton<SceneSystem>::GetSingleton()->ChangeScene(state);
 	}

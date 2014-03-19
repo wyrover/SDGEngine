@@ -22,6 +22,7 @@ namespace SDGEngine
 		for (auto gameObject : m_gameObjects)
 		{
 			gameObject->Destroy();
+			SDELETE(gameObject);
 		}
 		_destroyed = true;
 	}
@@ -30,6 +31,10 @@ namespace SDGEngine
 	{
 		for (auto gameObject : m_gameObjects)
 		{
+			if (m_requireSpriteSort)
+			{
+				std::sort(m_gameObjects.begin(), m_gameObjects.end(), Space::ZorderSort);
+			}
 			if (gameObject->Active())
 				gameObject->Update(delta);
 		}
@@ -44,7 +49,7 @@ namespace SDGEngine
 		}
 	}
 
-	void Space::Add(GameObject *object)
+	void Space::Add(Entity *object)
 	{
 		if (object == NULL)
 			throw std::invalid_argument("The object argument can't be null.");
@@ -56,7 +61,7 @@ namespace SDGEngine
 		m_gameObjects.push_back(object);
 	}
 
-	void Space::Remove(GameObject *object)
+	void Space::Remove(Entity *object)
 	{
 		if (object == NULL)
 			throw std::invalid_argument("The object argument can't be null.");
@@ -66,5 +71,15 @@ namespace SDGEngine
 			throw std::logic_error("The object is not attached.");
 
 		m_gameObjects.erase(obj_it);
+	}
+
+	bool Space::ZorderSort(Entity *a, Entity *b)
+	{
+		auto sa = a->GetComponent<Sprite>();
+		auto sb = b->GetComponent<Sprite>();
+		if (sa && sb) {
+			return Sprite::SpriteCompare(sa, sb);
+		}
+		return false;
 	}
 }

@@ -28,18 +28,18 @@ namespace SDGEngine
 	void SceneSystem::Update(float delta)
 	{
 		// let the state update the game
-		GameScene *scene = m_scene.back();
+		Scene *scene = m_scene.back();
 		if (scene && scene->isActive()) scene->Update(delta);
 	}
 
 	void SceneSystem::Render()
 	{
 		// let the state update the game
-		GameScene *scene = m_scene.back();
+		Scene *scene = m_scene.back();
 		if (scene && scene->isActive()) scene->Render();
 	}
 
-	void SceneSystem::PushScene(GameScene* state)
+	void SceneSystem::PushScene(Scene* state)
 	{
 		// store and init the new state
 		m_scene.push_back(state);
@@ -55,7 +55,7 @@ namespace SDGEngine
 		}
 	}
 
-	void SceneSystem::ChangeScene(GameScene* state)
+	void SceneSystem::ChangeScene(Scene* state)
 	{
 		// cleanup the current state
 		if (!m_scene.empty()) {

@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	class GameObject;
+	class Entity;
 	class Space : public Object
 	{
 	public:
@@ -15,11 +15,15 @@ namespace SDGEngine
 		virtual void Update(float delta) override;
 		virtual void Render() override;
 
-		void Add(GameObject *object);
-		void Remove(GameObject *object);
+		void Add(Entity *object);
+		void Remove(Entity *object);
+		void Sort(bool b) { m_requireSpriteSort = b; }
+
+		static bool ZorderSort(Entity *a, Entity *b);
 
 	private:
-		std::vector<GameObject *> m_gameObjects;
+		std::vector<Entity *> m_gameObjects;
+		bool m_requireSpriteSort = true;
 		bool _initialized = false;
 		bool _destroyed = false;
 		DISALLOW_COPY_AND_ASSIGN(Space);

@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	Ime::Ime(std::string font, int size)
+	InputEditor::InputEditor(std::string font, int size)
 	{
 		isKorean = false;
 		buf = (char *)malloc(256);
@@ -10,12 +10,12 @@ namespace SDGEngine
 		offset = 0;
 	}
 
-	Ime::~Ime()
+	InputEditor::~InputEditor()
 	{
 		free(buf);
 	}
 
-	int Ime::GetCharWidth(HDC hdc, char *ch, int len)
+	int InputEditor::GetCharWidth(HDC hdc, char *ch, int len)
 	{
 		//SIZE sz;
 		//GetTextExtentPoint32(hdc, ch, len, &sz);
@@ -23,7 +23,7 @@ namespace SDGEngine
 		return 0;
 	}
 
-	void Ime::SetCaret()
+	void InputEditor::SetCaret()
 	{
 		//SIZE sz;
 		//HDC hdc;
@@ -49,12 +49,12 @@ namespace SDGEngine
 		//ReleaseDC(m_hWnd, hdc);
 	}
 
-	inline int Ime::isDBCS(int nPos)
+	inline int InputEditor::isDBCS(int nPos)
 	{
 		return (IsDBCSLeadByte(buf[nPos]));
 	}
 
-	int Ime::GetPrevOff(int nPos)
+	int InputEditor::GetPrevOff(int nPos)
 	{
 		int n, size;
 
@@ -73,7 +73,7 @@ namespace SDGEngine
 		return n - size;
 	}
 
-	int Ime::GetNextOff(int nPos)
+	int InputEditor::GetNextOff(int nPos)
 	{
 		if (isDBCS(nPos))
 			return nPos + 2;
@@ -81,7 +81,7 @@ namespace SDGEngine
 			return nPos + 1;
 	}
 
-	void Ime::Insert(int nPos, char *str)
+	void InputEditor::Insert(int nPos, char *str)
 	{
 		int len;
 		int movelen;
@@ -93,7 +93,7 @@ namespace SDGEngine
 		memcpy(buf + nPos, str, len);
 	}
 
-	void Ime::Delete(int nPos, int nCount)
+	void InputEditor::Delete(int nPos, int nCount)
 	{
 		int movelen;
 
@@ -104,7 +104,7 @@ namespace SDGEngine
 		memmove(buf + nPos, buf + nPos + nCount, movelen);
 	}
 
-	LRESULT Ime::wmChar(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+	LRESULT InputEditor::wmChar(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (iMessage)
 		{
@@ -128,7 +128,7 @@ namespace SDGEngine
 		return 0;
 	}
 
-	LRESULT Ime::imeComposition(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+	LRESULT InputEditor::imeComposition(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (iMessage)
 		{
@@ -163,7 +163,7 @@ namespace SDGEngine
 		return 0;
 	}
 
-	LRESULT Ime::imeChar(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+	LRESULT InputEditor::imeChar(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (iMessage)
 		{
@@ -196,7 +196,7 @@ namespace SDGEngine
 		return 0;
 	}
 
-	LRESULT Ime::wmSetFocus(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+	LRESULT InputEditor::wmSetFocus(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (iMessage)
 		{
@@ -208,7 +208,7 @@ namespace SDGEngine
 		return 0;
 	}
 
-	LRESULT Ime::wmKillFocus(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+	LRESULT InputEditor::wmKillFocus(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (iMessage)
 		{
@@ -220,7 +220,7 @@ namespace SDGEngine
 		return 0;
 	}
 
-	LRESULT Ime::wmKeyDown(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+	LRESULT InputEditor::wmKeyDown(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (iMessage)
 		{

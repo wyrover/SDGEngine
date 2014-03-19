@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	class GameScene;
+	class Scene;
 	class SceneSystem : public Object, public Singleton<SceneSystem>
 	{
 	public:
@@ -14,12 +14,12 @@ namespace SDGEngine
 		virtual void Update(float delta) override;
 		virtual void Render() override;
 
-		void ChangeScene(GameScene* state);
-		void PushScene(GameScene* state);
+		void ChangeScene(Scene* state);
+		void PushScene(Scene* state);
 		void PopScene();
 
 	private:
-		std::vector<GameScene*> m_scene;
+		std::vector<Scene*> m_scene;
 		DISALLOW_COPY_AND_ASSIGN(SceneSystem);
 	};
 }

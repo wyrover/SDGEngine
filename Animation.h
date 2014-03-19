@@ -2,7 +2,7 @@
 
 namespace SDGEngine
 {
-	class Animation : public Behaviour
+	class Animation : public Component
 	{
 	public:
 		Animation();

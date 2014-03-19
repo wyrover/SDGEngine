@@ -60,7 +60,6 @@ namespace SDGEngine
 			}
 		}
 
-		printf("left: %f\nright: %f\ntop: %f\nbottom: %f\n", m_ViewPort.left, m_ViewPort.left + m_ViewPort.right, m_ViewPort.top, m_ViewPort.top + m_ViewPort.bottom);
 		RECT scissor;
 		SetRect(&scissor, 0, 0, (int)m_ViewPort.right, (int)m_ViewPort.bottom);
 		Singleton<Engine>::GetSingleton()->Device()->SetScissorRect(&scissor);

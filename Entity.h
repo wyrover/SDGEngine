@@ -2,20 +2,23 @@
 
 namespace SDGEngine 
 {
-	class GameObject : public Object
+	class Entity : public Object
 	{
 	public:
-		GameObject(Space *space, std::string name); //when parent object
-		GameObject(GameObject *parent, std::string name); //when child object
-		virtual ~GameObject();
+		Entity(Space *space, std::string name); //when parent object
+		Entity(Entity *parent, std::string name); //when child object
+		virtual ~Entity();
 
 		template<typename C>
 		C *AddComponent();
 		template<typename C>
 		C *GetComponent();
+		template<typename C>
+		bool RemoveComponent();
+		bool RemoveComponent(Component *c);
 
 		std::string &name() { return m_name; }
-		GameObject &parent() const { return *m_parent; }
+		Entity &parent() const { return *m_parent; }
 
 		virtual void Init() override;
 		virtual void Destroy() override;
@@ -26,6 +29,9 @@ namespace SDGEngine
 		// 감시할 메세지를 등록
 		template<typename C>
 		void SubscribeToMessageType(EMessageType);
+		// 모든 메세지 구독
+		template<typename C>
+		void SubscribeAllMessageType();
 		// 특정 컴포넌트에 메세지를 보냄
 		template<typename C>
 		void PostMessage(const Message &);
@@ -36,20 +42,20 @@ namespace SDGEngine
 		void SetActiveRecursively(bool active);
 
 	private:
-		GameObject *m_parent = NULL;
-		std::vector<GameObject *> m_children;
+		Entity *m_parent = NULL;
+		std::vector<Entity *> m_children;
 		std::unordered_map<std::type_index, Component *> m_components;
-		std::set<Component *> m_subscriber[NUM_MESSAGE_TPYES];
+		std::set<Component *> m_subscriber[NUM_MESSAGE_TYPES];
 		std::string m_name;
 		Space *m_space;
 		bool _initialized = false;
 		bool _destroyed = false;
 		bool m_active = false;
-		DISALLOW_COPY_AND_ASSIGN(GameObject);
+		DISALLOW_COPY_AND_ASSIGN(Entity);
 	};
 
 	template<typename C>
-	C *GameObject::AddComponent()
+	C *Entity::AddComponent()
 	{
 		if (m_components.find(typeid(C)) != m_components.end())
 		{
@@ -70,7 +76,25 @@ namespace SDGEngine
 	}
 
 	template<typename C>
-	C *GameObject::GetComponent()
+	bool Entity::RemoveComponent()
+	{
+		auto it = m_components.find(typeid(C));
+		if (it == m_components.end()) 
+			return false;
+		
+		it->second->Destroy();
+		SDELETE(it->second);
+		m_components.erase(it);
+		return true;
+	}
+
+	bool Entity::RemoveComponent(Component *c)
+	{
+		return RemoveComponent<decltype(c)>();
+	}
+
+	template<typename C>
+	C *Entity::GetComponent()
 	{
 		auto it = m_components.find(typeid(C));
 		if (it == m_components.end()) return NULL;
@@ -78,7 +102,7 @@ namespace SDGEngine
 	}
 
 	template<typename C>
-	void GameObject::SubscribeToMessageType(EMessageType msgType)
+	void Entity::SubscribeToMessageType(EMessageType msgType)
 	{
 		auto ret = GetComponent<C>();
 		assert(ret != NULL);
@@ -87,7 +111,18 @@ namespace SDGEngine
 	}
 
 	template<typename C>
-	void GameObject::PostMessage(const Message &msg)
+	void Entity::SubscribeAllMessageType()
+	{
+		auto ret = GetComponent<C>();
+		assert(ret != NULL);
+
+		for (int i = 0; i < NUM_MESSAGE_TYPES; i++) {
+			m_subscriber[i].insert(ret);
+		}
+	}
+
+	template<typename C>
+	void Entity::PostMessage(const Message &msg)
 	{
 		auto ret = GetComponent<C>();
 		assert(ret != NULL);

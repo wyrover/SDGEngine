@@ -137,8 +137,6 @@ namespace SDGEngine
 				Load(xmlElement);
 			}
 			return MR_TRUE;
-		case MT_UPDATE:
-			return MR_TRUE;
 		}
 
 		return MR_IGNORED;
