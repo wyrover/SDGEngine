@@ -92,6 +92,7 @@ namespace SDGEngine
 		m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
+			Singleton<Viewport>::GetSingleton()->Render();
 			Singleton<SceneSystem>::GetSingleton()->Render();
 #ifdef DEBUG
 			Graphics::RenderText(*m_FPS, 10, 10, "frameRate: %ld", Singleton<Time>::GetSingleton()->frameRate());
@@ -104,6 +105,7 @@ namespace SDGEngine
 
 	void Engine::OnUpdate(float delta)
 	{
+		Singleton<Viewport>::GetSingleton()->Update(delta);
 		Singleton<SceneSystem>::GetSingleton()->Update(delta);
 	}
 

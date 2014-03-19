@@ -24,8 +24,8 @@ namespace SDGEngine
 
 	void Scene::Render()
 	{
-		OnRender();
 		m_space->Render();
+		OnRender();
 	}
 
 	void Scene::ChangeScene(Scene* state)

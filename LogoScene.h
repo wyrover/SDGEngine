@@ -15,8 +15,7 @@ namespace SDGEngine
 		virtual void OnRender() override;
 
 	private:
-		Entity *hero, *hero2;
-		TileMap* m_Tilemap;
-		Viewport* m_Viewport;
+		Entity *hero = NULL;
+		TileMap* m_Tilemap = NULL;
 	};
 }

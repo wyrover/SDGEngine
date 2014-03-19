@@ -3,23 +3,24 @@
 
 namespace SDGEngine
 {
-	class Sprite;
 	class TileMap;
-	class Viewport
+	class Viewport : public Singleton<Viewport>
 	{
 	public:
-		Viewport(TileMap *mapinfo, int ViewportW, int ViewportH);
-		~Viewport() {}
+		Viewport() {}
+		virtual ~Viewport() {}
 
-		void Update();
+		void Init(TileMap *mapinfo, int ViewportW, int ViewportH);
+		void Update(float delta);
 		void Render();
 
 	private:
 		Rect m_ViewPort;
 		Rect m_TotalMapSize;
-		TileMap *m_TileMapInfo;
+		TileMap *m_TileMapInfo = NULL;
 		int m_ViewportX;
 		int m_ViewportY;
+		const float MoveUnit = 1000.0f;
 		DISALLOW_COPY_AND_ASSIGN(Viewport);
 	};
 }
