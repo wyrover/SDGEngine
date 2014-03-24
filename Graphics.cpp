@@ -105,7 +105,7 @@ namespace SDGEngine
 		// 가변인자
 		va_list ap;
 		INT nLenResult = 0;
-		TCHAR Buffer[256];
+		char Buffer[256];
 
 		// 읽어들임
 		va_start(ap, str);
@@ -119,6 +119,28 @@ namespace SDGEngine
 
 		return nLenResult;
 	}
+
+	//int Graphics::RenderText(TTFFontAsset &font, int x, int y, DWORD format, char *str, ...)
+	//{
+	//	RECT rc;
+	//	SetRect(&rc, x, y, -1, -1);
+	//	// 가변인자
+	//	va_list ap;
+	//	INT nLenResult = 0;
+	//	char Buffer[256];
+
+	//	// 읽어들임
+	//	va_start(ap, str);
+	//	{
+	//		// 버퍼에 기록
+	//		nLenResult = wvsprintf(Buffer, str, ap);
+	//	}
+	//	va_end(ap);
+
+	//	font.PrintText(Buffer, &rc, DT_NOCLIP | DT_VCENTER, font.getColor());
+
+	//	return nLenResult;
+	//}
 
 	void Graphics::SetAlphatest(bool flag)
 	{

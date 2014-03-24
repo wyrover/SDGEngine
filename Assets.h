@@ -13,7 +13,7 @@
 namespace SDGEngine
 {
 	class Asset;
-	class AudioAsset;
+	//class AudioAsset;
 	class TextureAsset;
 	class FontAsset;
 	class Assets : public Singleton<Assets>
@@ -24,7 +24,7 @@ namespace SDGEngine
 
 		TextureAsset *RequestTexture(const std::string &filename);
 		FontAsset *RequestFont(const std::string &filename, int size);
-		AudioAsset *RequestAudio(const std::string &filename, FMOD_MODE mode = FMOD_LOOP_OFF);
+		//AudioAsset *RequestAudio(const std::string &filename, FMOD_MODE mode = FMOD_LOOP_OFF);
 
 		void RemoveAsset(Asset *asset);
 		void StoreAsset(Asset *asset);

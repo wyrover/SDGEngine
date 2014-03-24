@@ -26,29 +26,29 @@ namespace SDGEngine
 		SRELEASE(m_dInput);
 	}
 
-	bool Input::Init()
+	HRESULT Input::Init()
 	{
 		// Create a direct input object
 		if (FAILED(DirectInput8Create(g_hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&m_dInput, NULL)))
-			return false;
+			return E_FAIL;
 
 		// Create a device for monitoring the keyboard
 		if (FAILED(m_dInput->CreateDevice(GUID_SysKeyboard, &m_keyboardDevice, NULL)))
-			return false;
+			return E_FAIL;
 		if (FAILED(m_keyboardDevice->SetCooperativeLevel(Singleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE))) //DISCL_BACKGROUND, DISCL_EXCLUSIVE
-			return false;
+			return E_FAIL;
 		if (FAILED(m_keyboardDevice->SetDataFormat(&c_dfDIKeyboard)))
-			return false;
+			return E_FAIL;
 
 		// Create a device for monitoring the mouse
 		if (FAILED(m_dInput->CreateDevice(GUID_SysMouse, &m_mouseDevice, NULL)))
-			return false;
+			return E_FAIL;
 		if (FAILED(m_mouseDevice->SetCooperativeLevel(Singleton<Engine>::GetSingleton()->Handle(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE)))
-			return false;
+			return E_FAIL;
 		if (FAILED(m_mouseDevice->SetDataFormat(&c_dfDIMouse)))
-			return false;
+			return E_FAIL;
 
-		return true;
+		return S_OK;
 	}
 
 	void Input::Capture()

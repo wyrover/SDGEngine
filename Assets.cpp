@@ -75,38 +75,38 @@ namespace SDGEngine
 		return asset;
 	}
 
-	AudioAsset *Assets::RequestAudio(const std::string &filename, FMOD_MODE mode)
-	{
-		AudioAsset *asset = NULL;
-		std::string name = GetContentPath() + filename;
+	//AudioAsset *Assets::RequestAudio(const std::string &filename, FMOD_MODE mode)
+	//{
+	//	AudioAsset *asset = NULL;
+	//	std::string name = GetContentPath() + filename;
 
-		// check to see if we have one stored already
-		asset = (AudioAsset*)GetAssetByFilename(name);
+	//	// check to see if we have one stored already
+	//	asset = (AudioAsset*)GetAssetByFilename(name);
 
-		// if not, load it and store it
-		if (!asset)
-		{
-			asset = new AudioAsset();
-			if (asset->Load(name, mode))
-			{
-				StoreAsset(asset);
-				std::cout << asset->m_filename << ": Load" << std::endl;
-			}
-			else
-			{
-				SDELETE(asset);
-			}
-		}
+	//	// if not, load it and store it
+	//	if (!asset)
+	//	{
+	//		asset = new AudioAsset();
+	//		if (asset->Load(name, mode))
+	//		{
+	//			StoreAsset(asset);
+	//			std::cout << asset->m_filename << ": Load" << std::endl;
+	//		}
+	//		else
+	//		{
+	//			SDELETE(asset);
+	//		}
+	//	}
 
-		if (asset)
-		{
-			asset->AddReference();
-			std::cout << asset->m_filename << ": RefCount (" << asset->m_iRefCount << ")" << std::endl;
-		}
+	//	if (asset)
+	//	{
+	//		asset->AddReference();
+	//		std::cout << asset->m_filename << ": RefCount (" << asset->m_iRefCount << ")" << std::endl;
+	//	}
 
-		// return what we found
-		return asset;
-	}
+	//	// return what we found
+	//	return asset;
+	//}
 
 	void Assets::StoreAsset(Asset *asset)
 	{

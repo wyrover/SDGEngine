@@ -9,7 +9,7 @@ namespace SDGEngine
 		Input();
 		virtual ~Input();
 
-		bool Init();
+		HRESULT Init();
 
 		void Capture();
 		// keyboard

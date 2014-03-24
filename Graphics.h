@@ -28,6 +28,7 @@ namespace SDGEngine
 		static void RenderLineRect(float x, float y, float w, float h);
 		static void RenderTriangle(float size);
 		static int  RenderText(const FontAsset &font, int x, int y, char *str, ...);
+//		static int  RenderText(TTFFontAsset &font, int x, int y, DWORD format, char *str, ...);
 		static void SetAlphatest(bool flag);
 		static void SetAddressModes(D3DTEXTUREADDRESS address);
 		static void SetTextureFilter(D3DTEXTUREFILTERTYPE texfilter);

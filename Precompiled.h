@@ -15,7 +15,7 @@
 #pragma comment(lib, "lua51.lib")
 #pragma comment(lib, "imm32.lib")
 #pragma comment(lib, "tinyxml/tinyxml.lib")
-#pragma comment(lib, "fmodex_vc.lib")
+#pragma comment(lib, "freetype252.lib")
 
 extern "C"
 {
@@ -43,11 +43,12 @@ extern "C"
 #include <stdexcept>
 #include <algorithm>
 #include <iterator>
+#include <time.h>
 #include <imm.h>
 #include "tinyxml.h"
-#include <fmod.hpp>
-#include <fmod_errors.h>
 #include <memory>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #ifdef _DEBUG
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
@@ -55,12 +56,12 @@ extern "C"
 //#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
-#define RANDOMIZE() srand((unsigned)time(nullptr))
+#define RANDOMIZE() srand((unsigned)time(NULL))
 #define RANDOM(n) (rand() % (n))
 
-#define SDELETE(p)       { if(p) { delete (p);     (p)=nullptr; } }
-#define SDELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=nullptr; } }
-#define SRELEASE(p)      { if(p) { (p)->Release(); (p)=nullptr; } }
+#define SDELETE(p)       { if(p) { delete (p);     (p)=NULL; } }
+#define SDELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }
+#define SRELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
 #define UNUSED(p) (void)p
 
 // A macro to disallow the copy constructor and operator= functions
@@ -68,6 +69,13 @@ extern "C"
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
 	TypeName(const TypeName&);               \
 	void operator=(const TypeName&)
+
+#ifndef V
+#define V(x)           { HRESULT hr = (x); }
+#endif
+#ifndef V_RETURN
+#define V_RETURN(x)    { HRESULT hr = (x); if( FAILED(hr) ) { return E_FAIL; } }
+#endif
 
 #include "RemoveQualifier.h"
 #include "Meta.h"
@@ -234,16 +242,13 @@ extern HINSTANCE g_hInstance;
 #include "Assets.h"
 #include "TextureAsset.h"
 #include "TextureAtlas.h"
-#include "FmodAudioSystem.h"
-#include "AudioAsset.h"
-//#include "TTFFontAsset.h"
+#include "TTFFontAsset.h"
 #include "FontAsset.h"
+#include "TTFFont.h"
+#include "TTF.h"
 #include "Input.h"
 #include "Time.h"
 #include "Graphics.h"
-#include "AnimationClip.h"
-#include "AnimationEnums.h"
-#include "MessageEnums.h"
 #include "Message.h"
 #include "Space.h"
 #include "Component.h"
@@ -257,7 +262,7 @@ extern HINSTANCE g_hInstance;
 
 #include "Sprite.h"
 #include "Collider.h"
-#include "Animation.h"
+#include "SpriteAnimation.h"
 
 #include "Scene.h"
 #include "LogoScene.h"

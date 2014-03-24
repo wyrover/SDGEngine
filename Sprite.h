@@ -22,7 +22,7 @@ namespace SDGEngine
 				return a->m_tx.zorder < b->m_tx.zorder;
 		}
 
-	private:
+	protected:
 		TextureAsset *m_texture = NULL;
 		int width = 0, height = 0;
 		D3DXVECTOR2 textureOffset = D3DXVECTOR2(0.f, 0.f);

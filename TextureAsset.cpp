@@ -12,6 +12,18 @@ namespace SDGEngine
 
 	}
 
+	bool TextureAsset::LoadDynamic(int w, int h)
+	{
+		if (FAILED(D3DXCreateTexture(Singleton<Engine>::GetSingleton()->Device(), w, h, 1, 0, 
+			D3DFMT_A8B8G8R8, D3DPOOL_MANAGED, &m_texture))) {
+			std::string errorMsg = "Could not create empty texture\n";
+			std::cout << errorMsg.c_str() << std::endl;
+			return false;
+		}
+
+		return true;
+	}
+
 	bool TextureAsset::Load(const std::string data)
 	{
 		m_filename = data;

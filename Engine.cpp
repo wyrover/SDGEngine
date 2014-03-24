@@ -40,7 +40,7 @@ namespace SDGEngine
 		if (!m_hwnd)
 			return E_FAIL;
 
-		if (NULL == (m_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
+		if (!(m_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
 			return E_FAIL;
 
 		ZeroMemory(&m_d3dpp, sizeof(m_d3dpp));
@@ -48,24 +48,11 @@ namespace SDGEngine
 		m_d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 		m_d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 
-		if (FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd,
-			D3DCREATE_HARDWARE_VERTEXPROCESSING, &m_d3dpp, &m_pd3dDevice)))
-			return E_FAIL;
-
-		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)))
-			return E_FAIL;
-
-		if (FAILED(m_pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE)))
-			return E_FAIL;
-
-		if (!Singleton<Time>::GetSingleton()->Init())
-			return E_FAIL;
-
-		if (!Singleton<Input>::GetSingleton()->Init())
-			return E_FAIL;
-
-		if (!Singleton<FmodAudioSystem>::GetSingleton()->Init())
-			return E_FAIL;
+		V_RETURN(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &m_d3dpp, &m_pd3dDevice));
+		V_RETURN(m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE));
+		V_RETURN(m_pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE));
+		V_RETURN(Singleton<Time>::GetSingleton()->Init());
+		V_RETURN(Singleton<Input>::GetSingleton()->Init());
 
 		Singleton<SceneSystem>::GetSingleton()->Init();
 		Singleton<SceneSystem>::GetSingleton()->ChangeScene(new LogoScene);
@@ -89,7 +76,7 @@ namespace SDGEngine
 		if (NULL == m_pd3dDevice)
 			return;
 
-		m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, Colours::White, 1.0f, 0);
+		m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, Colours::Black, 1.0f, 0);
 		if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 		{
 			Singleton<Viewport>::GetSingleton()->Render();
@@ -129,7 +116,6 @@ namespace SDGEngine
 			{
 				Singleton<Time>::GetSingleton()->Start();
 				Singleton<Input>::GetSingleton()->Capture();
-				Singleton<FmodAudioSystem>::GetSingleton()->AudioSystem()->update();
 				OnUpdate(Singleton<Time>::GetSingleton()->deltaTime());
 				OnRender();
 			}

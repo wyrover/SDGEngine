@@ -17,5 +17,6 @@ namespace SDGEngine
 	private:
 		Entity *hero = NULL;
 		TileMap* m_Tilemap = NULL;
+		TTF *ttf = NULL;
 	};
 }

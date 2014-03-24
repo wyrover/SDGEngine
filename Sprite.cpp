@@ -44,6 +44,8 @@ namespace SDGEngine
 		switch (msg.m_type)
 		{
 		case MT_OBJECT_CREATED:
+			return MR_TRUE;
+		case MT_LOAD_TEXTURE:
 			name = static_cast<const char *>(msg.m_data);
 			m_texture = Singleton<Assets>::GetSingleton()->RequestTexture(name);
 			if (m_texture)

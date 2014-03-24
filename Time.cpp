@@ -10,7 +10,7 @@ namespace SDGEngine
 	{
 	}
 
-	bool Time::Init()
+	HRESULT Time::Init()
 	{
 		if (QueryPerformanceFrequency((LARGE_INTEGER*)&m_countsPerSec))
 		{
@@ -25,7 +25,7 @@ namespace SDGEngine
 			m_secPerCount = 0.001f;
 		}
 
-		return true;
+		return S_OK;
 	}
 
 	void Time::Start()

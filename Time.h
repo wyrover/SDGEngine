@@ -8,7 +8,7 @@ namespace SDGEngine
 		Time();
 		virtual ~Time();
 
-		bool Init();
+		HRESULT Init();
 		void Start();
 		float deltaTime() { return m_deltaTime; }
 		unsigned long frameRate() { return m_fps; }

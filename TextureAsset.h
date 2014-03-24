@@ -8,6 +8,7 @@ namespace SDGEngine
 		TextureAsset();
 		virtual ~TextureAsset();
 
+		bool LoadDynamic(int w, int h);
 		bool Load(const std::string data);
 		unsigned int width();
 		unsigned int height();
